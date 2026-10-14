@@ -60,7 +60,7 @@
     .app-header {
       background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
       color: #ffffff;
-      padding: 16px 24px;
+      padding: 14px 20px;
       box-shadow: var(--shadow-md);
       position: sticky;
       top: 0;
@@ -72,9 +72,10 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 16px;
-      max-width: 1600px;
-      margin: 0 auto;
+      gap: 14px;
+      max-width: 100%;
+      width: 100%;
+      margin: 0;
     }
 
     .brand-group {
@@ -174,14 +175,15 @@
 
     /* Main Container */
     .main-container {
-      max-width: 1600px;
+      max-width: 100%;
       width: 100%;
-      margin: 0 auto;
-      padding: 20px 24px 48px;
+      margin: 0;
+      padding: 16px 20px 48px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
       flex: 1;
+      box-sizing: border-box;
     }
 
     /* KPI Summary Strip */
@@ -506,24 +508,28 @@
     }
 
     /* Table View */
+    /* Table View */
     .table-container {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       box-shadow: var(--shadow-sm);
       overflow: hidden;
+      width: 100%;
     }
 
     .table-scroll {
-      overflow-x: auto;
-      max-height: 680px;
+      overflow-x: hidden; /* Zero horizontal scroll - fits page horizontally */
+      max-height: 720px;
       overflow-y: auto;
+      width: 100%;
     }
 
     table.task-table {
       width: 100%;
+      table-layout: fixed;
       border-collapse: collapse;
-      font-size: 13px;
+      font-size: 12.5px;
       text-align: left;
     }
 
@@ -532,16 +538,18 @@
       top: 0;
       background: #f8fafc;
       color: var(--text-muted);
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.4px;
-      padding: 11px 12px;
+      padding: 10px 8px;
       border-bottom: 2px solid var(--border);
       white-space: nowrap;
       z-index: 10;
       cursor: pointer;
       user-select: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     table.task-table thead th:hover {
@@ -559,86 +567,216 @@
     }
 
     table.task-table td {
-      padding: 11px 12px;
-      vertical-align: top;
+      padding: 8px 8px;
+      vertical-align: middle;
       color: var(--text);
+      overflow: hidden;
+    }
+
+    /* Sticky Action Column on Right - Always Visible with Zero Horizontal Scroll */
+    table.task-table th.col-actions,
+    table.task-table td.col-actions {
+      position: sticky;
+      right: 0;
+      background: var(--surface);
+      box-shadow: -3px 0 8px rgba(15, 23, 42, 0.08);
+      z-index: 5;
+      text-align: center;
+      padding: 8px 6px;
+    }
+
+    table.task-table thead th.col-actions {
+      background: #f8fafc;
+      z-index: 15;
+    }
+
+    table.task-table tbody tr:hover td.col-actions {
+      background: #f8fafc;
     }
 
     .td-id {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       font-weight: 700;
-      font-size: 12.5px;
+      font-size: 12px;
       color: var(--primary);
       white-space: nowrap;
     }
 
-    .td-title {
+    .td-title-cell {
+      overflow: hidden;
+    }
+
+    .td-title-text {
       font-weight: 600;
-      min-width: 200px;
-      max-width: 280px;
-    }
-
-    .td-desc {
-      color: var(--text-muted);
+      color: var(--text);
       font-size: 12.5px;
-      min-width: 200px;
-      max-width: 300px;
-      white-space: pre-line;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
     }
 
-    .td-notes {
+    .td-title-text:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    .td-desc-sub {
       color: var(--text-muted);
+      font-size: 11px;
+      line-height: 1.3;
+      margin-top: 2px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .td-truncate {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       font-size: 12px;
-      min-width: 170px;
-      max-width: 250px;
-      white-space: pre-line;
+    }
+
+    .td-muted {
+      color: var(--text-muted);
+    }
+
+    .td-notes-compact {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      max-width: 100%;
+    }
+
+    .note-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      cursor: help;
+    }
+
+    .dep-pill {
+      background: #fffbeb;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+
+    .comment-pill {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+    }
+
+    .td-date-stacked {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .td-date-stacked .date-due {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .td-date-stacked .date-overdue {
+      color: var(--danger);
+      font-weight: 700;
     }
 
     .td-date {
       white-space: nowrap;
-      font-size: 12.5px;
+      font-size: 11.5px;
       color: var(--text-muted);
     }
 
-    .inline-select {
-      padding: 3px 7px;
-      border-radius: 6px;
-      font-size: 11.5px;
-      font-weight: 700;
-      cursor: pointer;
-      border: 1px solid transparent;
-    }
-
-    .link-pill {
+    .btn-action-group {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 4px;
-      padding: 3px 8px;
-      background: #eff6ff;
-      color: #1d4ed8;
-      border: 1px solid #bfdbfe;
-      border-radius: 5px;
-      font-size: 11.5px;
-      font-weight: 600;
-      text-decoration: none;
-      max-width: 190px;
-      overflow: hidden;
-      text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .link-pill:hover {
+    .btn-xs {
+      padding: 3px 8px;
+      font-size: 11px;
+      border-radius: 4px;
+    }
+
+    .inline-select {
+      padding: 2px 5px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      max-width: 100%;
+    }
+
+    .link-icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 3px 6px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .link-icon-btn:hover {
       background: #dbeafe;
-      text-decoration: underline;
+    }
+
+    .table-mode-switch {
+      display: inline-flex;
+      background: var(--neutral-bg);
+      padding: 2px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      gap: 2px;
+    }
+
+    .table-mode-switch .btn {
+      padding: 4px 9px;
+      font-size: 11.5px;
+    }
+
+    .table-mode-switch .btn.active {
+      background: var(--surface);
+      color: var(--primary);
+      box-shadow: var(--shadow-sm);
+      border-color: var(--border-strong);
     }
 
     /* Kanban Board View */
     .kanban-board {
       display: grid;
-      grid-template-columns: repeat(5, minmax(260px, 1fr));
-      gap: 14px;
-      overflow-x: auto;
-      padding-bottom: 8px;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      width: 100%;
       align-items: start;
     }
 
@@ -1038,6 +1176,10 @@
         <select id="filterAssignee" class="filter-select" onchange="renderCurrentView()">
           <option value="">All Assignees</option>
         </select>
+        <div class="table-mode-switch" id="tableModeSwitch" title="Switch table horizontal layout">
+          <button type="button" class="btn btn-sm btn-light active" id="btnModeFit" onclick="setTableMode('fit')" title="Streamlined horizontal fit with zero scrolling">&#9638; Fit to Page</button>
+          <button type="button" class="btn btn-sm btn-light" id="btnModeExpanded" onclick="setTableMode('expanded')" title="Separate 14 columns across full screen width">&#9641; 14 Columns</button>
+        </div>
         <button class="btn btn-light btn-sm" onclick="clearFilters()">Clear Filters</button>
       </div>
     </section>
@@ -1141,9 +1283,22 @@
       repositoryLinks: INITIAL_DATA.repositoryLinks,
       currentView: "table", // 'table' | 'kanban' | 'workload' | 'repository'
       dataset: "active",    // 'active' | 'completed' | 'all'
+      tableMode: localStorage.getItem("idemi_table_mode") || "fit", // 'fit' | 'expanded'
       sortField: "id",
       sortAsc: true
     };
+
+    function setTableMode(mode) {
+      state.tableMode = mode;
+      localStorage.setItem("idemi_table_mode", mode);
+      const btnFit = document.getElementById("btnModeFit");
+      const btnExp = document.getElementById("btnModeExpanded");
+      if (btnFit && btnExp) {
+        btnFit.classList.toggle("active", mode === "fit");
+        btnExp.classList.toggle("active", mode === "expanded");
+      }
+      renderCurrentView();
+    }
 
     function initApp() {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -1391,6 +1546,18 @@
       document.getElementById("countTable").textContent = filtered.length;
       document.getElementById("countKanban").textContent = filtered.length;
 
+      // Sync Table Mode Switch visibility and active state
+      const modeSwitch = document.getElementById("tableModeSwitch");
+      if (modeSwitch) {
+        modeSwitch.style.display = state.currentView === "table" ? "inline-flex" : "none";
+        const btnFit = document.getElementById("btnModeFit");
+        const btnExp = document.getElementById("btnModeExpanded");
+        if (btnFit && btnExp) {
+          btnFit.classList.toggle("active", state.tableMode === "fit");
+          btnExp.classList.toggle("active", state.tableMode === "expanded");
+        }
+      }
+
       const container = document.getElementById("viewContainer");
       if (state.currentView === "table") {
         container.innerHTML = renderTableView(filtered);
@@ -1419,18 +1586,120 @@
 
       const sortArrow = (f) => state.sortField === f ? (state.sortAsc ? " &#9650;" : " &#9660;") : "";
 
+      if (state.tableMode !== "expanded") {
+        // Fit to Page Mode (Default - Zero horizontal scroll, all actions & options fully visible)
+        const rowsHtml = tasks.map(t => {
+          const mergedBadge = t.parentId ? `<div class="merged-indicator" title="Shared merged task group with ${escapeHtml(t.parentId)}">Linked: ${escapeHtml(t.parentId)}</div>` : "";
+          const linkHtml = t.link
+            ? `<a class="link-icon-btn" href="${escapeHtml(t.link)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(t.link)}">&#128279; Open</a>`
+            : `<span style="color:#94a3b8;font-size:12px;">—</span>`;
+          
+          const isOverdue = t.dueDate && t.progress !== "Completed" && new Date(t.dueDate) < new Date();
+
+          return `
+            <tr>
+              <td class="td-id">
+                <span>${escapeHtml(t.id)}</span>
+                ${mergedBadge}
+              </td>
+              <td class="td-title-cell">
+                <div class="td-title-text" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')" title="Click to edit: ${escapeHtml(t.title || '')}">${escapeHtml(t.title || "(Untitled Row)")}</div>
+                ${t.description ? `<div class="td-desc-sub" title="${escapeHtml(t.description)}">${escapeHtml(t.description)}</div>` : ''}
+              </td>
+              <td><span class="cat-tag" title="${escapeHtml(t.category || 'General')}">${escapeHtml(t.category || "General")}</span></td>
+              <td>
+                <select class="inline-select prio-${escapeHtml(t.priority)}" onchange="inlineUpdateTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}', 'priority', this.value)">
+                  ${INITIAL_DATA.priorities.map(p => `<option value="${p}" ${t.priority === p ? 'selected' : ''}>${p}</option>`).join("")}
+                </select>
+              </td>
+              <td>
+                <div class="td-date-stacked">
+                  <span title="Start Date">&#128197; ${escapeHtml(t.startDate || "—")}</span>
+                  <span class="${isOverdue ? 'date-overdue' : 'date-due'}" title="Due Date">&#9200; ${escapeHtml(t.dueDate || "—")}</span>
+                  ${t.completionDate ? `<span style="color:#059669;font-weight:600;" title="Completed Date">&#10003; ${escapeHtml(t.completionDate)}</span>` : ''}
+                </div>
+              </td>
+              <td>
+                <div class="assignee-chip" title="${escapeHtml(t.assignee || 'Unassigned')}">
+                  <span class="avatar">${getInitials(t.assignee)}</span>
+                  <span>${escapeHtml(t.assignee || "Unassigned")}</span>
+                </div>
+              </td>
+              <td>
+                <select class="inline-select ${statusClass(t.progress)}" onchange="inlineUpdateTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}', 'progress', this.value)">
+                  ${INITIAL_DATA.statuses.map(s => `<option value="${s}" ${t.progress === s ? 'selected' : ''}>${s}</option>`).join("")}
+                </select>
+              </td>
+              <td>
+                <div class="td-notes-compact">
+                  ${t.dependencies ? `<div class="note-pill dep-pill" title="Dependency: ${escapeHtml(t.dependencies)}">&#9888; ${escapeHtml(t.dependencies)}</div>` : ''}
+                  ${t.comments ? `<div class="note-pill comment-pill" title="Comment / Update: ${escapeHtml(t.comments)}">&#128172; ${escapeHtml(t.comments)}</div>` : ''}
+                  ${!t.dependencies && !t.comments ? '<span style="color:#94a3b8;font-size:12px;">—</span>' : ''}
+                </div>
+              </td>
+              <td style="text-align:center;">${linkHtml}</td>
+              <td class="col-actions">
+                <div class="btn-action-group">
+                  <button class="btn btn-light btn-xs" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">Edit</button>
+                  <button class="btn btn-danger-outline btn-xs" onclick="deleteTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">&#128465;</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join("");
+
+        return `
+          <div class="table-container">
+            <div class="table-scroll">
+              <table class="task-table">
+                <colgroup>
+                  <col style="width: 70px;" />
+                  <col style="width: auto;" />
+                  <col style="width: 100px;" />
+                  <col style="width: 82px;" />
+                  <col style="width: 110px;" />
+                  <col style="width: 130px;" />
+                  <col style="width: 105px;" />
+                  <col style="width: 180px;" />
+                  <col style="width: 75px;" />
+                  <col style="width: 95px;" />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th onclick="sortBy('id')">ID${sortArrow('id')}</th>
+                    <th onclick="sortBy('title')">Task &amp; Details${sortArrow('title')}</th>
+                    <th onclick="sortBy('category')">Category${sortArrow('category')}</th>
+                    <th onclick="sortBy('priority')">Priority${sortArrow('priority')}</th>
+                    <th onclick="sortBy('dueDate')">Timeline${sortArrow('dueDate')}</th>
+                    <th onclick="sortBy('assignee')">Assignee${sortArrow('assignee')}</th>
+                    <th onclick="sortBy('progress')">Progress${sortArrow('progress')}</th>
+                    <th>Notes &amp; Deps</th>
+                    <th style="text-align:center;">Link</th>
+                    <th class="col-actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rowsHtml}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
+      // 14-Column View (also fits horizontally with auto-percentages and sticky actions)
       const rowsHtml = tasks.map(t => {
-        const mergedBadge = t.parentId ? `<span class="merged-indicator" title="Shared merged task group with ${escapeHtml(t.parentId)}">Linked: ${escapeHtml(t.parentId)}</span>` : "";
+        const mergedBadge = t.parentId ? `<div class="merged-indicator" title="Shared merged task group with ${escapeHtml(t.parentId)}">Linked: ${escapeHtml(t.parentId)}</div>` : "";
         const linkHtml = t.link
-          ? `<a class="link-pill" href="${escapeHtml(t.link)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(t.link)}">&#128279; ${escapeHtml(t.linkLabel || "Open Link")}</a>`
+          ? `<a class="link-icon-btn" href="${escapeHtml(t.link)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(t.link)}">&#128279; Link</a>`
           : `<span style="color:#94a3b8;font-size:12px;">—</span>`;
 
         return `
           <tr>
             <td class="td-id">${escapeHtml(t.id)}${mergedBadge}</td>
-            <td class="td-title">${escapeHtml(t.title || "(Untitled Row)")}</td>
-            <td class="td-desc">${escapeHtml(t.description || "—")}</td>
-            <td><span class="cat-tag">${escapeHtml(t.category || "General")}</span></td>
+            <td class="td-truncate" title="${escapeHtml(t.title || '')}">${escapeHtml(t.title || "(Untitled Row)")}</td>
+            <td class="td-truncate td-muted" title="${escapeHtml(t.description || '')}">${escapeHtml(t.description || "—")}</td>
+            <td><span class="cat-tag" title="${escapeHtml(t.category || 'General')}">${escapeHtml(t.category || "General")}</span></td>
             <td>
               <select class="inline-select prio-${escapeHtml(t.priority)}" onchange="inlineUpdateTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}', 'priority', this.value)">
                 ${INITIAL_DATA.priorities.map(p => `<option value="${p}" ${t.priority === p ? 'selected' : ''}>${p}</option>`).join("")}
@@ -1440,7 +1709,7 @@
             <td class="td-date">${escapeHtml(t.dueDate || "—")}</td>
             <td class="td-date">${escapeHtml(t.completionDate || "—")}</td>
             <td>
-              <div class="assignee-chip">
+              <div class="assignee-chip" title="${escapeHtml(t.assignee || 'Unassigned')}">
                 <span class="avatar">${getInitials(t.assignee)}</span>
                 <span>${escapeHtml(t.assignee || "Unassigned")}</span>
               </div>
@@ -1450,12 +1719,14 @@
                 ${INITIAL_DATA.statuses.map(s => `<option value="${s}" ${t.progress === s ? 'selected' : ''}>${s}</option>`).join("")}
               </select>
             </td>
-            <td class="td-notes">${escapeHtml(t.dependencies || "—")}</td>
-            <td class="td-notes">${escapeHtml(t.comments || "—")}</td>
-            <td>${linkHtml}</td>
-            <td style="white-space:nowrap;">
-              <button class="btn btn-light btn-sm" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">Edit</button>
-              <button class="btn btn-danger-outline btn-sm" onclick="deleteTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">&#128465;</button>
+            <td class="td-truncate td-muted" title="${escapeHtml(t.dependencies || '')}">${escapeHtml(t.dependencies || "—")}</td>
+            <td class="td-truncate td-muted" title="${escapeHtml(t.comments || '')}">${escapeHtml(t.comments || "—")}</td>
+            <td style="text-align:center;">${linkHtml}</td>
+            <td class="col-actions">
+              <div class="btn-action-group">
+                <button class="btn btn-light btn-xs" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">Edit</button>
+                <button class="btn btn-danger-outline btn-xs" onclick="deleteTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">&#128465;</button>
+              </div>
             </td>
           </tr>
         `;
@@ -1465,22 +1736,38 @@
         <div class="table-container">
           <div class="table-scroll">
             <table class="task-table">
+              <colgroup>
+                <col style="width: 60px;" />
+                <col style="width: 14%;" />
+                <col style="width: 14%;" />
+                <col style="width: 7.5%;" />
+                <col style="width: 6.5%;" />
+                <col style="width: 6.5%;" />
+                <col style="width: 6.5%;" />
+                <col style="width: 6.5%;" />
+                <col style="width: 9%;" />
+                <col style="width: 7.5%;" />
+                <col style="width: 7.5%;" />
+                <col style="width: 7.5%;" />
+                <col style="width: 5%;" />
+                <col style="width: 80px;" />
+              </colgroup>
               <thead>
                 <tr>
-                  <th onclick="sortBy('id')">Task ID${sortArrow('id')}</th>
+                  <th onclick="sortBy('id')">ID${sortArrow('id')}</th>
                   <th onclick="sortBy('title')">Task Title${sortArrow('title')}</th>
                   <th>Description</th>
                   <th onclick="sortBy('category')">Category${sortArrow('category')}</th>
                   <th onclick="sortBy('priority')">Priority${sortArrow('priority')}</th>
-                  <th onclick="sortBy('startDate')">Start Date${sortArrow('startDate')}</th>
-                  <th onclick="sortBy('dueDate')">Due Date${sortArrow('dueDate')}</th>
-                  <th onclick="sortBy('completionDate')">Completion${sortArrow('completionDate')}</th>
+                  <th onclick="sortBy('startDate')">Start${sortArrow('startDate')}</th>
+                  <th onclick="sortBy('dueDate')">Due${sortArrow('dueDate')}</th>
+                  <th onclick="sortBy('completionDate')">Done${sortArrow('completionDate')}</th>
                   <th onclick="sortBy('assignee')">Assignee${sortArrow('assignee')}</th>
                   <th onclick="sortBy('progress')">Progress${sortArrow('progress')}</th>
-                  <th>Dependencies</th>
-                  <th>Comments / Updates</th>
-                  <th>Links</th>
-                  <th>Actions</th>
+                  <th>Deps</th>
+                  <th>Comments</th>
+                  <th style="text-align:center;">Links</th>
+                  <th class="col-actions">Actions</th>
                 </tr>
               </thead>
               <tbody>
