@@ -1,0 +1,1911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IDEMI Animation Dept — Task & Repository Management App</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --text-light: #64748b;
+      --primary: #1e3a8a;
+      --primary-hover: #1d4ed8;
+      --primary-soft: #dbeafe;
+      --accent: #0284c7;
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --danger-border: #fecaca;
+      --warning: #d97706;
+      --warning-bg: #fffbeb;
+      --warning-border: #fde68a;
+      --success: #059669;
+      --success-bg: #ecfdf5;
+      --success-border: #a7f3d0;
+      --info: #2563eb;
+      --info-bg: #eff6ff;
+      --info-border: #bfdbfe;
+      --neutral-bg: #f1f5f9;
+      --neutral-text: #475569;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+      --shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.08);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation Header */
+    .app-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: #ffffff;
+      padding: 16px 24px;
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      color: #38bdf8;
+    }
+
+    .brand-title h1 {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-title p {
+      font-size: 12.5px;
+      color: #cbd5e1;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0369a1;
+    }
+    .btn-primary:hover {
+      background: #0369a1;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-light {
+      background: var(--surface);
+      color: var(--text);
+      border-color: var(--border-strong);
+    }
+    .btn-light:hover {
+      background: var(--surface-alt);
+    }
+
+    .btn-danger-outline {
+      background: transparent;
+      color: var(--danger);
+      border-color: var(--danger-border);
+    }
+    .btn-danger-outline:hover {
+      background: var(--danger-bg);
+    }
+
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    /* Main Container */
+    .main-container {
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px 24px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      flex: 1;
+    }
+
+    /* KPI Summary Strip */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+      gap: 14px;
+    }
+
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 15px 18px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: #94a3b8;
+    }
+
+    .kpi-card.active-kpi {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.15);
+    }
+
+    .kpi-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+    }
+
+    .kpi-total::before { background: #1e3a8a; }
+    .kpi-delayed::before { background: var(--danger); }
+    .kpi-onhold::before { background: var(--warning); }
+    .kpi-inprogress::before { background: var(--info); }
+    .kpi-high::before { background: #7c3aed; }
+    .kpi-completed::before { background: var(--success); }
+
+    .kpi-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .kpi-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.15;
+    }
+
+    .kpi-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Navigation Tabs & Controls Bar */
+    .controls-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .tabs-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .view-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .view-tab {
+      padding: 8px 15px;
+      border-radius: var(--radius-sm);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.15s ease;
+    }
+
+    .view-tab:hover {
+      background: var(--surface-alt);
+      color: var(--text);
+    }
+
+    .view-tab.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+      border-color: #bfdbfe;
+    }
+
+    .tab-count {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 99px;
+      background: rgba(15, 23, 42, 0.08);
+    }
+
+    .view-tab.active .tab-count {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .dataset-switch {
+      display: inline-flex;
+      background: var(--neutral-bg);
+      padding: 3px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    .dataset-btn {
+      padding: 5px 11px;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .dataset-btn.active {
+      background: var(--surface);
+      color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Filter Row */
+    .filters-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-wrapper {
+      flex: 1;
+      min-width: 240px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 8px 12px 8px 34px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--text);
+      background: var(--surface-alt);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: var(--surface);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    .filter-select {
+      padding: 8px 11px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--text);
+      background: var(--surface-alt);
+      cursor: pointer;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: var(--surface);
+    }
+
+    /* Badges & Pills */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      line-height: 1.3;
+      white-space: nowrap;
+    }
+
+    .status-Delayed {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid var(--danger-border);
+    }
+    .status-OnHold {
+      background: var(--warning-bg);
+      color: var(--warning);
+      border: 1px solid var(--warning-border);
+    }
+    .status-InProgress {
+      background: var(--info-bg);
+      color: var(--info);
+      border: 1px solid var(--info-border);
+    }
+    .status-Completed {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid var(--success-border);
+    }
+    .status-NotStarted {
+      background: var(--neutral-bg);
+      color: var(--neutral-text);
+      border: 1px solid var(--border-strong);
+    }
+
+    .prio-High {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+    .prio-Medium {
+      background: #fffbeb;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+    .prio-Low {
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .cat-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 5px;
+      font-size: 11.5px;
+      font-weight: 600;
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #e2e8f0;
+    }
+
+    .merged-indicator {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #0369a1;
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 5px;
+    }
+
+    .assignee-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--primary-soft);
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10.5px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    /* Table View */
+    .table-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+      max-height: 680px;
+      overflow-y: auto;
+    }
+
+    table.task-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    table.task-table thead th {
+      position: sticky;
+      top: 0;
+      background: #f8fafc;
+      color: var(--text-muted);
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      padding: 11px 12px;
+      border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+      z-index: 10;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    table.task-table thead th:hover {
+      background: #f1f5f9;
+      color: var(--text);
+    }
+
+    table.task-table tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.12s ease;
+    }
+
+    table.task-table tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    table.task-table td {
+      padding: 11px 12px;
+      vertical-align: top;
+      color: var(--text);
+    }
+
+    .td-id {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-weight: 700;
+      font-size: 12.5px;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .td-title {
+      font-weight: 600;
+      min-width: 200px;
+      max-width: 280px;
+    }
+
+    .td-desc {
+      color: var(--text-muted);
+      font-size: 12.5px;
+      min-width: 200px;
+      max-width: 300px;
+      white-space: pre-line;
+    }
+
+    .td-notes {
+      color: var(--text-muted);
+      font-size: 12px;
+      min-width: 170px;
+      max-width: 250px;
+      white-space: pre-line;
+    }
+
+    .td-date {
+      white-space: nowrap;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .inline-select {
+      padding: 3px 7px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      border-radius: 5px;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-decoration: none;
+      max-width: 190px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .link-pill:hover {
+      background: #dbeafe;
+      text-decoration: underline;
+    }
+
+    /* Kanban Board View */
+    .kanban-board {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(260px, 1fr));
+      gap: 14px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      align-items: start;
+    }
+
+    .kanban-col {
+      background: #eef2f6;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      max-height: 740px;
+    }
+
+    .kanban-col-header {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 13px;
+      background: rgba(255, 255, 255, 0.6);
+      border-top-left-radius: var(--radius-md);
+      border-top-right-radius: var(--radius-md);
+    }
+
+    .kanban-cards {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      min-height: 140px;
+    }
+
+    .kanban-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      cursor: grab;
+    }
+
+    .kanban-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: #cbd5e1;
+    }
+
+    .k-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .k-card-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.35;
+    }
+
+    .k-card-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .k-card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 11.5px;
+      color: var(--text-light);
+      padding-top: 4px;
+      border-top: 1px dashed var(--border);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Team Workload & Analytics View */
+    .analytics-layout {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 18px;
+    }
+
+    .panel-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .panel-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .panel-card .panel-sub {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-bottom: 16px;
+    }
+
+    .bar-list {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    .bar-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      padding: 6px 8px;
+      border-radius: 6px;
+      transition: background 0.12s;
+    }
+
+    .bar-row:hover {
+      background: var(--surface-alt);
+    }
+
+    .bar-row-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .bar-track {
+      height: 9px;
+      background: #f1f5f9;
+      border-radius: 99px;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .bar-seg {
+      height: 100%;
+    }
+
+    /* Repository Hub View */
+    .repo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 14px;
+    }
+
+    .repo-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 15px 16px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .repo-card-tab {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--primary);
+      background: var(--primary-soft);
+      padding: 2px 8px;
+      border-radius: 4px;
+      align-self: flex-start;
+    }
+
+    .repo-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* Modal Styling */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(2px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-dialog {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+    }
+
+    .modal-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h2 {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .modal-body {
+      padding: 20px 22px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .form-control {
+      padding: 8px 11px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    textarea.form-control {
+      min-height: 68px;
+      resize: vertical;
+    }
+
+    .modal-footer {
+      padding: 14px 22px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      background: var(--surface-alt);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--text-muted);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.2s ease;
+      pointer-events: none;
+      z-index: 200;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .modal-body {
+        grid-template-columns: 1fr;
+      }
+      .header-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header class="app-header">
+    <div class="header-top">
+      <div class="brand-group">
+        <div class="brand-badge">ANI</div>
+        <div class="brand-title">
+          <h1>IDEMI Animation Dept — Task & Repository Manager</h1>
+          <p>Built on the official <strong>Task Sheet</strong> (13-column schema) &amp; <strong>Completed Work Archive</strong></p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-primary" onclick="openTaskModal()">+ New Task (T-ID)</button>
+        <button class="btn btn-secondary" onclick="exportCSV()">Export CSV</button>
+        <label class="btn btn-secondary" style="margin:0;">
+          Import CSV
+          <input type="file" id="csvFileInput" accept=".csv" style="display:none" onchange="importCSV(event)" />
+        </label>
+        <button class="btn btn-secondary" onclick="resetToOriginalData()" title="Restore original Excel workbook records">Reset Sheet Data</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="main-container">
+
+    <!-- KPI Cards -->
+    <section class="kpi-grid" id="kpiGrid"></section>
+
+    <!-- Controls & View Switcher -->
+    <section class="controls-panel">
+      <div class="tabs-row">
+        <div class="view-tabs">
+          <button class="view-tab active" data-view="table" onclick="switchView('table')">
+            <span>Task Sheet Table</span>
+            <span class="tab-count" id="countTable">0</span>
+          </button>
+          <button class="view-tab" data-view="kanban" onclick="switchView('kanban')">
+            <span>Kanban Board</span>
+            <span class="tab-count" id="countKanban">0</span>
+          </button>
+          <button class="view-tab" data-view="workload" onclick="switchView('workload')">
+            <span>Team Workload &amp; Analytics</span>
+          </button>
+          <button class="view-tab" data-view="repository" onclick="switchView('repository')">
+            <span>Department Repository Links</span>
+            <span class="tab-count" id="countRepo">0</span>
+          </button>
+        </div>
+
+        <div class="dataset-switch" id="datasetSwitch">
+          <button class="dataset-btn active" data-ds="active" onclick="setDataset('active')">Active Task Sheet (21)</button>
+          <button class="dataset-btn" data-ds="completed" onclick="setDataset('completed')">Completed Work Tab (102)</button>
+          <button class="dataset-btn" data-ds="all" onclick="setDataset('all')">All Combined (123)</button>
+        </div>
+      </div>
+
+      <!-- Search & Filter Bar -->
+      <div class="filters-row" id="filtersRow">
+        <div class="search-wrapper">
+          <span class="search-icon">&#128269;</span>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search by Task ID (e.g. T001, T038), Title, Assignee, Dependencies, Comments..." oninput="renderCurrentView()" />
+        </div>
+        <select id="filterStatus" class="filter-select" onchange="renderCurrentView()">
+          <option value="">All Progress Statuses</option>
+        </select>
+        <select id="filterPriority" class="filter-select" onchange="renderCurrentView()">
+          <option value="">All Priorities</option>
+        </select>
+        <select id="filterCategory" class="filter-select" onchange="renderCurrentView()">
+          <option value="">All Categories</option>
+        </select>
+        <select id="filterAssignee" class="filter-select" onchange="renderCurrentView()">
+          <option value="">All Assignees</option>
+        </select>
+        <button class="btn btn-light btn-sm" onclick="clearFilters()">Clear Filters</button>
+      </div>
+    </section>
+
+    <!-- Dynamic View Output -->
+    <section id="viewContainer"></section>
+
+  </main>
+
+  <!-- Add / Edit Task Modal -->
+  <div class="modal-backdrop" id="taskModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 id="modalTitle">Add New Task</h2>
+        <button class="btn btn-light btn-sm" onclick="closeTaskModal()">&#10005;</button>
+      </div>
+      <form id="taskForm" onsubmit="saveTaskForm(event)">
+        <input type="hidden" id="editInternalIdx" value="" />
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="fTaskId">Task ID *</label>
+            <input type="text" id="fTaskId" class="form-control" required placeholder="e.g. T107" />
+          </div>
+          <div class="form-group">
+            <label for="fCategory">Category *</label>
+            <input type="text" id="fCategory" list="categoryList" class="form-control" required placeholder="e.g. Design, Training, Advertisement" />
+            <datalist id="categoryList"></datalist>
+          </div>
+          <div class="form-group full-width">
+            <label for="fTitle">Task Title *</label>
+            <input type="text" id="fTitle" class="form-control" required placeholder="Enter clear task title" />
+          </div>
+          <div class="form-group full-width">
+            <label for="fDesc">Description</label>
+            <textarea id="fDesc" class="form-control" placeholder="Detailed scope or task instructions..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="fAssignee">Assignee *</label>
+            <select id="fAssignee" class="form-control" required></select>
+          </div>
+          <div class="form-group">
+            <label for="fPriority">Priority *</label>
+            <select id="fPriority" class="form-control" required>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fProgress">Progress Status *</label>
+            <select id="fProgress" class="form-control" required onchange="autoFillCompletionDate()">
+              <option value="Not Started">Not Started</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Delayed">Delayed</option>
+              <option value="On Hold">On Hold</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fStartDate">Start Date</label>
+            <input type="date" id="fStartDate" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="fDueDate">Due Date</label>
+            <input type="date" id="fDueDate" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="fCompletionDate">Completion Date</label>
+            <input type="date" id="fCompletionDate" class="form-control" />
+          </div>
+          <div class="form-group full-width">
+            <label for="fDependencies">Dependencies</label>
+            <input type="text" id="fDependencies" class="form-control" placeholder="e.g. Requires details from marketing team / Coordinate with Harish Aryan" />
+          </div>
+          <div class="form-group full-width">
+            <label for="fComments">Comments / Updates</label>
+            <textarea id="fComments" class="form-control" placeholder="Status remarks, follow-up notes, or blockers..."></textarea>
+          </div>
+          <div class="form-group full-width">
+            <label for="fLink">Links (if any)</label>
+            <input type="text" id="fLink" class="form-control" placeholder="https://..." />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" onclick="closeTaskModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toastMsg">Saved!</div>
+
+  <script>
+    const INITIAL_DATA = {"activeTasks": [{"id": "T001", "parentId": "", "title": "NSQF Courses Brochure", "description": "Design brochure for NSQF courses", "category": "Design", "priority": "High", "startDate": "2025-01-02", "dueDate": "2025-01-13", "completionDate": "", "assignee": "Abhishek Kamble", "progress": "Delayed", "dependencies": "Requires details from marketing team", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T002", "parentId": "", "title": "IDEMI Training Prospectus", "description": "Design and coordinate with the departments and sections for the IDEMI Training prospectus", "category": "Design", "priority": "High", "startDate": "2025-01-03", "dueDate": "2025-01-18", "completionDate": "", "assignee": "Rahul More", "progress": "Delayed", "dependencies": "Requires details from the respective departments", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T002-B", "parentId": "T002", "title": "IDEMI Training Prospectus", "description": "Design and coordinate with the departments and sections for the IDEMI Training prospectus", "category": "Design", "priority": "High", "startDate": "2025-01-03", "dueDate": "2025-01-18", "completionDate": "", "assignee": "Abhishek Kamble", "progress": "Delayed", "dependencies": "Requires details from the respective departments", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T003", "parentId": "", "title": "MeitY Landing Page Creation", "description": "Design and coordinate the MeitY landing page", "category": "Web Design", "priority": "Medium", "startDate": "2025-01-03", "dueDate": "2025-01-18", "completionDate": "", "assignee": "Shaunak Kolte", "progress": "Delayed", "dependencies": "Coordinate with Harish Aryan", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T008", "parentId": "", "title": "Internship Follow-up with Sachin Deshpande", "description": "Regarding MeitY Student Placement", "category": "Communication", "priority": "Medium", "startDate": "2025-01-07", "dueDate": "2025-01-18", "completionDate": "", "assignee": "Aayush Raisoni", "progress": "On Hold", "dependencies": "", "comments": "No response from the Sachin Deshpande - Process Aborted", "link": "", "source": "Task Sheet"}, {"id": "T023", "parentId": "", "title": "Book to be made of curriculam", "description": "Take print out of the exisiting NSQF Courses and Create a Spiral Book", "category": "Teaching Material", "priority": "Low", "startDate": "2025-01-15", "dueDate": "2025-01-18", "completionDate": "", "assignee": "Sushil Baviskar", "progress": "On Hold", "dependencies": "", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T038", "parentId": "", "title": "To update website Information regarding training courses under Training/Sponsored Programs", "description": "Meity Information needs to be updated.\nNSQF Information needs to be updated.", "category": "Website Management", "priority": "High", "startDate": "2025-01-30", "dueDate": "2025-02-08", "completionDate": "", "assignee": "Shaunak Kolte", "progress": "Delayed", "dependencies": "Documentation has been done only the discussion part has been remain", "comments": "Meity Information needs to be updated.\nNSQF Information needs to be updated.", "link": "", "source": "Task Sheet"}, {"id": "T046", "parentId": "", "title": "Meity Brochure", "description": "Flim comp assit & 3d Animator Assit", "category": "Advertisement", "priority": "Low", "startDate": "2025-02-20", "dueDate": "", "completionDate": "", "assignee": "Vishal Angre", "progress": "On Hold", "dependencies": "", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T050", "parentId": "", "title": "Identifing Media & Entertainment companies and recrutement agency", "description": "", "category": "Placement", "priority": "Medium", "startDate": "2025-02-20", "dueDate": "", "completionDate": "", "assignee": "Aayush Raisoni", "progress": "Delayed", "dependencies": "", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T051", "parentId": "T050", "title": "Identifing Media & Entertainment companies and recrutement agency", "description": "", "category": "Placement", "priority": "Medium", "startDate": "2025-02-20", "dueDate": "", "completionDate": "", "assignee": "Nilesh Sharma", "progress": "Delayed", "dependencies": "", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T052", "parentId": "T050", "title": "Identifing Media & Entertainment companies and recrutement agency", "description": "", "category": "Placement", "priority": "Medium", "startDate": "2025-02-20", "dueDate": "", "completionDate": "", "assignee": "Shaunak Kolte", "progress": "Delayed", "dependencies": "", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T053", "parentId": "T050", "title": "Identifing Media & Entertainment companies and recrutement agency", "description": "", "category": "Placement", "priority": "Medium", "startDate": "2025-02-20", "dueDate": "", "completionDate": "", "assignee": "Sushil Baviskar", "progress": "Delayed", "dependencies": "", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T057", "parentId": "", "title": "AICTE Propspectus & Flyer", "description": "To create AICTE Prospectus", "category": "Advertisement", "priority": "High", "startDate": "2025-03-03", "dueDate": "", "completionDate": "", "assignee": "Abhishek Kamble", "progress": "Delayed", "dependencies": "", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T069", "parentId": "", "title": "AICTE brochure and prospectus", "description": "for new batch design", "category": "Advertisement", "priority": "High", "startDate": "2025-04-17", "dueDate": "", "completionDate": "", "assignee": "Aayush Raisoni", "progress": "Delayed", "dependencies": "", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T073", "parentId": "", "title": "Animation Design", "description": "New brochure and prospectus", "category": "Design", "priority": "High", "startDate": "2025-04-23", "dueDate": "", "completionDate": "", "assignee": "Aayush Raisoni", "progress": "Delayed", "dependencies": "", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T076", "parentId": "", "title": "Mobile Phone Note", "description": "Only Allow Mobile Phones to the People who are using Phone for the Departmental Work", "category": "Training", "priority": "High", "startDate": "2025-09-19", "dueDate": "2025-09-20", "completionDate": "2025-09-20", "assignee": "Nilesh Sharma", "progress": "On Hold", "dependencies": "", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T078", "parentId": "", "title": "Vision & Mission Statement", "description": "For AICTE Audit", "category": "Training", "priority": "High", "startDate": "2025-12-02", "dueDate": "2025-12-03", "completionDate": "", "assignee": "Sushil Baviskar", "progress": "On Hold", "dependencies": "", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T082", "parentId": "", "title": "Translate the IDEMI Script in Marathi", "description": "for Udyojak Magazine of MSSDS", "category": "Training", "priority": "High", "startDate": "2025-12-02", "dueDate": "2025-12-05", "completionDate": "", "assignee": "Nilesh Sharma", "progress": "Delayed", "dependencies": "", "comments": "", "link": "", "source": "Task Sheet"}, {"id": "T104", "parentId": "", "title": "IDEMI Diploma Dashboard", "description": "https://idemi-diploma-dashboard.vercel.app/admin-dashboard", "category": "Dashboard & Portal", "priority": "Medium", "startDate": "", "dueDate": "", "completionDate": "", "assignee": "Unassigned", "progress": "Not Started", "dependencies": "", "comments": "Quick-access dashboard/form link listed in Task Sheet", "link": "https://idemi-diploma-dashboard.vercel.app/admin-dashboard", "source": "Task Sheet"}, {"id": "T105", "parentId": "", "title": "AICTE Registrations 2026-27", "description": "AICTE Student Inquiry Form 2026-27 (Responses)", "category": "Dashboard & Portal", "priority": "Medium", "startDate": "", "dueDate": "", "completionDate": "", "assignee": "Unassigned", "progress": "Not Started", "dependencies": "", "comments": "Quick-access dashboard/form link listed in Task Sheet", "link": "https://docs.google.com/spreadsheets/d/1TRkzM1g8SBxy-DfcimxJ-l2UNHTHwgUOym1s7NglxCE/edit?gid=2024590674", "source": "Task Sheet"}, {"id": "T106", "parentId": "", "title": "AICTE Admission 26-27 Dashboard", "description": "Dashboard Animation - AICTE Admission 2026-27", "category": "Dashboard & Portal", "priority": "Medium", "startDate": "", "dueDate": "", "completionDate": "", "assignee": "Unassigned", "progress": "Not Started", "dependencies": "", "comments": "Quick-access dashboard/form link listed in Task Sheet", "link": "https://docs.google.com/spreadsheets/d/1I9wHBe2tZGc6bxoRooytqo8NK7bUHxPQ4dJH4WLzHcI/edit?gid=1082350316", "source": "Task Sheet"}], "completedTasks": [{"id": "CW-001", "srNo": 1, "title": "Bulk WhatsApp Implementation", "description": "Payment for the Application is pending from the account section.", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-05-27", "completionDate": "2024-06-04", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "Payment for the Application is pending from the account section.", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-002", "srNo": 2, "title": "Database of Professional Courses to be shared to Animation Dept.", "description": "Sachin Nikam has shared the updated sheet with the Animation Department", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2024-05-27", "completionDate": "2024-06-04", "assignee": "Sachin Nikam", "progress": "Completed", "dependencies": "", "comments": "Sachin Nikam has shared the updated sheet with the Animation Department", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-003", "srNo": 3, "title": "To Create a Syllabus on Office Automation for 1st Sem", "description": "Work on the Office Automation syllabus is ongoing, the same will be completed by 29th May 24.", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-05-29", "completionDate": "2024-05-28", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "Work on the Office Automation syllabus is ongoing, the same will be completed by 29th May 24.", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-004", "srNo": 4, "title": "To Create a Syllabus on Principals of Animation for 1st Sem", "description": "Work on the Principals of Animation syllabus is ongoing, the same will be completed by 29th May 24.", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-05-29", "completionDate": "2024-05-28", "assignee": "Sushil Baviskar", "progress": "Completed", "dependencies": "", "comments": "Work on the Principals of Animation syllabus is ongoing, the same will be completed by 29th May 24.", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-005", "srNo": 5, "title": "To create Minutes of Meeting for 3rd June meeting with PD Sir", "description": "The MOM has been completed.", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-06-04", "completionDate": "2024-06-04", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "The MOM has been completed.", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-006", "srNo": 6, "title": "Student data management of the PG-PD Batch for Certification preparation", "description": "Certification process has been completed.", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-06-20", "completionDate": "2024-06-24", "assignee": "Rahul More", "progress": "Completed", "dependencies": "", "comments": "Certification process has been completed.", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-007", "srNo": 7, "title": "Presentation of AICTE Syllabus - Animation Dept.", "description": "PPT has been completed only minor changes are required.", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-06-11", "completionDate": "2024-06-17", "assignee": "Shaunak Kolte", "progress": "Completed", "dependencies": "", "comments": "PPT has been completed only minor changes are required.", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-008", "srNo": 8, "title": "Download Nuke Software on PC", "description": "Non Commercial License to be downloaded for faculty PCs.", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-07-17", "completionDate": "", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "Non Commercial License to be downloaded for faculty PCs.", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-009", "srNo": 9, "title": "AICTE Marketing Follow-up on Leads", "description": "Call has been done by the vishal to the registered applicants to complete the admission process.", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-07-19", "completionDate": "2024-07-17", "assignee": "Vishal Angre", "progress": "Completed", "dependencies": "", "comments": "Call has been done by the vishal to the registered applicants to complete the admission process.", "link": "https://docs.google.com/spreadsheets/d/1sXfyIN1z0r46S8cdKIB9U3ED05x1n8O7cJWYpGZVAMA/edit", "linkLabel": "Animation Department Task & Repository Sheet", "source": "Task Sheet (Completed Work)"}, {"id": "CW-010", "srNo": 10, "title": "ScriptWriting Lecture Google Classroom Invite", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-08-03", "completionDate": "", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-011", "srNo": 11, "title": "MeitY - G&W First Batch Finalization", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-08-03", "completionDate": "2024-08-03", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-012", "srNo": 12, "title": "Digital Matketing Note for AICTE (TD & RM)", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-08-03", "completionDate": "2024-08-03", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-013", "srNo": 13, "title": "Digital Matketing Note for MeitY", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-08-03", "completionDate": "2024-08-03", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-014", "srNo": 14, "title": "MeitY - G&W First SCM Document", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-08-03", "completionDate": "2024-08-03", "assignee": "Vishal Angre", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-015", "srNo": 15, "title": "MeitY - G&W Assesment & Selection Document", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-08-03", "completionDate": "2024-08-03", "assignee": "Vishal Angre", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-016", "srNo": 16, "title": "MeitY - G&W 2428201", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-08-03", "completionDate": "2024-08-03", "assignee": "Vishal Angre", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-017", "srNo": 17, "title": "Server Management and Data Transfer", "description": "Praveen Dhurve has transferred partial data in the server.", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2024-05-31", "completionDate": "2024-06-04", "assignee": "Kunal Tawde", "progress": "Completed", "dependencies": "", "comments": "Praveen Dhurve has transferred partial data in the server.", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-018", "srNo": 18, "title": "Creative Assets Data Management on GDrive", "description": "Abhhishek Kamble is sorting the Creative Assets Data and uploading the same on GDrive. The same will be linked in the Task & Repository Sheet.", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2024-07-12", "completionDate": "2024-07-03", "assignee": "Abhishek Kamble", "progress": "Completed", "dependencies": "", "comments": "Abhhishek Kamble is sorting the Creative Assets Data and uploading the same on GDrive. The same will be linked in the Task & Repository Sheet.", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-019", "srNo": 19, "title": "Internshala Internship Day - IDEMI Registration", "description": "Need to register our Institute on the Internshala Portal", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-07-16", "completionDate": "2024-07-15", "assignee": "Ravindra Ahire", "progress": "Completed", "dependencies": "", "comments": "Need to register our Institute on the Internshala Portal", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-020", "srNo": 20, "title": "Color Advertisment for Newspaper - AICTE", "description": "Need to create a half page color advertisment for AICTE Course promotion", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2024-07-23", "completionDate": "2024-07-22", "assignee": "Abhishek Kamble", "progress": "Completed", "dependencies": "", "comments": "Need to create a half page color advertisment for AICTE Course promotion", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-051", "srNo": 51, "title": "Hubli GiA Work", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-10-16", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-052", "srNo": 52, "title": "MM and GW Enrollment no.", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-053", "srNo": 53, "title": "Animation Labs and Classrooms Infra Data", "description": "", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-054", "srNo": 54, "title": "new batch MM and GW file", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-04-19", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-055", "srNo": 55, "title": "new summary sheet", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-04-19", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-056", "srNo": 56, "title": "smart school", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-057", "srNo": 57, "title": "Handbook", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-03-31", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-058", "srNo": 58, "title": "Handbook", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-03-31", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-059", "srNo": 59, "title": "Facilator guide", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-03-31", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-060", "srNo": 60, "title": "Facilator guide", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-03-31", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-061", "srNo": 61, "title": "upi ppt form", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-04-15", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-062", "srNo": 62, "title": "To publish Digital Marketing of HHP and RACHA", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-063", "srNo": 63, "title": "AICTE Defaulter List", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Sushil Baviskar", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-064", "srNo": 64, "title": "SCM for Animation MeitY Batches", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-065", "srNo": 65, "title": "Graphic Batch", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-066", "srNo": 66, "title": "Multimedia Animation Exam", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-02-28", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-067", "srNo": 67, "title": "LMS for Meity", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-068", "srNo": 68, "title": "New meity Batch Planing", "description": "Created other batches that were in demand", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "Created other batches that were in demand", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-069", "srNo": 69, "title": "Exam paper", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-070", "srNo": 70, "title": "TB Mukt Bharat", "description": "PPT created, 2 Social media post created but are in rework, brochure pending", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "PPT created, 2 Social media post created but are in rework, brochure pending", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-071", "srNo": 71, "title": "Silgate Solutions Pvt. Ltd", "description": "1 Student got hired", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Shaunak Kolte", "progress": "Completed", "dependencies": "", "comments": "1 Student got hired", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-072", "srNo": 72, "title": "NSQF New course Qualification file", "description": "", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-073", "srNo": 73, "title": "Digital Media Andehri", "description": "1 Student got hired", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-01-12", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "1 Student got hired", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-074", "srNo": 74, "title": "Qualification file", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-075", "srNo": 75, "title": "Departmental Task #75 (Nilesh Sharma)", "description": "", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-076", "srNo": 76, "title": "Facilator Guide", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-01-28", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-077", "srNo": 77, "title": "Revise DRDO Desktop Publishing Tax Invoice", "description": "Done by Sagar Nevage Sir", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-01-23", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "Done by Sagar Nevage Sir", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-078", "srNo": 78, "title": "To send an email to the CFTI Chennai", "description": "", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-23", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-079", "srNo": 79, "title": "Grill to be added in the Ladies Washroom's window", "description": "Window is there, hence no need to install grill", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-21", "completionDate": "2025-12-06", "assignee": "Sushil Baviskar", "progress": "Completed", "dependencies": "", "comments": "Window is there, hence no need to install grill", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-080", "srNo": 80, "title": "Complete the DRDO Training proposal file", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-01-21", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-081", "srNo": 81, "title": "Send an email to Harish Aryan", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-01-21", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-082", "srNo": 82, "title": "Send an email to Admin", "description": "", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-21", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-083", "srNo": 83, "title": "Create Adobe Creative Cloud Note", "description": "Process is Done through PD Sir by Raju Kharat", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-01-16", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "Process is Done through PD Sir by Raju Kharat", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-084", "srNo": 84, "title": "Feedback Form", "description": "Task successfully completed at the last day of the GWD Batch", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-21", "completionDate": "2025-12-06", "assignee": "Shaunak Kolte", "progress": "Completed", "dependencies": "", "comments": "Task successfully completed at the last day of the GWD Batch", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-085", "srNo": 85, "title": "Recruitment Drive Message to send in PAL India Group", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-01-16", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-086", "srNo": 86, "title": "New VFX SCM to be planned", "description": "Task successfully completed, SCM is Schedule through online mode on 18th Jan 2025, at 11 am", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-01-16", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "Task successfully completed, SCM is Schedule through online mode on 18th Jan 2025, at 11 am", "link": "https://meet.google.com/heh-tjth-zza", "linkLabel": "https://meet.google.com/heh-tjth-zza", "source": "Task Sheet (Completed Work)"}, {"id": "CW-087", "srNo": 87, "title": "ESDP Training - Film Making with AI", "description": "", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-22", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-088", "srNo": 88, "title": "Departmental Task #88 (Aayush Raisoni)", "description": "Task successfully completed", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-27", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "Task successfully completed", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-089", "srNo": 89, "title": "Departmental Task #89 (Apoorva Tripathi)", "description": "Task successfully completed", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-27", "completionDate": "2025-12-06", "assignee": "Apoorva Tripathi", "progress": "Completed", "dependencies": "", "comments": "Task successfully completed", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-090", "srNo": 90, "title": "Departmental Task #90 (Shaunak Kolte)", "description": "Task successfully completed", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-27", "completionDate": "2025-12-06", "assignee": "Shaunak Kolte", "progress": "Completed", "dependencies": "", "comments": "Task successfully completed", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-091", "srNo": 91, "title": "Departmental Task #91 (Mahendra Janathe)", "description": "Task successfully completed", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-27", "completionDate": "2025-12-06", "assignee": "Mahendra Janathe", "progress": "Completed", "dependencies": "", "comments": "Task successfully completed", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-092", "srNo": 92, "title": "Departmental Task #92 (Sushil Baviskar)", "description": "Task successfully completed", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-27", "completionDate": "2025-12-06", "assignee": "Sushil Baviskar", "progress": "Completed", "dependencies": "", "comments": "Task successfully completed", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-093", "srNo": 93, "title": "Departmental Task #93 (Praveen Dhurve)", "description": "Task successfully completed", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-27", "completionDate": "2025-12-06", "assignee": "Praveen Dhurve", "progress": "Completed", "dependencies": "", "comments": "Task successfully completed", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-094", "srNo": 94, "title": "Departmental Task #94 (Vishal Angre)", "description": "Task successfully completed", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-27", "completionDate": "2025-12-06", "assignee": "Vishal Angre", "progress": "Completed", "dependencies": "", "comments": "Task successfully completed", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-095", "srNo": 95, "title": "AICTE Semester Paper Checking", "description": "Task successfully completed", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-27", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "Task successfully completed", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-096", "srNo": 96, "title": "Research Course Brochure Designs", "description": "Task successfully completed", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-09", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "Task successfully completed", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-097", "srNo": 97, "title": "Portfolio and Employability Skills Training - Graphics & Web Designer Assistant", "description": "Task successfully completed", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-01-13", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "Task successfully completed", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-098", "srNo": 98, "title": "Departmental Task #98 (Shaunak Kolte)", "description": "Task successfully completed", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-10", "completionDate": "2025-12-06", "assignee": "Shaunak Kolte", "progress": "Completed", "dependencies": "", "comments": "Task successfully completed", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-099", "srNo": 99, "title": "MeitY Communication File", "description": "Task successfully completed", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-04", "completionDate": "2025-12-06", "assignee": "Vishal Angre", "progress": "Completed", "dependencies": "", "comments": "Task successfully completed", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-100", "srNo": 100, "title": "Send the Confirmed DRDO List to Amit from Stores", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-03", "completionDate": "2025-12-06", "assignee": "Shaunak Kolte", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-101", "srNo": 101, "title": "MM and GW file", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-102", "srNo": 102, "title": "Animation Department Tender received", "description": "", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-103", "srNo": 103, "title": "Departmental Task #103 (Rahul More)", "description": "No Update from the Batch Coordinator", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-10", "completionDate": "2025-12-06", "assignee": "Rahul More", "progress": "Completed", "dependencies": "", "comments": "No Update from the Batch Coordinator", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-104", "srNo": 104, "title": "MeitY Batch Students Follow-up", "description": "No Update from the Batch Coordinator", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "2025-01-10", "completionDate": "2025-12-06", "assignee": "Mahendra Janathe", "progress": "Completed", "dependencies": "", "comments": "No Update from the Batch Coordinator", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-105", "srNo": 105, "title": "AR VR Course", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-106", "srNo": 106, "title": "Animation Department Tender Procurement", "description": "", "category": "Completed Archive", "priority": "Medium", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-107", "srNo": 107, "title": "Industry validation", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-108", "srNo": 108, "title": "Canva Online Professional Course Plan", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-01-18", "completionDate": "2025-12-06", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-109", "srNo": 109, "title": "AR VR Carousel", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-01-23", "completionDate": "2025-12-06", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-110", "srNo": 110, "title": "To take the interview of Nitish Kulkarni", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-09", "completionDate": "2025-12-10", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-111", "srNo": 111, "title": "To provide list of MeitY candidates", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-10", "completionDate": "2025-12-10", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-112", "srNo": 112, "title": "To connect with the Mumbai University", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-10", "completionDate": "2025-12-10", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-113", "srNo": 113, "title": "To submit the visual art content", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-10", "completionDate": "2025-12-11", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-114", "srNo": 114, "title": "Game Engine Fundamentals", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-115", "srNo": 115, "title": "Departmental Task #115 (Nilesh Sharma)", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-116", "srNo": 116, "title": "Visual Art", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-117", "srNo": 117, "title": "Principal of Animation", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Vishal Angre", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-118", "srNo": 118, "title": "Computer Language", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Shaunak Kolte", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-119", "srNo": 119, "title": "Fundamentals of Drawing & Shading", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Sushil Baviskar", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-120", "srNo": 120, "title": "Departmental Task #120 (Shaunak Kolte)", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Shaunak Kolte", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-121", "srNo": 121, "title": "Computer Fundamentals", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Shaunak Kolte", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-122", "srNo": 122, "title": "DRDO Report Submission", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-11", "completionDate": "2026-02-16", "assignee": "Sushil Baviskar", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-123", "srNo": 123, "title": "Pamphlet for upcoming AR VR ToT", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-03", "completionDate": "2026-02-16", "assignee": "Nilesh Sharma", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-124", "srNo": 124, "title": "Departmental Task #124 (Praveen Dhurve)", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Praveen Dhurve", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-125", "srNo": 125, "title": "Motion Graphics Animation", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Praveen Dhurve", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-126", "srNo": 126, "title": "Departmental Task #126 (Praveen Dhurve)", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Praveen Dhurve", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-127", "srNo": 127, "title": "Character Rigging & Skinning", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Praveen Dhurve", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-128", "srNo": 128, "title": "Life Drawing", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Sushil Baviskar", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-129", "srNo": 129, "title": "Character Animation I", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Praveen Dhurve", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-130", "srNo": 130, "title": "3D Modelling & Texturing II", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Praveen Dhurve", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-131", "srNo": 131, "title": "AR VR Crash Course for Entrepreneures", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-17", "completionDate": "2026-02-16", "assignee": "Aayush Raisoni", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}, {"id": "CW-132", "srNo": 132, "title": "To Prepare the syllabus for the AR VR ToT", "description": "", "category": "Completed Archive", "priority": "High", "startDate": "", "dueDate": "2025-12-15", "completionDate": "2026-02-16", "assignee": "Praveen Dhurve", "progress": "Completed", "dependencies": "", "comments": "", "link": "", "linkLabel": "", "source": "Task Sheet (Completed Work)"}], "repositoryLinks": [{"tab": "TOT Files", "name": "TOT 2025-26 - Main Folder", "label": "TOT 2025-26", "url": "https://drive.google.com/drive/folders/1wdfZYsUcEj36vYQlTlo3PLvfuhw3alHH?usp=sharing"}, {"tab": "MeitY 2024", "name": "MeitY 2024 - Project Documents", "label": "MeitY 2024 - Project Documents", "url": "https://drive.google.com/drive/folders/1LuKHtuDPem1mTmqGs8os_jEbJsHVpID7?usp=sharing"}, {"tab": "MeitY 2024", "name": "MeitY - Admin Approval IDEMI", "label": "MeitY - Admin Approval IDEMI.pdf", "url": "https://drive.google.com/file/d/1TK5wh8yx_GAud81uv-oqBTTdIPLilp3B/view?usp=sharing"}, {"tab": "MeitY 2024", "name": "MeitY - Terms & Conditions", "label": "MeitY - Terms & Conditions.pdf", "url": "https://drive.google.com/file/d/18yIvUQQEuaqMPuVyrz-HXyUkDhKrmevd/view?usp=sharing"}, {"tab": "MeitY 2024", "name": "MeitY Project Presentation to TCs_IDEMI_20.06.2024", "label": "MeitY Project Presentation to TCs_IDEMI_20.06.2024.pptx", "url": "https://docs.google.com/presentation/d/1KqKEfyeCBwBf6VztRwo4Z6xszTAP0-Z6/edit?usp=drive_link&ouid=113215948768736857263&rtpof=true&sd=true"}, {"tab": "MeitY 2024", "name": "Meity Creatives", "label": "MeitY Creatives 2024", "url": "https://drive.google.com/drive/folders/11p4pZRUe4DIEbz7O_e-ahoy-S9Qb3n9l?usp=drive_link"}, {"tab": "MeitY 2024", "name": "Meity Google Form creatives", "label": "Google Form MeitY", "url": "https://drive.google.com/drive/folders/1VlQ9dikqFI0-sROkndMrPsI8BESb531F?usp=drive_link"}, {"tab": "MeitY 2024", "name": "MeitY Student Registration Form", "label": "MeitY Project - Student Registration form (Responses)", "url": "https://docs.google.com/spreadsheets/d/1vL2_xcWv_IvgqGIGrtWIQFCXXQ9qHAvuTpfdY_uKFyM/edit?resourcekey=&gid=2069006072"}, {"tab": "MeitY 2024", "name": "MeitY Animation 24-25 SCM Documents", "label": "MeitY Animation 24-25 SCM Documents", "url": "https://drive.google.com/drive/folders/1A0OW_xB1hncd8Ar9aLZ7MjzLT2kOKuVD?usp=sharing"}, {"tab": "MeitY 2024", "name": "MeitY SCM Documents 24-25 - Animation", "label": "MeitY SCM Documents 24-25 - Animation", "url": "https://drive.google.com/drive/folders/1A0OW_xB1hncd8Ar9aLZ7MjzLT2kOKuVD?usp=sharing"}, {"tab": "MeitY 2024", "name": "MeitY AY 24-25 Students Documents", "label": "MeitY AY 24-25 Students Documents", "url": "https://drive.google.com/drive/folders/1SMqQGRQvnK6h-D8p0EORlX5gWKrfn4qB?usp=sharing"}, {"tab": "MeitY 2024", "name": "MeitY Course Progress_Tracker 2024-25", "label": "MeitY Course Progress_Tracker 2024-25", "url": "https://docs.google.com/spreadsheets/d/1G3VCFFBnSNGitPw4Q8k3wnTWDJ6JhfgPsoXhiFqUDLw/edit?usp=sharing"}, {"tab": "AICTE Marketing", "name": "Website Enquiry Form", "label": "IDEMI | Website Enquiry Form (Responses)", "url": "https://docs.google.com/spreadsheets/d/1Vbtw6gy8Vq_RHJqJiNkt7CunIgxQiICsCcDK09BgwUg/edit"}, {"tab": "AICTE Marketing", "name": "Application for AICTE Diploma", "label": "Application for AICTE Diploma (Responses)", "url": "https://docs.google.com/spreadsheets/d/132BAAD-P7Xq8iua5JbxK5XBEaMLP6j4_BNcdoZ4sD0c/edit"}, {"tab": "AICTE Marketing", "name": "AICTE 2024 Marketing Campaign Report - Animation Dept", "label": "AICTE 2024 Marketing Campaign Report", "url": "https://docs.google.com/spreadsheets/d/1a4Kn2ymLQC_FAqNMxKp6HSseLwVoPVWvuBR1b1t9M_A/edit"}, {"tab": "AICTE Marketing", "name": "AICTE Approval Handbook", "label": "APH Final.pdf", "url": "https://drive.google.com/file/d/18tAllgeduXyzHsGyYufJC3Wta0JRzEsY/view?usp=sharing"}, {"tab": "AICTE Syllabus", "name": "Diploma in 3D Animation & Graphics Syllabus (Old)", "label": "Old_Syllabus_Diploma in 3D Animation & Graphics.docx", "url": "https://docs.google.com/document/d/1RdPGZqRPX6wvqaICvt5j9V0mIE_eUgr4/edit"}, {"tab": "AICTE Syllabus", "name": "Diploma in 3D Animation & Graphics Syllabus (New)", "label": "AICTE NEW SYLLABUS", "url": "https://drive.google.com/drive/folders/1DGV3LfZ1VkSs6hgfSHRS5FMmLdBe5uuh"}, {"tab": "AICTE Syllabus", "name": "Diploma in 3D Animation & Graphics Syllabus (Rev - Latest)", "label": "Rev 2 DIPLOMA IN 3D ANIMATION & GRAPHICS", "url": "https://drive.google.com/drive/folders/1_iohLNNWMjNkGA7wNx26i8nUAZv43Tq-"}, {"tab": "AICTE Syllabus", "name": "Diploma in 3D Animation & Graphics Syllabus (3 Rev - 100626)", "label": "Rev 3 DIPLOMA IN 3D ANIMATION & GRAPHICS", "url": "https://drive.google.com/drive/u/0/folders/1Gjqfi_SLSj20IA_iv8vpIExQE9pz5gdn"}, {"tab": "Creatives & Assets", "name": "MSME IDEMI Logo", "label": "Open Link", "url": "https://drive.google.com/drive/folders/1d59bFrqqArPOufZrYnYetpfStx3B_tGD?usp=drive_link"}, {"tab": "Creatives & Assets", "name": "MSME TC Logo", "label": "MSME TC LOGO", "url": "https://drive.google.com/drive/folders/1wnPlZL1vCXXmqCkTbQPHd-JS9u2eneQc?usp=drive_link"}, {"tab": "Creatives & Assets", "name": "MEITY Creatives", "label": "MeitY Creatives 2025", "url": "https://drive.google.com/drive/folders/11p4pZRUe4DIEbz7O_e-ahoy-S9Qb3n9l?usp=drive_link"}, {"tab": "Creatives & Assets", "name": "AICTE Creatives", "label": "AICTE Ads 2024-25", "url": "https://drive.google.com/drive/folders/1l41ozzs1w8PnlAay64xGWDPqD3pWJZw1?usp=drive_link"}, {"tab": "Creatives & Assets", "name": "Meity Google Form creatives", "label": "Google Form MeitY", "url": "https://drive.google.com/drive/folders/1VlQ9dikqFI0-sROkndMrPsI8BESb531F?usp=drive_link"}, {"tab": "Creatives & Assets", "name": "NSQF Creatives", "label": "NSQF Creatives 2025", "url": "https://drive.google.com/drive/folders/1Ro2IQuZkNzIqONjaHWrawb3b2Feprl-e?usp=drive_link"}, {"tab": "Creatives & Assets", "name": "MEITY TC center Creatives", "label": "MEITY TC center Creatives", "url": "https://drive.google.com/drive/folders/1ggiDrPQpG7ktCdPF3nAkq2pmKKCzv2Op?usp=drive_link"}, {"tab": "NCVET NSQF", "name": "IDEMI - NCVET MEDIA & ENTERTAINMENT SECTOR - Industry Validation & Skills Gap Study", "label": "IDEMI - NCVET MEDIA & ENTERTAINMENT SECTOR - Industry Validation & Skills Gap Study", "url": "https://docs.google.com/spreadsheets/d/13NF8HtE5f8msd3XAyPpANkkAWa1B_yC2R4MFNmvGOug/edit?usp=sharing"}, {"tab": "NCVET NSQF", "name": "NCVET MEDIA & ENTERTAINMENT and C&G SECTOR - ENGLISH & HINDI VERSION", "label": "NCVET MEDIA & ENTERTAINMENT and C&G SECTOR - ENGLISH & HINDI VERSION", "url": "https://docs.google.com/spreadsheets/d/12FfylkN54Qg6KrQOLaGthBSM0uXRCBi8uEbBVbE38yQ/edit?usp=sharing"}, {"tab": "NCVET NSQF", "name": "New Proposed IDEMI Courses under NCVET - Phase II", "label": "New Proposed IDEMI Courses under NCVET", "url": "https://docs.google.com/spreadsheets/d/1FSz5af8gjGfhIZzRGQxWxbkBBDCJZ2Fy_JpUlGGiVzY/edit?usp=sharing"}, {"tab": "NCVET NSQF", "name": "New Proposed NSQF QF & Curriculum - IDEMI", "label": "New Proposed NSQF QF & Curriculum - IDEMI", "url": "https://drive.google.com/drive/folders/1uqJ-naRjvhSWadHqS-eXm8HtCUGI2S7i?usp=sharing"}, {"tab": "Repository", "name": "Notes and Letter Formats", "label": "Notes and Letter Formats", "url": "https://drive.google.com/drive/folders/1UmFuFNNCuk5eH0pj4DjC4VhE1_pEBSa3?usp=drive_link"}, {"tab": "Repository", "name": "Monthly Training Completion Mastersheet", "label": "Monthly Training Completion Mastersheet.xlsx", "url": "https://docs.google.com/spreadsheets/d/1GmCXqYBEKumBSHbCW2AOrpTvMqdWLzg-/edit?gid=690550622"}, {"tab": "Repository", "name": "Monthly Training Plan Mastersheet", "label": "Monthly Training Plan Mastersheet.xlsx", "url": "https://docs.google.com/spreadsheets/d/1VM41RQ0Y5fP02fS4lA9zdbW3ej-veF2y/edit?gid=1738325545"}], "assignees": ["Abhishek Kamble", "Rahul More", "Shaunak Kolte", "Aayush Raisoni", "Sushil Baviskar", "Vishal Angre", "Nilesh Sharma", "Praveen Dhurve", "Mahendra Janathe", "Apoorva Tripathi", "Rajendra Majigud", "Raju Kharat", "Sachin Nikam", "Pratik Deshmukh", "Kunal Tawde", "Ravindra Ahire", "Naresh Shimpi", "Unassigned"], "statuses": ["Not Started", "In Progress", "Delayed", "On Hold", "Completed"], "priorities": ["High", "Medium", "Low"], "categories": ["Design", "Web Design", "Communication", "Teaching Material", "Website Management", "Advertisement", "Placement", "Training", "Dashboard & Portal", "Completed Archive", "General"]};
+    const STORAGE_KEY = "idemi_ani_task_manager_v1";
+
+    let state = {
+      activeTasks: [],
+      completedTasks: [],
+      repositoryLinks: INITIAL_DATA.repositoryLinks,
+      currentView: "table", // 'table' | 'kanban' | 'workload' | 'repository'
+      dataset: "active",    // 'active' | 'completed' | 'all'
+      sortField: "id",
+      sortAsc: true
+    };
+
+    function initApp() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          state.activeTasks = parsed.activeTasks || JSON.parse(JSON.stringify(INITIAL_DATA.activeTasks));
+          state.completedTasks = parsed.completedTasks || JSON.parse(JSON.stringify(INITIAL_DATA.completedTasks));
+        } catch (e) {
+          loadDefaults();
+        }
+      } else {
+        loadDefaults();
+      }
+      populateFilterDropdowns();
+      renderCurrentView();
+    }
+
+    function loadDefaults() {
+      state.activeTasks = JSON.parse(JSON.stringify(INITIAL_DATA.activeTasks));
+      state.completedTasks = JSON.parse(JSON.stringify(INITIAL_DATA.completedTasks));
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        activeTasks: state.activeTasks,
+        completedTasks: state.completedTasks
+      }));
+      updateDatasetCounts();
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById("toastMsg");
+      el.textContent = msg;
+      el.classList.add("show");
+      setTimeout(() => el.classList.remove("show"), 2400);
+    }
+
+    function resetToOriginalData() {
+      if (confirm("Reset all tasks back to the original rows from 'Task & Repository Sheet - ANI.xlsx'?")) {
+        localStorage.removeItem(STORAGE_KEY);
+        loadDefaults();
+        populateFilterDropdowns();
+        renderCurrentView();
+        showToast("Restored original Excel sheet data");
+      }
+    }
+
+    function getAllCurrentDatasetTasks() {
+      if (state.dataset === "active") return state.activeTasks;
+      if (state.dataset === "completed") return state.completedTasks;
+      return [...state.activeTasks, ...state.completedTasks];
+    }
+
+    function populateFilterDropdowns() {
+      const allTasks = [...state.activeTasks, ...state.completedTasks];
+
+      // Statuses
+      const statusSel = document.getElementById("filterStatus");
+      const curStatus = statusSel.value;
+      statusSel.innerHTML = `<option value="">All Progress Statuses</option>` +
+        INITIAL_DATA.statuses.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
+      statusSel.value = curStatus;
+
+      // Priorities
+      const prioSel = document.getElementById("filterPriority");
+      const curPrio = prioSel.value;
+      prioSel.innerHTML = `<option value="">All Priorities</option>` +
+        INITIAL_DATA.priorities.map(p => `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join("");
+      prioSel.value = curPrio;
+
+      // Categories
+      const cats = Array.from(new Set([
+        ...INITIAL_DATA.categories,
+        ...allTasks.map(t => t.category).filter(Boolean)
+      ])).sort();
+      const catSel = document.getElementById("filterCategory");
+      const curCat = catSel.value;
+      catSel.innerHTML = `<option value="">All Categories</option>` +
+        cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
+      catSel.value = curCat;
+
+      const catList = document.getElementById("categoryList");
+      catList.innerHTML = cats.map(c => `<option value="${escapeHtml(c)}"></option>`).join("");
+
+      // Assignees
+      const assignees = Array.from(new Set([
+        ...INITIAL_DATA.assignees,
+        ...allTasks.map(t => t.assignee).filter(Boolean)
+      ])).sort();
+      const assSel = document.getElementById("filterAssignee");
+      const curAss = assSel.value;
+      assSel.innerHTML = `<option value="">All Assignees</option>` +
+        assignees.map(a => `<option value="${escapeHtml(a)}">${escapeHtml(a)}</option>`).join("");
+      assSel.value = curAss;
+
+      const modalAss = document.getElementById("fAssignee");
+      modalAss.innerHTML = assignees.map(a => `<option value="${escapeHtml(a)}">${escapeHtml(a)}</option>`).join("");
+
+      updateDatasetCounts();
+    }
+
+    function updateDatasetCounts() {
+      const btns = document.querySelectorAll(".dataset-btn");
+      btns.forEach(b => {
+        const ds = b.getAttribute("data-ds");
+        if (ds === "active") b.textContent = `Active Task Sheet (${state.activeTasks.length})`;
+        if (ds === "completed") b.textContent = `Completed Work Tab (${state.completedTasks.length})`;
+        if (ds === "all") b.textContent = `All Combined (${state.activeTasks.length + state.completedTasks.length})`;
+      });
+      document.getElementById("countRepo").textContent = state.repositoryLinks.length;
+    }
+
+    function getFilteredTasks() {
+      const raw = getAllCurrentDatasetTasks();
+      const q = (document.getElementById("searchInput").value || "").trim().toLowerCase();
+      const fStatus = document.getElementById("filterStatus").value;
+      const fPrio = document.getElementById("filterPriority").value;
+      const fCat = document.getElementById("filterCategory").value;
+      const fAss = document.getElementById("filterAssignee").value;
+
+      const filtered = raw.filter(t => {
+        if (fStatus && t.progress !== fStatus) return false;
+        if (fPrio && t.priority !== fPrio) return false;
+        if (fCat && t.category !== fCat) return false;
+        if (fAss && t.assignee !== fAss) return false;
+        if (q) {
+          const hay = [
+            t.id, t.title, t.description, t.category, t.priority,
+            t.assignee, t.progress, t.dependencies, t.comments, t.link
+          ].join(" ").toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      filtered.sort((a, b) => {
+        const av = String(a[state.sortField] || "").toLowerCase();
+        const bv = String(b[state.sortField] || "").toLowerCase();
+        if (av < bv) return state.sortAsc ? -1 : 1;
+        if (av > bv) return state.sortAsc ? 1 : -1;
+        return 0;
+      });
+
+      return filtered;
+    }
+
+    function renderKPIs() {
+      const dsTasks = getAllCurrentDatasetTasks();
+      const total = dsTasks.length;
+      const delayed = dsTasks.filter(t => t.progress === "Delayed").length;
+      const onHold = dsTasks.filter(t => t.progress === "On Hold").length;
+      const inProg = dsTasks.filter(t => t.progress === "In Progress" || t.progress === "Not Started").length;
+      const highPrio = dsTasks.filter(t => t.priority === "High").length;
+      const completed = dsTasks.filter(t => t.progress === "Completed").length;
+
+      const curStatus = document.getElementById("filterStatus").value;
+      const curPrio = document.getElementById("filterPriority").value;
+
+      document.getElementById("kpiGrid").innerHTML = `
+        <div class="kpi-card kpi-total ${!curStatus && !curPrio ? 'active-kpi' : ''}" onclick="quickFilter('', '')">
+          <div class="kpi-label"><span>Total Tasks in View</span><span>&#128203;</span></div>
+          <div class="kpi-value">${total}</div>
+          <div class="kpi-sub">${state.dataset === 'active' ? 'From Active Task Sheet' : (state.dataset === 'completed' ? 'From Completed Work Tab' : 'Across Both Task Tabs')}</div>
+        </div>
+        <div class="kpi-card kpi-delayed ${curStatus === 'Delayed' ? 'active-kpi' : ''}" onclick="quickFilter('Delayed', '')">
+          <div class="kpi-label"><span>Delayed</span><span>&#9888;</span></div>
+          <div class="kpi-value" style="color:var(--danger)">${delayed}</div>
+          <div class="kpi-sub">Needs immediate follow-up</div>
+        </div>
+        <div class="kpi-card kpi-onhold ${curStatus === 'On Hold' ? 'active-kpi' : ''}" onclick="quickFilter('On Hold', '')">
+          <div class="kpi-label"><span>On Hold</span><span>&#9208;</span></div>
+          <div class="kpi-value" style="color:var(--warning)">${onHold}</div>
+          <div class="kpi-sub">Paused / awaiting external input</div>
+        </div>
+        <div class="kpi-card kpi-inprogress ${curStatus === 'Not Started' ? 'active-kpi' : ''}" onclick="quickFilter('Not Started', '')">
+          <div class="kpi-label"><span>Open / Not Started</span><span>&#128640;</span></div>
+          <div class="kpi-value" style="color:var(--info)">${inProg}</div>
+          <div class="kpi-sub">Dashboards &amp; new queue</div>
+        </div>
+        <div class="kpi-card kpi-high ${curPrio === 'High' ? 'active-kpi' : ''}" onclick="quickFilter('', 'High')">
+          <div class="kpi-label"><span>High Priority</span><span>&#128293;</span></div>
+          <div class="kpi-value" style="color:#7c3aed">${highPrio}</div>
+          <div class="kpi-sub">${total ? Math.round((highPrio / total) * 100) : 0}% of current dataset</div>
+        </div>
+        <div class="kpi-card kpi-completed ${curStatus === 'Completed' ? 'active-kpi' : ''}" onclick="quickFilter('Completed', '')">
+          <div class="kpi-label"><span>Completed</span><span>&#9989;</span></div>
+          <div class="kpi-value" style="color:var(--success)">${completed}</div>
+          <div class="kpi-sub">${state.completedTasks.length} in Completed Archive</div>
+        </div>
+      `;
+    }
+
+    function quickFilter(statusVal, prioVal) {
+      document.getElementById("filterStatus").value = statusVal;
+      document.getElementById("filterPriority").value = prioVal;
+      if (state.currentView === "repository") {
+        switchView("table");
+      } else {
+        renderCurrentView();
+      }
+    }
+
+    function clearFilters() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("filterStatus").value = "";
+      document.getElementById("filterPriority").value = "";
+      document.getElementById("filterCategory").value = "";
+      document.getElementById("filterAssignee").value = "";
+      renderCurrentView();
+    }
+
+    function switchView(viewName) {
+      state.currentView = viewName;
+      document.querySelectorAll(".view-tab").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-view") === viewName);
+      });
+      const showFilters = viewName !== "repository";
+      document.getElementById("filtersRow").style.display = showFilters ? "flex" : "none";
+      document.getElementById("datasetSwitch").style.display = showFilters ? "inline-flex" : "none";
+      renderCurrentView();
+    }
+
+    function setDataset(ds) {
+      state.dataset = ds;
+      document.querySelectorAll(".dataset-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-ds") === ds);
+      });
+      renderCurrentView();
+    }
+
+    function sortBy(field) {
+      if (state.sortField === field) {
+        state.sortAsc = !state.sortAsc;
+      } else {
+        state.sortField = field;
+        state.sortAsc = true;
+      }
+      renderCurrentView();
+    }
+
+    function renderCurrentView() {
+      renderKPIs();
+      const filtered = getFilteredTasks();
+      document.getElementById("countTable").textContent = filtered.length;
+      document.getElementById("countKanban").textContent = filtered.length;
+
+      const container = document.getElementById("viewContainer");
+      if (state.currentView === "table") {
+        container.innerHTML = renderTableView(filtered);
+      } else if (state.currentView === "kanban") {
+        container.innerHTML = renderKanbanView(filtered);
+      } else if (state.currentView === "workload") {
+        container.innerHTML = renderWorkloadView(filtered);
+      } else if (state.currentView === "repository") {
+        container.innerHTML = renderRepositoryView();
+      }
+    }
+
+    function statusClass(s) {
+      return "status-" + String(s || "Not Started").replace(/\s+/g, "");
+    }
+
+    function getInitials(name) {
+      if (!name || name === "Unassigned") return "UA";
+      return name.split(" ").filter(Boolean).slice(0, 2).map(p => p[0].toUpperCase()).join("");
+    }
+
+    function renderTableView(tasks) {
+      if (!tasks.length) {
+        return `<div class="table-container"><div class="empty-state"><h3>No matching tasks found</h3><p>Try clearing filters or switching between Active Task Sheet and Completed Work tabs.</p></div></div>`;
+      }
+
+      const sortArrow = (f) => state.sortField === f ? (state.sortAsc ? " &#9650;" : " &#9660;") : "";
+
+      const rowsHtml = tasks.map(t => {
+        const mergedBadge = t.parentId ? `<span class="merged-indicator" title="Shared merged task group with ${escapeHtml(t.parentId)}">Linked: ${escapeHtml(t.parentId)}</span>` : "";
+        const linkHtml = t.link
+          ? `<a class="link-pill" href="${escapeHtml(t.link)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(t.link)}">&#128279; ${escapeHtml(t.linkLabel || "Open Link")}</a>`
+          : `<span style="color:#94a3b8;font-size:12px;">—</span>`;
+
+        return `
+          <tr>
+            <td class="td-id">${escapeHtml(t.id)}${mergedBadge}</td>
+            <td class="td-title">${escapeHtml(t.title || "(Untitled Row)")}</td>
+            <td class="td-desc">${escapeHtml(t.description || "—")}</td>
+            <td><span class="cat-tag">${escapeHtml(t.category || "General")}</span></td>
+            <td>
+              <select class="inline-select prio-${escapeHtml(t.priority)}" onchange="inlineUpdateTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}', 'priority', this.value)">
+                ${INITIAL_DATA.priorities.map(p => `<option value="${p}" ${t.priority === p ? 'selected' : ''}>${p}</option>`).join("")}
+              </select>
+            </td>
+            <td class="td-date">${escapeHtml(t.startDate || "—")}</td>
+            <td class="td-date">${escapeHtml(t.dueDate || "—")}</td>
+            <td class="td-date">${escapeHtml(t.completionDate || "—")}</td>
+            <td>
+              <div class="assignee-chip">
+                <span class="avatar">${getInitials(t.assignee)}</span>
+                <span>${escapeHtml(t.assignee || "Unassigned")}</span>
+              </div>
+            </td>
+            <td>
+              <select class="inline-select ${statusClass(t.progress)}" onchange="inlineUpdateTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}', 'progress', this.value)">
+                ${INITIAL_DATA.statuses.map(s => `<option value="${s}" ${t.progress === s ? 'selected' : ''}>${s}</option>`).join("")}
+              </select>
+            </td>
+            <td class="td-notes">${escapeHtml(t.dependencies || "—")}</td>
+            <td class="td-notes">${escapeHtml(t.comments || "—")}</td>
+            <td>${linkHtml}</td>
+            <td style="white-space:nowrap;">
+              <button class="btn btn-light btn-sm" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">Edit</button>
+              <button class="btn btn-danger-outline btn-sm" onclick="deleteTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">&#128465;</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      return `
+        <div class="table-container">
+          <div class="table-scroll">
+            <table class="task-table">
+              <thead>
+                <tr>
+                  <th onclick="sortBy('id')">Task ID${sortArrow('id')}</th>
+                  <th onclick="sortBy('title')">Task Title${sortArrow('title')}</th>
+                  <th>Description</th>
+                  <th onclick="sortBy('category')">Category${sortArrow('category')}</th>
+                  <th onclick="sortBy('priority')">Priority${sortArrow('priority')}</th>
+                  <th onclick="sortBy('startDate')">Start Date${sortArrow('startDate')}</th>
+                  <th onclick="sortBy('dueDate')">Due Date${sortArrow('dueDate')}</th>
+                  <th onclick="sortBy('completionDate')">Completion${sortArrow('completionDate')}</th>
+                  <th onclick="sortBy('assignee')">Assignee${sortArrow('assignee')}</th>
+                  <th onclick="sortBy('progress')">Progress${sortArrow('progress')}</th>
+                  <th>Dependencies</th>
+                  <th>Comments / Updates</th>
+                  <th>Links</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderKanbanView(tasks) {
+      const cols = ["Delayed", "On Hold", "Not Started", "In Progress", "Completed"];
+      const colHtml = cols.map(status => {
+        const colTasks = tasks.filter(t => t.progress === status);
+        const cards = colTasks.length ? colTasks.map(t => `
+          <div class="kanban-card" draggable="true" ondragstart="onDragStart(event, '${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">
+            <div class="k-card-top">
+              <span class="td-id">${escapeHtml(t.id)}</span>
+              <span class="badge prio-${escapeHtml(t.priority)}">${escapeHtml(t.priority)}</span>
+            </div>
+            <div class="k-card-title">${escapeHtml(t.title)}</div>
+            ${t.description ? `<div class="k-card-desc">${escapeHtml(t.description)}</div>` : ''}
+            <div><span class="cat-tag">${escapeHtml(t.category)}</span></div>
+            ${t.dependencies ? `<div style="font-size:11.5px;color:#b45309;background:#fffbeb;padding:4px 7px;border-radius:4px;"><strong>Dep:</strong> ${escapeHtml(t.dependencies)}</div>` : ''}
+            ${t.comments ? `<div style="font-size:11.5px;color:#475569;background:#f8fafc;padding:4px 7px;border-radius:4px;"><strong>Note:</strong> ${escapeHtml(t.comments)}</div>` : ''}
+            ${t.link ? `<div><a class="link-pill" href="${escapeHtml(t.link)}" target="_blank" rel="noopener noreferrer">&#128279; Open Resource</a></div>` : ''}
+            <div class="k-card-meta">
+              <div class="assignee-chip">
+                <span class="avatar">${getInitials(t.assignee)}</span>
+                <span style="font-size:12px;">${escapeHtml(t.assignee)}</span>
+              </div>
+              <div style="display:flex;gap:4px;align-items:center;">
+                <span>${escapeHtml(t.dueDate || t.startDate || "")}</span>
+                <button class="btn btn-light btn-sm" style="padding:2px 7px;" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">Edit</button>
+              </div>
+            </div>
+          </div>
+        `).join("") : `<div style="text-align:center;padding:24px 8px;color:#94a3b8;font-size:12px;">Drop tasks here</div>`;
+
+        return `
+          <div class="kanban-col" ondragover="event.preventDefault()" ondrop="onDropCard(event, '${status}')">
+            <div class="kanban-col-header">
+              <span class="badge ${statusClass(status)}">${status}</span>
+              <span class="tab-count">${colTasks.length}</span>
+            </div>
+            <div class="kanban-cards">${cards}</div>
+          </div>
+        `;
+      }).join("");
+
+      return `<div class="kanban-board">${colHtml}</div>`;
+    }
+
+    let draggedTask = null;
+    function onDragStart(e, id, source) {
+      draggedTask = { id, source };
+    }
+
+    function onDropCard(e, newStatus) {
+      e.preventDefault();
+      if (!draggedTask) return;
+      inlineUpdateTask(draggedTask.id, draggedTask.source, "progress", newStatus);
+      draggedTask = null;
+    }
+
+    function renderWorkloadView(tasks) {
+      // Group by Assignee
+      const map = {};
+      tasks.forEach(t => {
+        const a = t.assignee || "Unassigned";
+        if (!map[a]) map[a] = { total: 0, Delayed: 0, "On Hold": 0, "In Progress": 0, "Not Started": 0, Completed: 0, High: 0 };
+        map[a].total++;
+        map[a][t.progress] = (map[a][t.progress] || 0) + 1;
+        if (t.priority === "High") map[a].High++;
+      });
+
+      const assigneeEntries = Object.entries(map).sort((a, b) => b[1].total - a[1].total);
+      const maxAss = assigneeEntries.length ? assigneeEntries[0][1].total : 1;
+
+      const assigneeHtml = assigneeEntries.map(([name, counts]) => {
+        const wDelayed = (counts.Delayed / maxAss) * 100;
+        const wHold = (counts["On Hold"] / maxAss) * 100;
+        const wOpen = ((counts["In Progress"] + counts["Not Started"]) / maxAss) * 100;
+        const wComp = (counts.Completed / maxAss) * 100;
+        return `
+          <div class="bar-row" onclick="filterByAssignee('${escapeHtml(name)}')" title="Click to filter tasks for ${escapeHtml(name)}">
+            <div class="bar-row-header">
+              <span>${escapeHtml(name)}</span>
+              <span style="color:var(--text-muted);font-size:12px;">
+                <strong>${counts.total}</strong> total
+                (${counts.Delayed ? `<span style="color:var(--danger)">${counts.Delayed} Delayed</span>, ` : ''}${counts["On Hold"] ? `<span style="color:var(--warning)">${counts["On Hold"]} On Hold</span>, ` : ''}<span style="color:var(--success)">${counts.Completed} Done</span>)
+              </span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-seg" style="width:${wDelayed}%;background:var(--danger);"></div>
+              <div class="bar-seg" style="width:${wHold}%;background:var(--warning);"></div>
+              <div class="bar-seg" style="width:${wOpen}%;background:var(--info);"></div>
+              <div class="bar-seg" style="width:${wComp}%;background:var(--success);"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      // Group by Category
+      const catMap = {};
+      tasks.forEach(t => {
+        const c = t.category || "General";
+        if (!catMap[c]) catMap[c] = { total: 0, High: 0, Delayed: 0 };
+        catMap[c].total++;
+        if (t.priority === "High") catMap[c].High++;
+        if (t.progress === "Delayed") catMap[c].Delayed++;
+      });
+      const catEntries = Object.entries(catMap).sort((a, b) => b[1].total - a[1].total);
+      const maxCat = catEntries.length ? catEntries[0][1].total : 1;
+
+      const catHtml = catEntries.map(([cat, counts]) => `
+        <div class="bar-row" onclick="filterByCategory('${escapeHtml(cat)}')">
+          <div class="bar-row-header">
+            <span>${escapeHtml(cat)}</span>
+            <span style="color:var(--text-muted);font-size:12px;"><strong>${counts.total}</strong> tasks (${counts.High} High Priority)</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-seg" style="width:${(counts.total / maxCat) * 100}%;background:var(--primary);"></div>
+          </div>
+        </div>
+      `).join("");
+
+      return `
+        <div class="analytics-layout">
+          <div class="panel-card">
+            <h3>Assignee Workload Breakdown</h3>
+            <p class="panel-sub">Click any team member to filter their tasks in the Task Sheet table. Red = Delayed, Amber = On Hold, Blue = Open, Green = Completed.</p>
+            <div class="bar-list">${assigneeHtml}</div>
+          </div>
+          <div class="panel-card">
+            <h3>Category Distribution</h3>
+            <p class="panel-sub">Breakdown by Task Sheet Category. Click any category bar to inspect its tasks.</p>
+            <div class="bar-list">${catHtml}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function filterByAssignee(name) {
+      document.getElementById("filterAssignee").value = name;
+      switchView("table");
+    }
+
+    function filterByCategory(cat) {
+      document.getElementById("filterCategory").value = cat;
+      switchView("table");
+    }
+
+    function renderRepositoryView() {
+      const cards = state.repositoryLinks.map(item => `
+        <div class="repo-card">
+          <div>
+            <span class="repo-card-tab">${escapeHtml(item.tab)}</span>
+            <div class="repo-card-title" style="margin-top:8px;">${escapeHtml(item.name)}</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">${escapeHtml(item.label)}</div>
+          </div>
+          <div>
+            ${item.url
+              ? `<a class="btn btn-primary btn-sm" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">&#128279; Open Connected Resource</a>`
+              : `<span style="font-size:12px;color:#94a3b8;">Reference entry in workbook</span>`
+            }
+          </div>
+        </div>
+      `).join("");
+
+      return `
+        <div>
+          <div style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <h3 style="font-size:16px;font-weight:700;">Connected IDEMI Animation Department Repository</h3>
+              <p style="font-size:12.5px;color:var(--text-muted);">Direct links extracted from TOT Files, MeitY 2024, AICTE Marketing, AICTE Syllabus, Creatives &amp; Assets, NCVET NSQF, and Repository sheets.</p>
+            </div>
+          </div>
+          <div class="repo-grid">${cards}</div>
+        </div>
+      `;
+    }
+
+    function findTaskArrayAndIndex(id, source) {
+      if (source === "Task Sheet (Completed Work)") {
+        const idx = state.completedTasks.findIndex(t => t.id === id);
+        if (idx !== -1) return { arr: state.completedTasks, idx };
+      }
+      const idxA = state.activeTasks.findIndex(t => t.id === id);
+      if (idxA !== -1) return { arr: state.activeTasks, idx: idxA };
+      const idxC = state.completedTasks.findIndex(t => t.id === id);
+      if (idxC !== -1) return { arr: state.completedTasks, idx: idxC };
+      return null;
+    }
+
+    function inlineUpdateTask(id, source, field, value) {
+      const found = findTaskArrayAndIndex(id, source);
+      if (!found) return;
+      const task = found.arr[found.idx];
+      task[field] = value;
+      if (field === "progress" && value === "Completed" && !task.completionDate) {
+        task.completionDate = new Date().toISOString().slice(0, 10);
+      }
+      saveState();
+      renderCurrentView();
+      showToast(`Updated ${id} ${field} to ${value}`);
+    }
+
+    function suggestNextTaskId() {
+      let maxNum = 106;
+      state.activeTasks.forEach(t => {
+        const m = String(t.id).match(/^T(\d+)/i);
+        if (m) {
+          const n = parseInt(m[1], 10);
+          if (n > maxNum) maxNum = n;
+        }
+      });
+      return "T" + String(maxNum + 1).padStart(3, "0");
+    }
+
+    function openTaskModal(id, source) {
+      const modal = document.getElementById("taskModal");
+      if (id) {
+        const found = findTaskArrayAndIndex(id, source);
+        if (!found) return;
+        const t = found.arr[found.idx];
+        document.getElementById("modalTitle").textContent = `Edit Task ${t.id}`;
+        document.getElementById("editInternalIdx").value = `${t.source}:::${t.id}`;
+        document.getElementById("fTaskId").value = t.id;
+        document.getElementById("fCategory").value = t.category || "General";
+        document.getElementById("fTitle").value = t.title || "";
+        document.getElementById("fDesc").value = t.description || "";
+        document.getElementById("fAssignee").value = t.assignee || "Unassigned";
+        document.getElementById("fPriority").value = t.priority || "Medium";
+        document.getElementById("fProgress").value = t.progress || "Not Started";
+        document.getElementById("fStartDate").value = t.startDate || "";
+        document.getElementById("fDueDate").value = t.dueDate || "";
+        document.getElementById("fCompletionDate").value = t.completionDate || "";
+        document.getElementById("fDependencies").value = t.dependencies || "";
+        document.getElementById("fComments").value = t.comments || "";
+        document.getElementById("fLink").value = t.link || "";
+      } else {
+        document.getElementById("modalTitle").textContent = "Add New Task to Task Sheet";
+        document.getElementById("editInternalIdx").value = "";
+        document.getElementById("taskForm").reset();
+        document.getElementById("fTaskId").value = suggestNextTaskId();
+        document.getElementById("fPriority").value = "High";
+        document.getElementById("fProgress").value = "Not Started";
+        document.getElementById("fStartDate").value = new Date().toISOString().slice(0, 10);
+      }
+      modal.classList.add("open");
+    }
+
+    function closeTaskModal() {
+      document.getElementById("taskModal").classList.remove("open");
+    }
+
+    function autoFillCompletionDate() {
+      const prog = document.getElementById("fProgress").value;
+      const compInput = document.getElementById("fCompletionDate");
+      if (prog === "Completed" && !compInput.value) {
+        compInput.value = new Date().toISOString().slice(0, 10);
+      }
+    }
+
+    function saveTaskForm(e) {
+      e.preventDefault();
+      const editRef = document.getElementById("editInternalIdx").value;
+      const payload = {
+        id: document.getElementById("fTaskId").value.trim(),
+        title: document.getElementById("fTitle").value.trim(),
+        description: document.getElementById("fDesc").value.trim(),
+        category: document.getElementById("fCategory").value.trim() || "General",
+        priority: document.getElementById("fPriority").value,
+        startDate: document.getElementById("fStartDate").value,
+        dueDate: document.getElementById("fDueDate").value,
+        completionDate: document.getElementById("fCompletionDate").value,
+        assignee: document.getElementById("fAssignee").value,
+        progress: document.getElementById("fProgress").value,
+        dependencies: document.getElementById("fDependencies").value.trim(),
+        comments: document.getElementById("fComments").value.trim(),
+        link: document.getElementById("fLink").value.trim(),
+        source: "Task Sheet"
+      };
+
+      if (editRef) {
+        const [origSource, origId] = editRef.split(":::");
+        const found = findTaskArrayAndIndex(origId, origSource);
+        if (found) {
+          payload.source = origSource;
+          payload.parentId = found.arr[found.idx].parentId || "";
+          found.arr[found.idx] = payload;
+          showToast(`Updated task ${payload.id}`);
+        }
+      } else {
+        state.activeTasks.unshift(payload);
+        state.dataset = "active";
+        showToast(`Created task ${payload.id}`);
+      }
+
+      saveState();
+      populateFilterDropdowns();
+      closeTaskModal();
+      renderCurrentView();
+    }
+
+    function deleteTask(id, source) {
+      if (!confirm(`Delete task ${id}?`)) return;
+      const found = findTaskArrayAndIndex(id, source);
+      if (!found) return;
+      found.arr.splice(found.idx, 1);
+      saveState();
+      renderCurrentView();
+      showToast(`Deleted task ${id}`);
+    }
+
+    function exportCSV() {
+      const tasks = getFilteredTasks();
+      const headers = [
+        "Task ID", "Task Title", "Description", "Category", "Priority",
+        "Start Date", "Due Date", "Completion Date", "Assignee", "Progress",
+        "Dependencies", "Comments/Updates", "Links (if any)"
+      ];
+      const csvRows = [headers.join(",")];
+      tasks.forEach(t => {
+        const vals = [
+          t.id, t.title, t.description, t.category, t.priority,
+          t.startDate, t.dueDate, t.completionDate, t.assignee, t.progress,
+          t.dependencies, t.comments, t.link
+        ].map(v => `"${String(v || "").replace(/"/g, '""')}"`);
+        csvRows.push(vals.join(","));
+      });
+      const blob = new Blob([csvRows.join("\n")], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `IDEMI_Task_Sheet_${state.dataset}_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast(`Exported ${tasks.length} tasks to CSV`);
+    }
+
+    function importCSV(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const text = e.target.result;
+        const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
+        if (lines.length < 2) {
+          alert("CSV file appears empty.");
+          return;
+        }
+        let importedCount = 0;
+        for (let i = 1; i < lines.length; i++) {
+          const cols = parseCSVLine(lines[i]);
+          if (cols.length >= 2 && (cols[1] || cols[8])) {
+            state.activeTasks.push({
+              id: cols[0] || suggestNextTaskId(),
+              title: cols[1] || "Imported Task",
+              description: cols[2] || "",
+              category: cols[3] || "General",
+              priority: cols[4] || "Medium",
+              startDate: cols[5] || "",
+              dueDate: cols[6] || "",
+              completionDate: cols[7] || "",
+              assignee: cols[8] || "Unassigned",
+              progress: cols[9] || "Not Started",
+              dependencies: cols[10] || "",
+              comments: cols[11] || "",
+              link: cols[12] || "",
+              source: "Task Sheet"
+            });
+            importedCount++;
+          }
+        }
+        saveState();
+        populateFilterDropdowns();
+        renderCurrentView();
+        showToast(`Imported ${importedCount} tasks into Active Task Sheet`);
+      };
+      reader.readAsText(file);
+    }
+
+    function parseCSVLine(line) {
+      const res = [];
+      let cur = "";
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (inQuotes) {
+          if (ch === '"' && line[i + 1] === '"') {
+            cur += '"';
+            i++;
+          } else if (ch === '"') {
+            inQuotes = false;
+          } else {
+            cur += ch;
+          }
+        } else {
+          if (ch === '"') {
+            inQuotes = true;
+          } else if (ch === ',') {
+            res.push(cur.trim());
+            cur = "";
+          } else {
+            cur += ch;
+          }
+        }
+      }
+      res.push(cur.trim());
+      return res;
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    window.addEventListener("DOMContentLoaded", initApp);
+  </script>
+</body>
+</html>
