@@ -168,6 +168,15 @@
       background: var(--danger-bg);
     }
 
+    .btn-danger {
+      background: var(--danger);
+      color: #ffffff;
+      border-color: #b91c1c;
+    }
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
+
     .btn-sm {
       padding: 5px 10px;
       font-size: 12px;
@@ -592,6 +601,80 @@
 
     table.task-table tbody tr:hover td.col-actions {
       background: #f8fafc;
+    }
+
+    /* Checkbox & Bulk Selection */
+    .task-checkbox-col {
+      width: 36px !important;
+      min-width: 36px !important;
+      max-width: 36px !important;
+      text-align: center !important;
+      padding: 8px 4px !important;
+      vertical-align: middle !important;
+    }
+
+    .task-checkbox {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: var(--primary);
+      vertical-align: middle;
+      margin: 0;
+    }
+
+    table.task-table tbody tr.row-selected {
+      background-color: #eff6ff !important;
+    }
+
+    table.task-table tbody tr.row-selected:hover {
+      background-color: #dbeafe !important;
+    }
+
+    table.task-table tbody tr.row-selected td.col-actions {
+      background-color: #eff6ff !important;
+    }
+
+    table.task-table tbody tr.row-selected:hover td.col-actions {
+      background-color: #dbeafe !important;
+    }
+
+    .bulk-action-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
+      border: 1px solid #bfdbfe;
+      border-radius: var(--radius-md);
+      padding: 9px 14px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .bulk-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1e3a8a;
+    }
+
+    .bulk-badge {
+      background: #1e3a8a;
+      color: #ffffff;
+      padding: 2px 9px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .bulk-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .td-id {
@@ -1180,6 +1263,12 @@
           <button type="button" class="btn btn-sm btn-light active" id="btnModeFit" onclick="setTableMode('fit')" title="Streamlined horizontal fit with zero scrolling">&#9638; Fit to Page</button>
           <button type="button" class="btn btn-sm btn-light" id="btnModeExpanded" onclick="setTableMode('expanded')" title="Separate 14 columns across full screen width">&#9641; 14 Columns</button>
         </div>
+        <button type="button" class="btn btn-light btn-sm" id="btnSelectAllToggle" onclick="toggleSelectAllFromButton()" title="Select or deselect all visible tasks">&#9745; Select All</button>
+        <div class="selection-actions-inline" id="selectionActionsInline" style="display:none; align-items: center; gap: 6px;">
+          <button type="button" class="btn btn-danger btn-sm" onclick="deleteSelectedTasks()" title="Delete all selected tasks at once">
+            &#128465; Delete Selected (<span id="btnDeleteSelectedCount">0</span>)
+          </button>
+        </div>
         <button class="btn btn-light btn-sm" onclick="clearFilters()">Clear Filters</button>
       </div>
     </section>
@@ -1285,7 +1374,8 @@
       dataset: "active",    // 'active' | 'completed' | 'all'
       tableMode: localStorage.getItem("idemi_table_mode") || "fit", // 'fit' | 'expanded'
       sortField: "id",
-      sortAsc: true
+      sortAsc: true,
+      selectedTaskKeys: new Set()
     };
 
     function setTableMode(mode) {
@@ -1298,6 +1388,94 @@
         btnExp.classList.toggle("active", mode === "expanded");
       }
       renderCurrentView();
+    }
+
+    function getTaskKey(t) {
+      return `${t.source || 'Task Sheet'}:::${t.id}`;
+    }
+
+    function toggleTaskSelection(id, source, checked) {
+      const key = `${source || 'Task Sheet'}:::${id}`;
+      if (checked) {
+        state.selectedTaskKeys.add(key);
+      } else {
+        state.selectedTaskKeys.delete(key);
+      }
+      renderCurrentView();
+    }
+
+    function toggleSelectAll(checked) {
+      const visible = getFilteredTasks();
+      if (checked) {
+        visible.forEach(t => state.selectedTaskKeys.add(getTaskKey(t)));
+      } else {
+        visible.forEach(t => state.selectedTaskKeys.delete(getTaskKey(t)));
+      }
+      renderCurrentView();
+    }
+
+    function toggleSelectAllFromButton() {
+      const visible = getFilteredTasks();
+      if (!visible.length) return;
+      const allSelected = visible.every(t => state.selectedTaskKeys.has(getTaskKey(t)));
+      toggleSelectAll(!allSelected);
+    }
+
+    function clearTaskSelection() {
+      state.selectedTaskKeys.clear();
+      renderCurrentView();
+    }
+
+    function updateSelectAllCheckbox(filteredTasks) {
+      const chk = document.getElementById("selectAllCheckbox");
+      if (!chk) return;
+      if (!filteredTasks || filteredTasks.length === 0) {
+        chk.checked = false;
+        chk.indeterminate = false;
+        chk.disabled = true;
+        return;
+      }
+      chk.disabled = false;
+      const visibleSelectedCount = filteredTasks.filter(t => state.selectedTaskKeys.has(getTaskKey(t))).length;
+      if (visibleSelectedCount === 0) {
+        chk.checked = false;
+        chk.indeterminate = false;
+      } else if (visibleSelectedCount === filteredTasks.length) {
+        chk.checked = true;
+        chk.indeterminate = false;
+      } else {
+        chk.checked = false;
+        chk.indeterminate = true;
+      }
+    }
+
+    function deleteSelectedTasks() {
+      const count = state.selectedTaskKeys.size;
+      if (count === 0) {
+        showToast("No tasks selected to delete");
+        return;
+      }
+
+      const msg = count === 1
+        ? "Are you sure you want to delete 1 selected task? This will remove it from the sheet."
+        : `Are you sure you want to delete all ${count} selected tasks at once? This will remove them from the sheet.`;
+
+      if (!confirm(msg)) return;
+
+      const keySet = state.selectedTaskKeys;
+      const initialActive = state.activeTasks.length;
+      const initialCompleted = state.completedTasks.length;
+
+      state.activeTasks = state.activeTasks.filter(t => !keySet.has(getTaskKey(t)));
+      state.completedTasks = state.completedTasks.filter(t => !keySet.has(getTaskKey(t)));
+
+      const removed = (initialActive - state.activeTasks.length) + (initialCompleted - state.completedTasks.length);
+
+      state.selectedTaskKeys.clear();
+      saveState();
+      populateFilterDropdowns();
+      renderCurrentView();
+      showToast(`Successfully deleted ${removed} task(s)`);
     }
 
     function initApp() {
@@ -1341,6 +1519,7 @@
       if (confirm("Reset all tasks back to the original rows from 'Task & Repository Sheet - ANI.xlsx'?")) {
         localStorage.removeItem(STORAGE_KEY);
         loadDefaults();
+        state.selectedTaskKeys.clear();
         populateFilterDropdowns();
         renderCurrentView();
         showToast("Restored original Excel sheet data");
@@ -1524,6 +1703,7 @@
 
     function setDataset(ds) {
       state.dataset = ds;
+      state.selectedTaskKeys.clear();
       document.querySelectorAll(".dataset-btn").forEach(btn => {
         btn.classList.toggle("active", btn.getAttribute("data-ds") === ds);
       });
@@ -1558,6 +1738,24 @@
         }
       }
 
+      // Sync Selection Controls in Filter Bar
+      const selCount = state.selectedTaskKeys.size;
+      const inlineSel = document.getElementById("selectionActionsInline");
+      const delCountSpan = document.getElementById("btnDeleteSelectedCount");
+      const btnSelToggle = document.getElementById("btnSelectAllToggle");
+
+      if (inlineSel && delCountSpan && btnSelToggle) {
+        if (selCount > 0) {
+          inlineSel.style.display = "inline-flex";
+          delCountSpan.textContent = selCount;
+        } else {
+          inlineSel.style.display = "none";
+        }
+
+        const allVisibleSelected = filtered.length > 0 && filtered.every(t => state.selectedTaskKeys.has(getTaskKey(t)));
+        btnSelToggle.innerHTML = allVisibleSelected ? "&#9744; Deselect All" : "&#9745; Select All";
+      }
+
       const container = document.getElementById("viewContainer");
       if (state.currentView === "table") {
         container.innerHTML = renderTableView(filtered);
@@ -1568,6 +1766,8 @@
       } else if (state.currentView === "repository") {
         container.innerHTML = renderRepositoryView();
       }
+
+      updateSelectAllCheckbox(filtered);
     }
 
     function statusClass(s) {
@@ -1585,10 +1785,28 @@
       }
 
       const sortArrow = (f) => state.sortField === f ? (state.sortAsc ? " &#9650;" : " &#9660;") : "";
+      const selectedCount = state.selectedTaskKeys.size;
+      const bulkBarHtml = selectedCount > 0 ? `
+        <div class="bulk-action-bar" id="bulkActionBar">
+          <div class="bulk-bar-left">
+            <span class="bulk-badge">${selectedCount}</span>
+            <span>${selectedCount === 1 ? 'task selected' : 'tasks selected in sheet'}</span>
+          </div>
+          <div class="bulk-bar-right">
+            <button type="button" class="btn btn-sm btn-light" onclick="toggleSelectAll(true)">&#9745; Select All in View (${tasks.length})</button>
+            <button type="button" class="btn btn-sm btn-light" onclick="clearTaskSelection()">&#10006; Deselect All</button>
+            <button type="button" class="btn btn-sm btn-danger" onclick="deleteSelectedTasks()">
+              &#128465; Delete Selected (${selectedCount})
+            </button>
+          </div>
+        </div>
+      ` : "";
 
       if (state.tableMode !== "expanded") {
         // Fit to Page Mode (Default - Zero horizontal scroll, all actions & options fully visible)
         const rowsHtml = tasks.map(t => {
+          const key = getTaskKey(t);
+          const isSelected = state.selectedTaskKeys.has(key);
           const mergedBadge = t.parentId ? `<div class="merged-indicator" title="Shared merged task group with ${escapeHtml(t.parentId)}">Linked: ${escapeHtml(t.parentId)}</div>` : "";
           const linkHtml = t.link
             ? `<a class="link-icon-btn" href="${escapeHtml(t.link)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(t.link)}">&#128279; Open</a>`
@@ -1597,7 +1815,10 @@
           const isOverdue = t.dueDate && t.progress !== "Completed" && new Date(t.dueDate) < new Date();
 
           return `
-            <tr>
+            <tr class="${isSelected ? 'row-selected' : ''}">
+              <td class="task-checkbox-col">
+                <input type="checkbox" class="task-checkbox task-row-chk" data-key="${escapeHtml(key)}" onchange="toggleTaskSelection('${escapeHtml(t.id)}', '${escapeHtml(t.source)}', this.checked)" ${isSelected ? 'checked' : ''} />
+              </td>
               <td class="td-id">
                 <span>${escapeHtml(t.id)}</span>
                 ${mergedBadge}
@@ -1649,23 +1870,28 @@
         }).join("");
 
         return `
+          ${bulkBarHtml}
           <div class="table-container">
             <div class="table-scroll">
               <table class="task-table">
                 <colgroup>
-                  <col style="width: 70px;" />
+                  <col style="width: 36px;" />
+                  <col style="width: 65px;" />
                   <col style="width: auto;" />
-                  <col style="width: 100px;" />
-                  <col style="width: 82px;" />
-                  <col style="width: 110px;" />
-                  <col style="width: 130px;" />
-                  <col style="width: 105px;" />
-                  <col style="width: 180px;" />
-                  <col style="width: 75px;" />
                   <col style="width: 95px;" />
+                  <col style="width: 80px;" />
+                  <col style="width: 105px;" />
+                  <col style="width: 125px;" />
+                  <col style="width: 100px;" />
+                  <col style="width: 165px;" />
+                  <col style="width: 70px;" />
+                  <col style="width: 90px;" />
                 </colgroup>
                 <thead>
                   <tr>
+                    <th class="task-checkbox-col" style="cursor: default;" title="Select all tasks in view">
+                      <input type="checkbox" id="selectAllCheckbox" class="task-checkbox" onchange="toggleSelectAll(this.checked)" />
+                    </th>
                     <th onclick="sortBy('id')">ID${sortArrow('id')}</th>
                     <th onclick="sortBy('title')">Task &amp; Details${sortArrow('title')}</th>
                     <th onclick="sortBy('category')">Category${sortArrow('category')}</th>
@@ -1689,13 +1915,18 @@
 
       // 14-Column View (also fits horizontally with auto-percentages and sticky actions)
       const rowsHtml = tasks.map(t => {
+        const key = getTaskKey(t);
+        const isSelected = state.selectedTaskKeys.has(key);
         const mergedBadge = t.parentId ? `<div class="merged-indicator" title="Shared merged task group with ${escapeHtml(t.parentId)}">Linked: ${escapeHtml(t.parentId)}</div>` : "";
         const linkHtml = t.link
           ? `<a class="link-icon-btn" href="${escapeHtml(t.link)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(t.link)}">&#128279; Link</a>`
           : `<span style="color:#94a3b8;font-size:12px;">—</span>`;
 
         return `
-          <tr>
+          <tr class="${isSelected ? 'row-selected' : ''}">
+            <td class="task-checkbox-col">
+              <input type="checkbox" class="task-checkbox task-row-chk" data-key="${escapeHtml(key)}" onchange="toggleTaskSelection('${escapeHtml(t.id)}', '${escapeHtml(t.source)}', this.checked)" ${isSelected ? 'checked' : ''} />
+            </td>
             <td class="td-id">${escapeHtml(t.id)}${mergedBadge}</td>
             <td class="td-truncate" title="${escapeHtml(t.title || '')}">${escapeHtml(t.title || "(Untitled Row)")}</td>
             <td class="td-truncate td-muted" title="${escapeHtml(t.description || '')}">${escapeHtml(t.description || "—")}</td>
@@ -1733,19 +1964,21 @@
       }).join("");
 
       return `
+        ${bulkBarHtml}
         <div class="table-container">
           <div class="table-scroll">
             <table class="task-table">
               <colgroup>
-                <col style="width: 60px;" />
-                <col style="width: 14%;" />
-                <col style="width: 14%;" />
-                <col style="width: 7.5%;" />
+                <col style="width: 36px;" />
+                <col style="width: 55px;" />
+                <col style="width: 13.5%;" />
+                <col style="width: 13.5%;" />
+                <col style="width: 7%;" />
                 <col style="width: 6.5%;" />
                 <col style="width: 6.5%;" />
                 <col style="width: 6.5%;" />
                 <col style="width: 6.5%;" />
-                <col style="width: 9%;" />
+                <col style="width: 8.5%;" />
                 <col style="width: 7.5%;" />
                 <col style="width: 7.5%;" />
                 <col style="width: 7.5%;" />
@@ -1754,6 +1987,9 @@
               </colgroup>
               <thead>
                 <tr>
+                  <th class="task-checkbox-col" style="cursor: default;" title="Select all tasks in view">
+                    <input type="checkbox" id="selectAllCheckbox" class="task-checkbox" onchange="toggleSelectAll(this.checked)" />
+                  </th>
                   <th onclick="sortBy('id')">ID${sortArrow('id')}</th>
                   <th onclick="sortBy('title')">Task Title${sortArrow('title')}</th>
                   <th>Description</th>
@@ -2080,6 +2316,7 @@
       const found = findTaskArrayAndIndex(id, source);
       if (!found) return;
       found.arr.splice(found.idx, 1);
+      state.selectedTaskKeys.delete(getTaskKey({ id, source }));
       saveState();
       renderCurrentView();
       showToast(`Deleted task ${id}`);
