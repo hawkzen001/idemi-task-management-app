@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IDEMI Animation Dept — Task & Repository Management App</title>
+  <title>IDEMI Animation Dept — Task & Repository Database</title>
   <style>
     :root {
       --bg: #f4f6f9;
@@ -1167,6 +1167,59 @@
       z-index: 200;
     }
 
+    
+    /* GitHub Database Status Pill & Modal Styles */
+    .db-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(15, 23, 42, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #e2e8f0;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .db-status-pill:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.38);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+    .db-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      background: #10b981;
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.7);
+    }
+    .db-status-dot.dot-connected {
+      background: #10b981;
+      box-shadow: 0 0 7px rgba(16, 185, 129, 0.85);
+    }
+    .db-status-dot.dot-warning {
+      background: #f59e0b;
+      box-shadow: 0 0 6px rgba(245, 158, 11, 0.7);
+    }
+    .db-status-dot.dot-error {
+      background: #ef4444;
+      box-shadow: 0 0 6px rgba(239, 68, 68, 0.7);
+    }
+    .db-status-dot.dot-syncing {
+      background: #38bdf8;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.9);
+      animation: pulse-dot 0.9s infinite alternate;
+    }
+    @keyframes pulse-dot {
+      0% { opacity: 0.35; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1.2); }
+    }
+
     .toast.show {
       opacity: 1;
       transform: translateY(0);
@@ -1191,18 +1244,24 @@
       <div class="brand-group">
         <div class="brand-badge">ANI</div>
         <div class="brand-title">
-          <h1>IDEMI Animation Dept — Task & Repository Manager</h1>
-          <p>Built on the official <strong>Task Sheet</strong> (13-column schema) &amp; <strong>Completed Work Archive</strong></p>
+          <h1>IDEMI Animation Dept — Task &amp; Repository Database</h1>
+          <p>Official Department Task Database &amp; Repository — Powered by GitHub Repository Database</p>
+        </div>
+        <div class="db-status-pill" id="dbStatusPill" onclick="openDbSettingsModal()" title="Click to open Database Settings &amp; Sync Manager">
+          <span class="db-status-dot" id="dbStatusDot"></span>
+          <span id="dbStatusText">GitHub DB: Checking...</span>
         </div>
       </div>
       <div class="header-actions">
         <button class="btn btn-primary" onclick="openTaskModal()">+ New Task (T-ID)</button>
+        <button class="btn btn-secondary" onclick="syncDatabaseNow()" title="Sync directly with GitHub Repository Database">🔄 Sync DB</button>
+        <button class="btn btn-secondary" onclick="openDbSettingsModal()" title="Configure GitHub database, Personal Access Token, and backups">⚙️ DB Settings</button>
         <button class="btn btn-secondary" onclick="exportCSV()">Export CSV</button>
         <label class="btn btn-secondary" style="margin:0;">
           Import CSV
           <input type="file" id="csvFileInput" accept=".csv" style="display:none" onchange="importCSV(event)" />
         </label>
-        <button class="btn btn-secondary" onclick="resetToOriginalData()" title="Restore original Excel workbook records">Reset Sheet Data</button>
+        <button class="btn btn-secondary" onclick="resetToOriginalData()" title="Restore baseline repository database">Reset DB</button>
       </div>
     </div>
   </header>
@@ -1218,7 +1277,7 @@
       <div class="tabs-row">
         <div class="view-tabs">
           <button class="view-tab active" data-view="table" onclick="switchView('table')">
-            <span>Task Sheet Table</span>
+            <span>Task Database Table</span>
             <span class="tab-count" id="countTable">0</span>
           </button>
           <button class="view-tab" data-view="kanban" onclick="switchView('kanban')">
@@ -1235,9 +1294,9 @@
         </div>
 
         <div class="dataset-switch" id="datasetSwitch">
-          <button class="dataset-btn active" data-ds="active" onclick="setDataset('active')">Active Task Sheet (21)</button>
-          <button class="dataset-btn" data-ds="completed" onclick="setDataset('completed')">Completed Work Tab (102)</button>
-          <button class="dataset-btn" data-ds="all" onclick="setDataset('all')">All Combined (123)</button>
+          <button class="dataset-btn active" data-ds="active" onclick="setDataset('active')">Active Tasks (21)</button>
+          <button class="dataset-btn" data-ds="completed" onclick="setDataset('completed')">Completed Archive (102)</button>
+          <button class="dataset-btn" data-ds="all" onclick="setDataset('all')">All Records (123)</button>
         </div>
       </div>
 
@@ -1360,6 +1419,83 @@
     </div>
   </div>
 
+  
+  <!-- Database Settings & GitHub Sync Modal -->
+  <div class="modal-backdrop" id="dbSettingsModal">
+    <div class="modal-dialog" style="max-width: 600px;">
+      <div class="modal-header">
+        <h2>⚙️ GitHub Database Settings &amp; Sync</h2>
+        <button class="btn btn-light btn-sm" onclick="closeDbSettingsModal()">&#10005;</button>
+      </div>
+      <div class="modal-body" style="grid-template-columns: 1fr; gap: 14px; padding: 20px;">
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px; font-size: 12.5px; color: #166534; line-height: 1.45;">
+          <strong>Autonomous GitHub Repository Database</strong><br/>
+          This application operates on its own dedicated database file (<code style="background: #dcfce7; padding: 1px 5px; border-radius: 4px;">data/database.json</code>). All connections and dependencies on Google Sheets have been completely removed.
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label for="dbOwner">GitHub Owner</label>
+            <input type="text" id="dbOwner" class="form-control" value="hawkzen001" placeholder="e.g. hawkzen001" />
+          </div>
+          <div class="form-group">
+            <label for="dbRepo">Repository Name</label>
+            <input type="text" id="dbRepo" class="form-control" value="idemi-task-management-app" placeholder="e.g. idemi-task-management-app" />
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 12px;">
+          <div class="form-group">
+            <label for="dbBranch">Branch</label>
+            <input type="text" id="dbBranch" class="form-control" value="main" placeholder="main" />
+          </div>
+          <div class="form-group">
+            <label for="dbFilePath">Database Path</label>
+            <input type="text" id="dbFilePath" class="form-control" value="data/database.json" readonly />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="dbToken">
+            GitHub Personal Access Token (PAT)
+            <span style="font-weight: normal; color: var(--text-muted); font-size: 11px;">(Enables live 1-click commits back to GitHub)</span>
+          </label>
+          <div style="display: flex; gap: 6px;">
+            <input type="password" id="dbToken" class="form-control" placeholder="Paste GitHub Token (ghp_... / github_pat_...)" autocomplete="off" />
+            <button type="button" class="btn btn-light btn-sm" onclick="toggleTokenVisibility()" id="btnToggleToken">Show</button>
+          </div>
+          <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+            Token is stored privately in your browser's local storage and only communicates directly with GitHub's official REST API (<code style="background:#f1f5f9; padding: 1px 4px;">api.github.com</code>).
+          </p>
+        </div>
+
+        <div id="dbTestResult" style="display: none; padding: 10px 12px; border-radius: 6px; font-size: 12.5px; line-height: 1.4;"></div>
+
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="btn btn-primary btn-sm" onclick="testGithubConnection()">🔌 Test Connection &amp; Permissions</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="saveDbSettings()">💾 Save Settings</button>
+          <button type="button" class="btn btn-light btn-sm" onclick="syncDatabaseNow()">🔄 Sync Database Now</button>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 4px 0;" />
+
+        <div>
+          <h4 style="font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: var(--text);">Database Backup &amp; Restore</h4>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-light btn-sm" onclick="downloadDatabaseJSON()">📥 Download database.json</button>
+            <label class="btn btn-light btn-sm" style="margin: 0; cursor: pointer;">
+              📤 Restore from JSON
+              <input type="file" id="jsonDbFileInput" accept=".json" style="display:none" onchange="restoreDatabaseFromJSON(event)" />
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" onclick="closeDbSettingsModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toastMsg">Saved!</div>
 
   <script>
@@ -1457,8 +1593,8 @@
       }
 
       const msg = count === 1
-        ? "Are you sure you want to delete 1 selected task? This will remove it from the sheet."
-        : `Are you sure you want to delete all ${count} selected tasks at once? This will remove them from the sheet.`;
+        ? "Are you sure you want to delete 1 selected task? This will remove it from the database."
+        : `Are you sure you want to delete all ${count} selected tasks at once? This will remove them from the database.`;
 
       if (!confirm(msg)) return;
 
@@ -1478,19 +1614,262 @@
       showToast(`Successfully deleted ${removed} task(s)`);
     }
 
-    function initApp() {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          state.activeTasks = parsed.activeTasks || JSON.parse(JSON.stringify(INITIAL_DATA.activeTasks));
-          state.completedTasks = parsed.completedTasks || JSON.parse(JSON.stringify(INITIAL_DATA.completedTasks));
-        } catch (e) {
-          loadDefaults();
+    
+    /* ============================================================
+     * GitHub Repository Database Service (Decoupled from Google Sheets)
+     * ============================================================ */
+    const GithubDB = {
+      config: {
+        owner: "hawkzen001",
+        repo: "idemi-task-management-app",
+        branch: "main",
+        filePath: "data/database.json",
+        token: ""
+      },
+      currentSha: null,
+      status: "init", // 'connected' | 'readonly' | 'syncing' | 'error'
+      lastSyncTime: null,
+
+      init() {
+        const saved = localStorage.getItem("idemi_db_config");
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            this.config = Object.assign(this.config, parsed);
+          } catch (e) {}
         }
-      } else {
+        const tok = localStorage.getItem("idemi_github_token");
+        if (tok) this.config.token = tok;
+      },
+
+      saveConfig(newConfig) {
+        this.config = Object.assign(this.config, newConfig);
+        localStorage.setItem("idemi_db_config", JSON.stringify({
+          owner: this.config.owner,
+          repo: this.config.repo,
+          branch: this.config.branch,
+          filePath: this.config.filePath
+        }));
+        if (newConfig.token !== undefined) {
+          this.config.token = newConfig.token;
+          if (newConfig.token) {
+            localStorage.setItem("idemi_github_token", newConfig.token);
+          } else {
+            localStorage.removeItem("idemi_github_token");
+          }
+        }
+      },
+
+      updateStatus(status, text) {
+        this.status = status;
+        const dot = document.getElementById("dbStatusDot");
+        const label = document.getElementById("dbStatusText");
+        if (!dot || !label) return;
+        dot.className = "db-status-dot";
+        if (status === "connected") {
+          dot.classList.add("dot-connected");
+          label.textContent = text || "GitHub DB: Connected";
+        } else if (status === "readonly") {
+          dot.classList.add("dot-warning");
+          label.textContent = text || "GitHub DB: Read-Only";
+        } else if (status === "syncing") {
+          dot.classList.add("dot-syncing");
+          label.textContent = text || "GitHub DB: Syncing...";
+        } else if (status === "error") {
+          dot.classList.add("dot-error");
+          label.textContent = text || "GitHub DB: Sync Error";
+        } else {
+          label.textContent = text || "GitHub DB: Local";
+        }
+      },
+
+      async load() {
+        this.init();
+
+        // 1. If token is present, try reading latest from GitHub API
+        if (this.config.token) {
+          try {
+            this.updateStatus("syncing", "Loading from GitHub...");
+            const apiUrl = `https://api.github.com/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}?ref=${this.config.branch}`;
+            const res = await fetch(apiUrl, {
+              headers: {
+                "Accept": "application/vnd.github.v3+json",
+                "Authorization": `token ${this.config.token}`
+              },
+              cache: "no-store"
+            });
+            if (res.ok) {
+              const fileData = await res.json();
+              this.currentSha = fileData.sha;
+              const decoded = decodeURIComponent(escape(atob(fileData.content.replace(/\s/g, ""))));
+              const dbJson = JSON.parse(decoded);
+              this.lastSyncTime = new Date();
+              this.updateStatus("connected", "GitHub DB: Connected");
+              return dbJson;
+            }
+          } catch (err) {
+            console.warn("GitHub API load error, falling back to static:", err);
+          }
+        }
+
+        // 2. Try loading from static data/database.json
+        try {
+          this.updateStatus("syncing", "Loading database...");
+          const res = await fetch(`./data/database.json?_t=${Date.now()}`);
+          if (res.ok) {
+            const dbJson = await res.json();
+            if (this.config.token) {
+              this.fetchShaInBackground();
+              this.updateStatus("connected", "GitHub DB: Connected");
+            } else {
+              this.updateStatus("readonly", "GitHub DB: Read-Only");
+            }
+            return dbJson;
+          }
+        } catch (e) {
+          console.warn("Static data/database.json fetch failed:", e);
+        }
+
+        // 3. Fallback to localStorage or INITIAL_DATA
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            this.updateStatus(this.config.token ? "connected" : "readonly", this.config.token ? "GitHub DB: Local Synced" : "GitHub DB: Read-Only");
+            return {
+              activeTasks: parsed.activeTasks,
+              completedTasks: parsed.completedTasks,
+              repositoryLinks: INITIAL_DATA.repositoryLinks
+            };
+          } catch (e) {}
+        }
+
+        this.updateStatus("readonly", "GitHub DB: Read-Only");
+        return INITIAL_DATA;
+      },
+
+      async fetchShaInBackground() {
+        if (!this.config.token) return;
+        try {
+          const res = await fetch(`https://api.github.com/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}?ref=${this.config.branch}`, {
+            headers: {
+              "Accept": "application/vnd.github.v3+json",
+              "Authorization": `token ${this.config.token}`
+            },
+            cache: "no-store"
+          });
+          if (res.ok) {
+            const data = await res.json();
+            this.currentSha = data.sha;
+          }
+        } catch (e) {}
+      },
+
+      async commit(commitMsg) {
+        if (!this.config.token) {
+          showToast("Saved locally. Click DB Settings to enter GitHub Token for cloud sync.");
+          return false;
+        }
+
+        this.updateStatus("syncing", "Committing to GitHub...");
+        try {
+          if (!this.currentSha) {
+            await this.fetchShaInBackground();
+          }
+
+          const payload = {
+            meta: {
+              name: "IDEMI Animation Dept Task & Repository Database",
+              version: "2.0.0",
+              schema: "idemi-github-db-v2",
+              repository: `${this.config.owner}/${this.config.repo}`,
+              lastUpdated: new Date().toISOString()
+            },
+            activeTasks: state.activeTasks,
+            completedTasks: state.completedTasks,
+            repositoryLinks: state.repositoryLinks,
+            assignees: INITIAL_DATA.assignees,
+            statuses: INITIAL_DATA.statuses,
+            priorities: INITIAL_DATA.priorities,
+            categories: INITIAL_DATA.categories
+          };
+
+          const jsonStr = JSON.stringify(payload, null, 2);
+          const b64Content = btoa(unescape(encodeURIComponent(jsonStr)));
+
+          const body = {
+            message: commitMsg || `Update database: ${state.activeTasks.length} active, ${state.completedTasks.length} completed tasks`,
+            content: b64Content,
+            branch: this.config.branch
+          };
+          if (this.currentSha) {
+            body.sha = this.currentSha;
+          }
+
+          const res = await fetch(`https://api.github.com/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`, {
+            method: "PUT",
+            headers: {
+              "Accept": "application/vnd.github.v3+json",
+              "Authorization": `token ${this.config.token}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+          });
+
+          if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            throw new Error(errData.message || `HTTP ${res.status}`);
+          }
+
+          const resData = await res.json();
+          this.currentSha = resData.content.sha;
+          this.lastSyncTime = new Date();
+          this.updateStatus("connected", "GitHub DB: Connected");
+          showToast("Database committed & synced to GitHub repo!");
+          return true;
+        } catch (err) {
+          console.error("GitHub commit failed:", err);
+          this.updateStatus("error", "GitHub DB: Sync Error");
+          showToast(`GitHub sync error: ${err.message}. Saved locally.`);
+          return false;
+        }
+      }
+    };
+
+    let commitDebounceTimer = null;
+    function debouncedGithubCommit(msg) {
+      clearTimeout(commitDebounceTimer);
+      commitDebounceTimer = setTimeout(() => {
+        GithubDB.commit(msg);
+      }, 1500);
+    }
+
+    async function initApp() {
+      GithubDB.init();
+      updateDbSettingsModalFields();
+
+      try {
+        const db = await GithubDB.load();
+        if (db) {
+          state.activeTasks = db.activeTasks || [];
+          state.completedTasks = db.completedTasks || [];
+          if (db.repositoryLinks) state.repositoryLinks = db.repositoryLinks;
+        }
+      } catch (err) {
+        console.error("Init database load error:", err);
         loadDefaults();
       }
+
+      // Check if localStorage has newer changes if no token was used
+      const localSaved = localStorage.getItem(STORAGE_KEY);
+      if (localSaved && !GithubDB.config.token) {
+        try {
+          const parsed = JSON.parse(localSaved);
+          if (parsed.activeTasks && parsed.activeTasks.length) state.activeTasks = parsed.activeTasks;
+          if (parsed.completedTasks && parsed.completedTasks.length) state.completedTasks = parsed.completedTasks;
+        } catch (e) {}
+      }
+
       populateFilterDropdowns();
       renderCurrentView();
     }
@@ -1500,12 +1879,17 @@
       state.completedTasks = JSON.parse(JSON.stringify(INITIAL_DATA.completedTasks));
     }
 
-    function saveState() {
+    function saveState(immediateCommit = true) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
         activeTasks: state.activeTasks,
-        completedTasks: state.completedTasks
+        completedTasks: state.completedTasks,
+        timestamp: Date.now()
       }));
       updateDatasetCounts();
+
+      if (GithubDB.config.token && immediateCommit) {
+        debouncedGithubCommit();
+      }
     }
 
     function showToast(msg) {
@@ -1515,14 +1899,26 @@
       setTimeout(() => el.classList.remove("show"), 2400);
     }
 
-    function resetToOriginalData() {
-      if (confirm("Reset all tasks back to the original rows from 'Task & Repository Sheet - ANI.xlsx'?")) {
+    async function resetToOriginalData() {
+      if (confirm("Reset all tasks back to the baseline GitHub repository database?")) {
         localStorage.removeItem(STORAGE_KEY);
-        loadDefaults();
+        try {
+          const res = await fetch(`./data/database.json?_t=${Date.now()}`);
+          if (res.ok) {
+            const db = await res.json();
+            state.activeTasks = db.activeTasks || [];
+            state.completedTasks = db.completedTasks || [];
+          } else {
+            loadDefaults();
+          }
+        } catch (e) {
+          loadDefaults();
+        }
         state.selectedTaskKeys.clear();
+        saveState(true);
         populateFilterDropdowns();
         renderCurrentView();
-        showToast("Restored original Excel sheet data");
+        showToast("Restored baseline repository database");
       }
     }
 
@@ -1584,9 +1980,9 @@
       const btns = document.querySelectorAll(".dataset-btn");
       btns.forEach(b => {
         const ds = b.getAttribute("data-ds");
-        if (ds === "active") b.textContent = `Active Task Sheet (${state.activeTasks.length})`;
-        if (ds === "completed") b.textContent = `Completed Work Tab (${state.completedTasks.length})`;
-        if (ds === "all") b.textContent = `All Combined (${state.activeTasks.length + state.completedTasks.length})`;
+        if (ds === "active") b.textContent = `Active Tasks (${state.activeTasks.length})`;
+        if (ds === "completed") b.textContent = `Completed Archive (${state.completedTasks.length})`;
+        if (ds === "all") b.textContent = `All Records (${state.activeTasks.length + state.completedTasks.length})`;
       });
       document.getElementById("countRepo").textContent = state.repositoryLinks.length;
     }
@@ -1641,7 +2037,7 @@
         <div class="kpi-card kpi-total ${!curStatus && !curPrio ? 'active-kpi' : ''}" onclick="quickFilter('', '')">
           <div class="kpi-label"><span>Total Tasks in View</span><span>&#128203;</span></div>
           <div class="kpi-value">${total}</div>
-          <div class="kpi-sub">${state.dataset === 'active' ? 'From Active Task Sheet' : (state.dataset === 'completed' ? 'From Completed Work Tab' : 'Across Both Task Tabs')}</div>
+          <div class="kpi-sub">${state.dataset === 'active' ? 'Active Tasks in database' : (state.dataset === 'completed' ? 'Completed Archive' : 'All Database Records')}</div>
         </div>
         <div class="kpi-card kpi-delayed ${curStatus === 'Delayed' ? 'active-kpi' : ''}" onclick="quickFilter('Delayed', '')">
           <div class="kpi-label"><span>Delayed</span><span>&#9888;</span></div>
@@ -1781,7 +2177,7 @@
 
     function renderTableView(tasks) {
       if (!tasks.length) {
-        return `<div class="table-container"><div class="empty-state"><h3>No matching tasks found</h3><p>Try clearing filters or switching between Active Task Sheet and Completed Work tabs.</p></div></div>`;
+        return `<div class="table-container"><div class="empty-state"><h3>No matching tasks found</h3><p>Try clearing filters or switching between Active Tasks and Completed Archive.</p></div></div>`;
       }
 
       const sortArrow = (f) => state.sortField === f ? (state.sortAsc ? " &#9650;" : " &#9660;") : "";
@@ -2247,7 +2643,7 @@
         document.getElementById("fComments").value = t.comments || "";
         document.getElementById("fLink").value = t.link || "";
       } else {
-        document.getElementById("modalTitle").textContent = "Add New Task to Task Sheet";
+        document.getElementById("modalTitle").textContent = "Add New Task to Database";
         document.getElementById("editInternalIdx").value = "";
         document.getElementById("taskForm").reset();
         document.getElementById("fTaskId").value = suggestNextTaskId();
@@ -2287,7 +2683,7 @@
         dependencies: document.getElementById("fDependencies").value.trim(),
         comments: document.getElementById("fComments").value.trim(),
         link: document.getElementById("fLink").value.trim(),
-        source: "Task Sheet"
+        source: "Active Tasks"
       };
 
       if (editRef) {
@@ -2342,7 +2738,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `IDEMI_Task_Sheet_${state.dataset}_${new Date().toISOString().slice(0,10)}.csv`;
+      a.download = `IDEMI_Task_Database_${state.dataset}_${new Date().toISOString().slice(0,10)}.csv`;
       a.click();
       URL.revokeObjectURL(url);
       showToast(`Exported ${tasks.length} tasks to CSV`);
@@ -2385,7 +2781,7 @@
         saveState();
         populateFilterDropdowns();
         renderCurrentView();
-        showToast(`Imported ${importedCount} tasks into Active Task Sheet`);
+        showToast(`Imported ${importedCount} tasks into Active Tasks database`);
       };
       reader.readAsText(file);
     }
@@ -2427,6 +2823,190 @@
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#39;");
+    }
+
+    
+    /* ============================================================
+     * DB Settings Modal & Sync Helpers
+     * ============================================================ */
+    function openDbSettingsModal() {
+      updateDbSettingsModalFields();
+      document.getElementById("dbSettingsModal").classList.add("open");
+    }
+
+    function closeDbSettingsModal() {
+      document.getElementById("dbSettingsModal").classList.remove("open");
+    }
+
+    function updateDbSettingsModalFields() {
+      const o = document.getElementById("dbOwner");
+      const r = document.getElementById("dbRepo");
+      const b = document.getElementById("dbBranch");
+      const p = document.getElementById("dbFilePath");
+      const t = document.getElementById("dbToken");
+      if (o) o.value = GithubDB.config.owner;
+      if (r) r.value = GithubDB.config.repo;
+      if (b) b.value = GithubDB.config.branch;
+      if (p) p.value = GithubDB.config.filePath;
+      if (t) t.value = GithubDB.config.token || "";
+    }
+
+    function toggleTokenVisibility() {
+      const t = document.getElementById("dbToken");
+      const btn = document.getElementById("btnToggleToken");
+      if (t.type === "password") {
+        t.type = "text";
+        btn.textContent = "Hide";
+      } else {
+        t.type = "password";
+        btn.textContent = "Show";
+      }
+    }
+
+    function saveDbSettings() {
+      const owner = document.getElementById("dbOwner").value.trim() || "hawkzen001";
+      const repo = document.getElementById("dbRepo").value.trim() || "idemi-task-management-app";
+      const branch = document.getElementById("dbBranch").value.trim() || "main";
+      const token = document.getElementById("dbToken").value.trim();
+
+      GithubDB.saveConfig({ owner, repo, branch, token });
+      if (token) {
+        GithubDB.updateStatus("connected", "GitHub DB: Connected");
+      } else {
+        GithubDB.updateStatus("readonly", "GitHub DB: Read-Only");
+      }
+      showToast("Database settings saved!");
+    }
+
+    async function testGithubConnection() {
+      const resDiv = document.getElementById("dbTestResult");
+      resDiv.style.display = "block";
+      resDiv.style.background = "#eff6ff";
+      resDiv.style.color = "#1e40af";
+      resDiv.style.border = "1px solid #bfdbfe";
+      resDiv.textContent = "Testing connection to GitHub repository...";
+
+      const owner = document.getElementById("dbOwner").value.trim();
+      const repo = document.getElementById("dbRepo").value.trim();
+      const token = document.getElementById("dbToken").value.trim();
+
+      if (!owner || !repo) {
+        resDiv.style.background = "#fef2f2";
+        resDiv.style.color = "#991b1b";
+        resDiv.style.border = "1px solid #fecaca";
+        resDiv.textContent = "Error: Repository owner and repository name are required.";
+        return;
+      }
+
+      try {
+        const headers = { "Accept": "application/vnd.github.v3+json" };
+        if (token) headers["Authorization"] = `token ${token}`;
+
+        const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers });
+        if (!res.ok) {
+          throw new Error(res.status === 404 ? "Repository not found or access denied." : `GitHub API returned HTTP ${res.status}`);
+        }
+        const repoData = await res.json();
+        const canPush = repoData.permissions ? repoData.permissions.push : !!token;
+
+        if (token) {
+          if (canPush) {
+            resDiv.style.background = "#ecfdf5";
+            resDiv.style.color = "#065f46";
+            resDiv.style.border = "1px solid #a7f3d0";
+            resDiv.innerHTML = `<strong>Connected successfully!</strong> Write permissions verified on repository <code>${owner}/${repo}</code>. You can sync &amp; commit directly to GitHub.`;
+            GithubDB.saveConfig({ owner, repo, token });
+            GithubDB.updateStatus("connected", "GitHub DB: Connected");
+          } else {
+            resDiv.style.background = "#fffbeb";
+            resDiv.style.color = "#92400e";
+            resDiv.style.border = "1px solid #fde68a";
+            resDiv.innerHTML = `Connected, but token has <strong>read-only</strong> access to <code>${owner}/${repo}</code>.`;
+            GithubDB.updateStatus("readonly", "GitHub DB: Read-Only");
+          }
+        } else {
+          resDiv.style.background = "#eff6ff";
+          resDiv.style.color = "#1e40af";
+          resDiv.style.border = "1px solid #bfdbfe";
+          resDiv.innerHTML = `Public repository read access verified! To commit changes directly to GitHub, enter your Personal Access Token.`;
+          GithubDB.updateStatus("readonly", "GitHub DB: Read-Only");
+        }
+      } catch (err) {
+        resDiv.style.background = "#fef2f2";
+        resDiv.style.color = "#991b1b";
+        resDiv.style.border = "1px solid #fecaca";
+        resDiv.textContent = `Connection failed: ${err.message}`;
+        GithubDB.updateStatus("error", "GitHub DB: Error");
+      }
+    }
+
+    async function syncDatabaseNow() {
+      if (!GithubDB.config.token) {
+        openDbSettingsModal();
+        showToast("Please enter your GitHub token to sync directly with GitHub");
+        return;
+      }
+      showToast("Syncing database with GitHub...");
+      const success = await GithubDB.commit("Manual sync: Update database records");
+      if (success) {
+        renderCurrentView();
+      }
+    }
+
+    function downloadDatabaseJSON() {
+      const payload = {
+        meta: {
+          name: "IDEMI Animation Dept Task & Repository Database",
+          version: "2.0.0",
+          schema: "idemi-github-db-v2",
+          repository: `${GithubDB.config.owner}/${GithubDB.config.repo}`,
+          exportedAt: new Date().toISOString()
+        },
+        activeTasks: state.activeTasks,
+        completedTasks: state.completedTasks,
+        repositoryLinks: state.repositoryLinks,
+        assignees: INITIAL_DATA.assignees,
+        statuses: INITIAL_DATA.statuses,
+        priorities: INITIAL_DATA.priorities,
+        categories: INITIAL_DATA.categories
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `idemi_database_${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("Database JSON backup downloaded!");
+    }
+
+    function restoreDatabaseFromJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const db = JSON.parse(e.target.result);
+          if (!db.activeTasks && !db.completedTasks) {
+            alert("Invalid database format: activeTasks or completedTasks missing.");
+            return;
+          }
+          if (!confirm(`Restore database from file? This will load ${db.activeTasks?.length || 0} active tasks and ${db.completedTasks?.length || 0} completed tasks.`)) {
+            return;
+          }
+          if (db.activeTasks) state.activeTasks = db.activeTasks;
+          if (db.completedTasks) state.completedTasks = db.completedTasks;
+          if (db.repositoryLinks) state.repositoryLinks = db.repositoryLinks;
+          saveState(true);
+          populateFilterDropdowns();
+          renderCurrentView();
+          closeDbSettingsModal();
+          showToast("Database successfully restored from JSON file!");
+        } catch (err) {
+          alert("Error parsing JSON file: " + err.message);
+        }
+      };
+      reader.readAsText(file);
     }
 
     window.addEventListener("DOMContentLoaded", initApp);
