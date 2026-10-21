@@ -1647,6 +1647,202 @@
         padding: 9px 11px;
       }
     }
+    /* ============================================================
+     * Admin Panel & Access Control Styles
+     * ============================================================ */
+    .admin-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 11px;
+      border-radius: 9999px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+    .admin-status-pill.locked {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+    .admin-status-pill.locked:hover {
+      background: #fde68a;
+      box-shadow: 0 2px 4px rgba(146, 64, 14, 0.15);
+    }
+    .admin-status-pill.unlocked {
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.25);
+      box-shadow: 0 2px 6px rgba(37,99,235,0.3);
+    }
+    .admin-status-pill.unlocked:hover {
+      filter: brightness(1.1);
+    }
+
+    .btn-admin {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #ffffff !important;
+      border: none;
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(217,119,6,0.3);
+    }
+    .btn-admin:hover {
+      background: linear-gradient(135deg, #d97706, #b45309);
+      color: #ffffff !important;
+    }
+
+    .btn-admin-panel {
+      background: linear-gradient(135deg, #4f46e5, #4338ca);
+      color: #ffffff !important;
+      border: none;
+      font-weight: 600;
+      box-shadow: 0 2px 5px rgba(79,70,229,0.3);
+    }
+    .btn-admin-panel:hover {
+      background: linear-gradient(135deg, #4338ca, #3730a3);
+      color: #ffffff !important;
+    }
+
+    .read-only-banner {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .read-only-banner a {
+      color: #2563eb;
+      font-weight: 600;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .admin-panel-tabs {
+      display: flex;
+      background: var(--surface-alt);
+      border-bottom: 1px solid var(--border);
+      padding: 0 16px;
+      overflow-x: auto;
+      gap: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .admin-tab-btn {
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .admin-tab-btn:hover {
+      color: var(--text);
+    }
+    .admin-tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .admin-setting-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+
+    .switch-toggle {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+    }
+    .switch-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .switch-toggle .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #cbd5e1;
+      transition: .3s;
+      border-radius: 26px;
+    }
+    .switch-toggle .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    }
+    .switch-toggle input:checked + .slider {
+      background-color: #16a34a;
+    }
+    .switch-toggle input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+
+    .audit-log-container {
+      max-height: 260px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-alt);
+    }
+    .audit-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .audit-item:last-child {
+      border-bottom: none;
+    }
+    .audit-item-time {
+      color: var(--text-muted);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .audit-item-text {
+      font-weight: 500;
+      color: var(--text);
+      flex-grow: 1;
+    }
+    .audit-item-user {
+      background: #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-weight: 600;
+    }
+
+    .modal-dialog-sm {
+      max-width: 440px;
+    }
+    .modal-dialog-lg {
+      max-width: 760px;
+    }
   </style>
 </head>
 <body>
@@ -1664,17 +1860,24 @@
           <span class="db-status-dot dot-connected" id="dbStatusDot"></span>
           <span id="dbStatusText">🟢 Firebase DB: Connected (Real-Time)</span>
         </div>
+        <!-- Admin Access Status Pill -->
+        <div class="admin-status-pill locked" id="adminStatusPill" onclick="handleAdminStatusClick()" title="Access Status: Read-Only (Click to enter Admin Passcode)">
+          <span id="adminStatusText">🔒 Read-Only Mode</span>
+        </div>
       </div>
       <div class="header-actions">
-        <button class="btn btn-primary" onclick="openTaskModal()">+ New Task (T-ID)</button>
+        <button class="btn btn-primary" id="btnNewTask" onclick="handleNewTaskClick()">+ New Task (T-ID)</button>
+        <button class="btn btn-admin" id="btnAdminAuth" onclick="openAdminLoginModal()">🔑 Admin Login</button>
+        <button class="btn btn-admin-panel" id="btnOpenAdminPanel" style="display:none;" onclick="openAdminPanelModal()">👑 Admin Panel</button>
+        <button class="btn btn-secondary" id="btnAdminLogout" style="display:none;" onclick="AdminAuth.logout()" title="Lock Admin controls">🔒 Lock</button>
         <button class="btn btn-secondary" onclick="FirebaseDB.syncFullState()" title="Instant Real-Time Sync with Firebase Cloud Firestore">⚡ Cloud Sync</button>
         <button class="btn btn-secondary" onclick="openDbSettingsModal()" title="Configure Firebase Cloud Firestore Database &amp; Backups">⚙️ Cloud DB</button>
         <button class="btn btn-secondary" onclick="exportCSV()">Export CSV</button>
-        <label class="btn btn-secondary" style="margin:0;">
+        <label class="btn btn-secondary" style="margin:0;" id="btnImportCsv">
           Import CSV
           <input type="file" id="csvFileInput" accept=".csv" style="display:none" onchange="importCSV(event)" />
         </label>
-        <button class="btn btn-secondary" onclick="resetToOriginalData()" title="Restore baseline repository database">Reset DB</button>
+        <button class="btn btn-secondary" id="btnResetDb" onclick="resetToOriginalData()" title="Restore baseline repository database">Reset DB</button>
       </div>
     </div>
   </header>
@@ -1760,6 +1963,10 @@
       </div>
       <form id="taskForm" onsubmit="saveTaskForm(event)">
         <input type="hidden" id="editInternalIdx" value="" />
+        <div id="modalReadOnlyBanner" class="read-only-banner" style="display:none;margin:12px 20px 0 20px;">
+          <span>🔒 <strong>Read-Only View:</strong> You are viewing this task without edit permission.</span>
+          <a href="javascript:void(0)" onclick="handleUnlockFromTaskModal()">Unlock to Edit</a>
+        </div>
         <div class="modal-body">
           <div class="form-group">
             <label for="fTaskId">Task ID *</label>
@@ -1825,15 +2032,195 @@
             <input type="text" id="fLink" class="form-control" placeholder="https://..." />
           </div>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer" id="taskModalFooter">
           <button type="button" class="btn btn-light" onclick="closeTaskModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save Task</button>
+          <button type="button" class="btn btn-admin" id="btnUnlockModal" style="display:none;" onclick="handleUnlockFromTaskModal()">🔑 Unlock Admin to Edit</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveTask">Save Task</button>
         </div>
       </form>
     </div>
   </div>
 
   
+  <!-- IDEMI Admin Login / Unlock Modal -->
+  <div class="modal-backdrop" id="adminLoginModal">
+    <div class="modal-dialog modal-dialog-sm">
+      <div class="modal-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:24px;">🔑</span>
+          <div>
+            <h2 style="font-size:17px;margin:0;">Department Admin Access</h2>
+            <p style="font-size:11.5px;color:var(--text-muted);margin:0;">IDEMI Animation Dept — Authentication</p>
+          </div>
+        </div>
+        <button class="btn btn-light btn-sm" onclick="closeAdminLoginModal()">&#10005;</button>
+      </div>
+      <form id="adminLoginForm" onsubmit="handleAdminLoginSubmit(event)">
+        <div class="modal-body" style="grid-template-columns:1fr;gap:14px;padding:18px;">
+          <div id="adminLoginReason" style="display:none;background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;padding:10px 12px;border-radius:8px;font-size:13px;line-height:1.4;"></div>
+          
+          <div class="form-group full-width">
+            <label for="adminPassInput" style="font-weight:600;">Admin Passcode / Master Key *</label>
+            <div style="position:relative;display:flex;align-items:center;">
+              <input type="password" id="adminPassInput" class="form-control" required placeholder="Enter admin passcode" style="padding-right:42px;font-size:16px;" autocomplete="current-password" />
+              <button type="button" onclick="togglePassVisibility('adminPassInput')" style="position:absolute;right:8px;background:none;border:none;cursor:pointer;font-size:16px;padding:4px;color:var(--text-muted);" title="Toggle password visibility">👁️</button>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;user-select:none;">
+              <input type="checkbox" id="adminRememberMe" checked style="width:16px;height:16px;accent-color:var(--primary);" />
+              <span>Remember me on this device (OnePlus 10R / PC)</span>
+            </label>
+          </div>
+
+          <div id="adminLoginError" style="display:none;background:#fef2f2;border:1px solid #fecaca;color:#991b1b;padding:8px 12px;border-radius:6px;font-size:12.5px;"></div>
+
+          <div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--text-muted);line-height:1.45;">
+            <strong>🛡️ Access Protection:</strong> Entries are locked in Read-Only mode for viewers without admin permission. You can update your master passcode at any time inside the Admin Panel.
+            <div style="margin-top:5px;font-size:11.5px;color:#475569;">
+              Default initial passcode: <code style="background:#e2e8f0;padding:2px 6px;border-radius:4px;color:#0f172a;font-weight:700;">idemi@admin2025</code>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="display:flex;justify-content:space-between;align-items:center;">
+          <button type="button" class="btn btn-light" onclick="closeAdminLoginModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnAdminSubmit" style="background:linear-gradient(135deg, #1e3a8a, #2563eb);min-width:140px;">
+            <span>Unlock Admin Access</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dedicated Department Admin Control Panel Modal -->
+  <div class="modal-backdrop" id="adminPanelModal">
+    <div class="modal-dialog modal-dialog-lg">
+      <div class="modal-header" style="background:linear-gradient(135deg, #0f172a, #1e3a8a);color:white;border-radius:var(--radius-lg) var(--radius-lg) 0 0;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:22px;">👑</div>
+          <div>
+            <h2 style="font-size:17.5px;margin:0;color:white;">Department Admin Control Panel</h2>
+            <p style="font-size:12px;color:rgba(255,255,255,0.8);margin:0;">Nilesh Sharma (Head) — IDEMI Animation Dept</p>
+          </div>
+        </div>
+        <button class="btn btn-light btn-sm" onclick="closeAdminPanelModal()" style="background:rgba(255,255,255,0.15);color:white;border:none;">&#10005;</button>
+      </div>
+
+      <!-- Navigation Tabs inside Admin Panel -->
+      <div class="admin-panel-tabs">
+        <button class="admin-tab-btn active" id="tabBtnSecurity" onclick="switchAdminTab('security')">🛡️ Security &amp; Permissions</button>
+        <button class="admin-tab-btn" id="tabBtnAudit" onclick="switchAdminTab('audit')">📋 Audit Activity Log</button>
+        <button class="admin-tab-btn" id="tabBtnDb" onclick="switchAdminTab('db')">⚙️ Cloud Database</button>
+      </div>
+
+      <div class="modal-body" style="grid-template-columns:1fr;gap:16px;padding:20px;">
+
+        <!-- Tab 1: Security & Permissions -->
+        <div id="adminTabSecurity" class="admin-tab-content">
+          <!-- Master Edit Lock Switch -->
+          <div class="admin-setting-card">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;">
+              <div>
+                <h3 style="font-size:15px;font-weight:700;margin:0 0 4px 0;color:var(--text);">Master Edit Lock (Enforce Read-Only for Public)</h3>
+                <p style="font-size:12.5px;color:var(--text-muted);margin:0;line-height:1.4;">
+                  When active, non-admin visitors and team members are strictly locked in Read-Only mode. All task additions, edits, deletions, and status changes require your admin passcode.
+                </p>
+              </div>
+              <label class="switch-toggle" style="flex-shrink:0;">
+                <input type="checkbox" id="chkMasterEditLock" checked onchange="handleMasterLockToggle(event)" />
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div style="margin-top:10px;display:flex;align-items:center;gap:6px;font-size:12px;color:#16a34a;" id="masterLockStatusLabel">
+              <span>●</span> <span>Editing is strictly locked for non-admin viewers.</span>
+            </div>
+          </div>
+
+          <!-- Change Admin Passcode Card -->
+          <div class="admin-setting-card" style="margin-top:14px;">
+            <h3 style="font-size:15px;font-weight:700;margin:0 0 4px 0;color:var(--text);">Change Master Admin Passcode</h3>
+            <p style="font-size:12.5px;color:var(--text-muted);margin:0 0 14px 0;">
+              Update your secret passcode. Passcodes are hashed with SHA-256 and securely synchronized to Google Cloud Firestore across all your devices.
+            </p>
+            <form id="changePassForm" onsubmit="handleChangePasscodeSubmit(event)">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));gap:12px;">
+                <div class="form-group">
+                  <label for="oldPassInput">Current Passcode *</label>
+                  <input type="password" id="oldPassInput" class="form-control" required placeholder="Enter current passcode" style="font-size:16px;" />
+                </div>
+                <div class="form-group">
+                  <label for="newPassInput">New Passcode *</label>
+                  <input type="password" id="newPassInput" class="form-control" required minlength="6" placeholder="Min 6 characters" style="font-size:16px;" />
+                </div>
+                <div class="form-group">
+                  <label for="confirmPassInput">Confirm New Passcode *</label>
+                  <input type="password" id="confirmPassInput" class="form-control" required minlength="6" placeholder="Re-enter new passcode" style="font-size:16px;" />
+                </div>
+              </div>
+              <div id="changePassMessage" style="display:none;margin-top:10px;padding:9px 12px;border-radius:6px;font-size:12.5px;"></div>
+              <div style="margin-top:14px;display:flex;justify-content:flex-end;">
+                <button type="submit" class="btn btn-primary btn-sm">Update Admin Passcode</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Tab 2: Audit Activity Log -->
+        <div id="adminTabAudit" class="admin-tab-content" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <div>
+              <h3 style="font-size:15px;font-weight:700;margin:0;color:var(--text);">Recent Activity &amp; Modification Log</h3>
+              <p style="font-size:12px;color:var(--text-muted);margin:2px 0 0 0;">Track task creations, edits, deletions, status transitions, and logins.</p>
+            </div>
+            <button type="button" class="btn btn-light btn-xs" onclick="renderAdminAuditLogs()">🔄 Refresh</button>
+          </div>
+          <div class="audit-log-container" id="adminAuditList">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Tab 3: Cloud Database & Maintenance -->
+        <div id="adminTabDb" class="admin-tab-content" style="display:none;">
+          <div class="admin-setting-card">
+            <h3 style="font-size:15px;font-weight:700;margin:0 0 4px 0;color:var(--text);">Database Status &amp; Maintenance</h3>
+            <p style="font-size:12.5px;color:var(--text-muted);margin:0 0 12px 0;">Google Cloud Firestore (Native Mode, asia-south1 / Mumbai)</p>
+            
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:10px;margin-bottom:14px;">
+              <div style="background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:10px;">
+                <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">Active Tasks</div>
+                <div style="font-size:18px;font-weight:700;color:var(--primary);" id="adminCountActive">21</div>
+              </div>
+              <div style="background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:10px;">
+                <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">Completed Archive</div>
+                <div style="font-size:18px;font-weight:700;color:#16a34a;" id="adminCountCompleted">102</div>
+              </div>
+              <div style="background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:10px;">
+                <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;">Repositories</div>
+                <div style="font-size:18px;font-weight:700;color:#9333ea;" id="adminCountRepos">34</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="downloadDatabaseBackup()">💾 Download Full Backup (JSON)</button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="FirebaseDB.syncFullState()">⚡ Force Cloud Resync</button>
+              <button type="button" class="btn btn-danger-outline btn-sm" onclick="resetToOriginalData()">⚠️ Restore Baseline Data</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Admin Panel Footer -->
+      <div class="modal-footer" style="display:flex;justify-content:space-between;align-items:center;">
+        <button type="button" class="btn btn-danger-outline btn-sm" onclick="AdminAuth.logout(); closeAdminPanelModal();">
+          <span>🔒 Lock / Logout Admin</span>
+        </button>
+        <button type="button" class="btn btn-light btn-sm" onclick="closeAdminPanelModal()">Close Panel</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Database Settings & Firebase Sync Modal -->
   <div class="modal-backdrop" id="dbSettingsModal">
     <div class="modal-dialog" style="max-width: 620px;">
@@ -1994,10 +2381,406 @@
       }
     }
 
+    /* ============================================================
+     * Admin Authentication & Access Permission Engine
+     * ============================================================ */
+    const AdminAuth = {
+      STORAGE_KEY: "idemi_admin_session_v1",
+      CONFIG_DOC: "admin_config",
+      DEFAULT_HASH: "6666007b0ffa5bfbd3d3dc2e0285d0b09b985ac43d850e7e9bd1084ef2d0532d", // sha256 for 'idemi@admin2025'
+      
+      isAdmin: false,
+      adminPassHash: null,
+      editLockEnabled: true,
+      adminName: "Nilesh Sharma",
+      auditLogs: [],
+
+      async sha256(message) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+      },
+
+      init() {
+        const saved = localStorage.getItem(this.STORAGE_KEY) || sessionStorage.getItem(this.STORAGE_KEY);
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            if (parsed && parsed.isAdmin && (!parsed.expiry || parsed.expiry > Date.now())) {
+              this.isAdmin = true;
+            } else {
+              localStorage.removeItem(this.STORAGE_KEY);
+              sessionStorage.removeItem(this.STORAGE_KEY);
+            }
+          } catch (e) {
+            console.warn("Invalid admin session:", e);
+          }
+        }
+        this.updateUI();
+      },
+
+      async loadFromCloud() {
+        try {
+          if (FirebaseDB.db) {
+            const doc = await FirebaseDB.db.collection("idemi_meta").doc(this.CONFIG_DOC).get();
+            if (doc.exists) {
+              const data = doc.data();
+              if (data.adminPassHash) this.adminPassHash = data.adminPassHash;
+              if (typeof data.editLockEnabled === "boolean") this.editLockEnabled = data.editLockEnabled;
+              if (data.adminName) this.adminName = data.adminName;
+              if (Array.isArray(data.auditLogs)) this.auditLogs = data.auditLogs;
+            }
+          }
+        } catch (e) {
+          console.warn("Could not load admin config from cloud:", e);
+        }
+        if (!this.adminPassHash) {
+          this.adminPassHash = this.DEFAULT_HASH;
+        }
+        const chkLock = document.getElementById("chkMasterEditLock");
+        if (chkLock) chkLock.checked = this.editLockEnabled;
+      },
+
+      async login(passcode, rememberMe = true) {
+        if (!passcode) return { success: false, message: "Please enter your admin passcode." };
+        const hash = await this.sha256(passcode.trim());
+        const targetHash = this.adminPassHash || this.DEFAULT_HASH;
+        
+        if (hash === targetHash) {
+          this.isAdmin = true;
+          const sessionData = JSON.stringify({
+            isAdmin: true,
+            loginAt: Date.now(),
+            expiry: rememberMe ? Date.now() + 30 * 24 * 60 * 60 * 1000 : null
+          });
+          if (rememberMe) {
+            localStorage.setItem(this.STORAGE_KEY, sessionData);
+          } else {
+            sessionStorage.setItem(this.STORAGE_KEY, sessionData);
+          }
+          this.logAction("Admin logged in successfully");
+          this.updateUI();
+          renderCurrentView();
+          return { success: true };
+        } else {
+          return { success: false, message: "Incorrect Admin Passcode. Please try again." };
+        }
+      },
+
+      logout() {
+        this.isAdmin = false;
+        localStorage.removeItem(this.STORAGE_KEY);
+        sessionStorage.removeItem(this.STORAGE_KEY);
+        this.logAction("Admin logged out / locked");
+        this.updateUI();
+        showToast("🔒 Admin mode locked. Read-Only viewer mode enabled.");
+        renderCurrentView();
+      },
+
+      async changePasscode(oldPass, newPass, confirmPass) {
+        if (!this.isAdmin) return { success: false, message: "You must be logged in as Admin." };
+        if (!newPass || newPass.length < 6) return { success: false, message: "New passcode must be at least 6 characters." };
+        if (newPass !== confirmPass) return { success: false, message: "New passcode and confirmation do not match." };
+        
+        const oldHash = await this.sha256(oldPass.trim());
+        const targetHash = this.adminPassHash || this.DEFAULT_HASH;
+        if (oldHash !== targetHash) {
+          return { success: false, message: "Current passcode is incorrect." };
+        }
+        
+        const newHash = await this.sha256(newPass.trim());
+        this.adminPassHash = newHash;
+        
+        if (FirebaseDB.db) {
+          await FirebaseDB.db.collection("idemi_meta").doc(this.CONFIG_DOC).set({
+            adminPassHash: newHash,
+            editLockEnabled: this.editLockEnabled,
+            adminName: this.adminName,
+            lastUpdatedAt: new Date().toISOString(),
+            lastUpdatedBy: "Admin"
+          }, { merge: true });
+        }
+        
+        this.logAction("Admin passcode changed successfully");
+        return { success: true, message: "Admin passcode changed successfully! Remember your new passcode." };
+      },
+
+      async toggleEditLock(enabled) {
+        if (!this.isAdmin) return;
+        this.editLockEnabled = enabled;
+        if (FirebaseDB.db) {
+          await FirebaseDB.db.collection("idemi_meta").doc(this.CONFIG_DOC).set({
+            editLockEnabled: enabled,
+            lastUpdatedAt: new Date().toISOString()
+          }, { merge: true });
+        }
+        this.logAction(`Master edit lock ${enabled ? 'Enabled' : 'Disabled'}`);
+        this.updateUI();
+        renderCurrentView();
+      },
+
+      logAction(action) {
+        const entry = {
+          timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+          action,
+          user: this.isAdmin ? this.adminName : "Guest/Viewer"
+        };
+        this.auditLogs.unshift(entry);
+        if (this.auditLogs.length > 50) this.auditLogs.pop();
+        
+        if (FirebaseDB.db && !FirebaseDB.isRemoteUpdate) {
+          FirebaseDB.db.collection("idemi_meta").doc("audit_trail").set({
+            recentLogs: this.auditLogs.slice(0, 30),
+            lastLog: entry
+          }, { merge: true }).catch(() => {});
+        }
+      },
+
+      checkOrPrompt(actionDescription = "perform this action") {
+        if (!this.editLockEnabled || this.isAdmin) return true;
+        openAdminLoginModal(`🔒 Admin Permission Required: You must enter the Admin Passcode to ${actionDescription}.`);
+        return false;
+      },
+
+      updateUI() {
+        const pill = document.getElementById("adminStatusPill");
+        const pillText = document.getElementById("adminStatusText");
+        const btnAuth = document.getElementById("btnAdminAuth");
+        const btnPanel = document.getElementById("btnOpenAdminPanel");
+        const btnLogout = document.getElementById("btnAdminLogout");
+        const btnNewTask = document.getElementById("btnNewTask");
+        
+        if (this.isAdmin) {
+          if (pill) {
+            pill.className = "admin-status-pill unlocked";
+            pill.title = "Admin Mode Active (Click to open Admin Panel)";
+          }
+          if (pillText) pillText.textContent = "👑 Admin: " + this.adminName;
+          if (btnAuth) btnAuth.style.display = "none";
+          if (btnPanel) btnPanel.style.display = "inline-flex";
+          if (btnLogout) btnLogout.style.display = "inline-flex";
+          if (btnNewTask) {
+            btnNewTask.innerHTML = "+ New Task (T-ID)";
+            btnNewTask.title = "Add a new task to database";
+          }
+        } else {
+          if (pill) {
+            pill.className = "admin-status-pill locked";
+            pill.title = "Viewing in Read-Only Mode. Click to enter Admin Passcode.";
+          }
+          if (pillText) pillText.textContent = "🔒 Read-Only Mode";
+          if (btnAuth) btnAuth.style.display = "inline-flex";
+          if (btnPanel) btnPanel.style.display = "none";
+          if (btnLogout) btnLogout.style.display = "none";
+          if (btnNewTask) {
+            btnNewTask.innerHTML = "🔒 + New Task";
+            btnNewTask.title = "Admin permission required to add tasks";
+          }
+        }
+
+        const lockLabel = document.getElementById("masterLockStatusLabel");
+        if (lockLabel) {
+          if (this.editLockEnabled) {
+            lockLabel.innerHTML = '<span style="color:#16a34a;">●</span> <span style="color:#16a34a;">Editing is strictly locked for non-admin viewers.</span>';
+          } else {
+            lockLabel.innerHTML = '<span style="color:#dc2626;">●</span> <span style="color:#dc2626;">Public editing is temporarily unlocked.</span>';
+          }
+        }
+      }
+    };
+
+    let pendingAdminAction = null;
+
+    function handleAdminStatusClick() {
+      if (AdminAuth.isAdmin) {
+        openAdminPanelModal();
+      } else {
+        openAdminLoginModal("unlock department admin editing controls.");
+      }
+    }
+
+    function openAdminLoginModal(reason) {
+      const modal = document.getElementById("adminLoginModal");
+      const reasonEl = document.getElementById("adminLoginReason");
+      const errEl = document.getElementById("adminLoginError");
+      const passInput = document.getElementById("adminPassInput");
+      
+      if (reason && reasonEl) {
+        reasonEl.textContent = reason;
+        reasonEl.style.display = "block";
+      } else if (reasonEl) {
+        reasonEl.style.display = "none";
+      }
+      
+      if (errEl) errEl.style.display = "none";
+      if (passInput) passInput.value = "";
+      modal.classList.add("open");
+      setTimeout(() => { if (passInput) passInput.focus(); }, 150);
+    }
+
+    function closeAdminLoginModal() {
+      document.getElementById("adminLoginModal").classList.remove("open");
+      pendingAdminAction = null;
+    }
+
+    async function handleAdminLoginSubmit(e) {
+      e.preventDefault();
+      const pass = document.getElementById("adminPassInput").value;
+      const remember = document.getElementById("adminRememberMe").checked;
+      const errEl = document.getElementById("adminLoginError");
+      
+      const res = await AdminAuth.login(pass, remember);
+      if (res.success) {
+        closeAdminLoginModal();
+        showToast("👑 Admin Mode Unlocked! Full edit access granted.");
+        if (typeof pendingAdminAction === "function") {
+          const action = pendingAdminAction;
+          pendingAdminAction = null;
+          action();
+        }
+      } else {
+        if (errEl) {
+          errEl.textContent = res.message;
+          errEl.style.display = "block";
+        }
+      }
+    }
+
+    function openAdminPanelModal() {
+      if (!AdminAuth.isAdmin) {
+        openAdminLoginModal("access the Department Admin Control Panel.");
+        return;
+      }
+      document.getElementById("adminCountActive").textContent = state.activeTasks.length;
+      document.getElementById("adminCountCompleted").textContent = state.completedTasks.length;
+      document.getElementById("adminCountRepos").textContent = state.repositories.length;
+      
+      switchAdminTab("security");
+      renderAdminAuditLogs();
+      document.getElementById("adminPanelModal").classList.add("open");
+    }
+
+    function closeAdminPanelModal() {
+      document.getElementById("adminPanelModal").classList.remove("open");
+    }
+
+    function switchAdminTab(tab) {
+      document.querySelectorAll(".admin-tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".admin-tab-content").forEach(c => c.style.display = "none");
+      
+      if (tab === "security") {
+        document.getElementById("tabBtnSecurity").classList.add("active");
+        document.getElementById("adminTabSecurity").style.display = "block";
+      } else if (tab === "audit") {
+        document.getElementById("tabBtnAudit").classList.add("active");
+        document.getElementById("adminTabAudit").style.display = "block";
+        renderAdminAuditLogs();
+      } else if (tab === "db") {
+        document.getElementById("tabBtnDb").classList.add("active");
+        document.getElementById("adminTabDb").style.display = "block";
+      }
+    }
+
+    function handleMasterLockToggle(e) {
+      AdminAuth.toggleEditLock(e.target.checked);
+    }
+
+    async function handleChangePasscodeSubmit(e) {
+      e.preventDefault();
+      const oldPass = document.getElementById("oldPassInput").value;
+      const newPass = document.getElementById("newPassInput").value;
+      const confirmPass = document.getElementById("confirmPassInput").value;
+      const msgEl = document.getElementById("changePassMessage");
+      
+      const res = await AdminAuth.changePasscode(oldPass, newPass, confirmPass);
+      msgEl.style.display = "block";
+      if (res.success) {
+        msgEl.style.background = "#f0fdf4";
+        msgEl.style.border = "1px solid #bbf7d0";
+        msgEl.style.color = "#166534";
+        msgEl.textContent = res.message;
+        document.getElementById("changePassForm").reset();
+      } else {
+        msgEl.style.background = "#fef2f2";
+        msgEl.style.border = "1px solid #fecaca";
+        msgEl.style.color = "#991b1b";
+        msgEl.textContent = res.message;
+      }
+    }
+
+    function renderAdminAuditLogs() {
+      const list = document.getElementById("adminAuditList");
+      if (!list) return;
+      if (!AdminAuth.auditLogs.length) {
+        list.innerHTML = '<div style="padding:18px;text-align:center;color:var(--text-muted);font-size:12px;">No activity logged yet.</div>';
+        return;
+      }
+      list.innerHTML = AdminAuth.auditLogs.map(log => `
+        <div class="audit-item">
+          <div class="audit-item-text">${escapeHtml(log.action)}</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="audit-item-user">${escapeHtml(log.user)}</span>
+            <span class="audit-item-time">${escapeHtml(log.timestamp)}</span>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function togglePassVisibility(inputId) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      input.type = input.type === "password" ? "text" : "password";
+    }
+
+    function handleNewTaskClick() {
+      if (!AdminAuth.checkOrPrompt("create a new task")) {
+        pendingAdminAction = () => openTaskModal();
+        return;
+      }
+      openTaskModal();
+    }
+
+    function handleUnlockFromTaskModal() {
+      const editRef = document.getElementById("editInternalIdx").value;
+      closeTaskModal();
+      openAdminLoginModal("edit this task.");
+      if (editRef) {
+        const [origSource, origId] = editRef.split(":::");
+        pendingAdminAction = () => openTaskModal(origId, origSource);
+      }
+    }
+
+    function downloadDatabaseBackup() {
+      const data = {
+        meta: {
+          exportedAt: new Date().toISOString(),
+          exportedBy: "Nilesh Sharma (Admin)",
+          database: "Google Cloud Firestore (idemi-task-management-db)"
+        },
+        activeTasks: state.activeTasks,
+        completedTasks: state.completedTasks,
+        repositoryLinks: state.repositoryLinks
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `idemi_task_database_backup_${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("💾 Database backup downloaded successfully!");
+      if (AdminAuth.isAdmin) AdminAuth.logAction("Downloaded database backup JSON");
+    }
+
     function deleteSelectedTasks() {
       const count = state.selectedTaskKeys.size;
       if (count === 0) {
         showToast("No tasks selected to delete");
+        return;
+      }
+      if (!AdminAuth.checkOrPrompt(`delete ${count} selected task(s)`)) {
+        pendingAdminAction = () => deleteSelectedTasks();
         return;
       }
 
@@ -2309,10 +3092,13 @@
 
     async function initApp() {
       FirebaseDB.init();
+      AdminAuth.init();
       updateDbSettingsModalFields();
 
       // Load data from Firebase Cloud Firestore
       const loadedFromFirebase = await FirebaseDB.loadInitialData();
+      await AdminAuth.loadFromCloud();
+      AdminAuth.updateUI();
 
       if (!loadedFromFirebase) {
         // Fallback: try static database.json or INITIAL_DATA
@@ -2364,6 +3150,10 @@
     }
 
     async function resetToOriginalData() {
+      if (!AdminAuth.checkOrPrompt("reset the database to baseline")) {
+        pendingAdminAction = () => resetToOriginalData();
+        return;
+      }
       if (confirm("Reset all tasks back to the baseline Firebase database (21 active, 102 completed)?")) {
         localStorage.removeItem(STORAGE_KEY);
         await FirebaseDB.resetBaseline();
@@ -2709,8 +3499,8 @@
                 </div>
                 <div class="m-card-actions">
                   ${linkHtml}
-                  <button type="button" class="btn btn-xs btn-light" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')" title="Edit">&#9998; Edit</button>
-                  <button type="button" class="btn btn-xs btn-danger-outline" onclick="deleteTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')" title="Delete">&#128465;</button>
+                  <button type="button" class="btn btn-xs btn-light" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">${AdminAuth.isAdmin ? '&#9998; Edit' : '👁️ View'}</button>
+                  <button type="button" class="btn btn-xs ${AdminAuth.isAdmin ? 'btn-danger-outline' : 'btn-light'}" onclick="deleteTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')" title="${AdminAuth.isAdmin ? 'Delete Task' : 'Admin Required'}">${AdminAuth.isAdmin ? '&#128465;' : '🔒'}</button>
                 </div>
               </div>
             </div>
@@ -2784,8 +3574,8 @@
               <td style="text-align:center;">${linkHtml}</td>
               <td class="col-actions">
                 <div class="btn-action-group">
-                  <button class="btn btn-light btn-xs" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">Edit</button>
-                  <button class="btn btn-danger-outline btn-xs" onclick="deleteTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">&#128465;</button>
+                  <button class="btn btn-light btn-xs" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">${AdminAuth.isAdmin ? 'Edit' : 'View'}</button>
+                  <button class="btn ${AdminAuth.isAdmin ? 'btn-danger-outline' : 'btn-light'} btn-xs" onclick="deleteTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')" title="${AdminAuth.isAdmin ? 'Delete Task' : 'Admin Required'}">${AdminAuth.isAdmin ? '&#128465;' : '🔒'}</button>
                 </div>
               </td>
             </tr>
@@ -2878,8 +3668,8 @@
             <td style="text-align:center;">${linkHtml}</td>
             <td class="col-actions">
               <div class="btn-action-group">
-                <button class="btn btn-light btn-xs" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">Edit</button>
-                <button class="btn btn-danger-outline btn-xs" onclick="deleteTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">&#128465;</button>
+                <button class="btn btn-light btn-xs" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">${AdminAuth.isAdmin ? 'Edit' : 'View'}</button>
+                <button class="btn ${AdminAuth.isAdmin ? 'btn-danger-outline' : 'btn-light'} btn-xs" onclick="deleteTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')" title="${AdminAuth.isAdmin ? 'Delete Task' : 'Admin Required'}">${AdminAuth.isAdmin ? '&#128465;' : '🔒'}</button>
               </div>
             </td>
           </tr>
@@ -2961,7 +3751,7 @@
               </div>
               <div style="display:flex;gap:4px;align-items:center;">
                 <span>${escapeHtml(t.dueDate || t.startDate || "")}</span>
-                <button class="btn btn-light btn-sm" style="padding:2px 7px;" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">Edit</button>
+                <button class="btn btn-light btn-sm" style="padding:2px 7px;" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')">${AdminAuth.isAdmin ? 'Edit' : 'View'}</button>
               </div>
             </div>
           </div>
@@ -3124,6 +3914,10 @@
     }
 
     function inlineUpdateTask(id, source, field, value) {
+      if (!AdminAuth.checkOrPrompt(`update task ${id} (${field})`)) {
+        renderCurrentView(); // Revert any dropdown change in UI
+        return;
+      }
       const found = findTaskArrayAndIndex(id, source);
       if (!found) return;
       const task = found.arr[found.idx];
@@ -3150,12 +3944,35 @@
     }
 
     function openTaskModal(id, source) {
+      if (!id && !AdminAuth.checkOrPrompt("create a new task")) {
+        pendingAdminAction = () => openTaskModal();
+        return;
+      }
+
       const modal = document.getElementById("taskModal");
+      const isReadOnly = !AdminAuth.isAdmin && AdminAuth.editLockEnabled;
+      const banner = document.getElementById("modalReadOnlyBanner");
+      const btnUnlock = document.getElementById("btnUnlockModal");
+      const btnSave = document.getElementById("btnSaveTask");
+      const form = document.getElementById("taskForm");
+
+      // Set input disabled state based on admin status
+      const inputs = form.querySelectorAll("input, select, textarea");
+      inputs.forEach(inp => {
+        if (inp.id !== "editInternalIdx") {
+          inp.disabled = isReadOnly;
+        }
+      });
+
+      if (banner) banner.style.display = isReadOnly ? "flex" : "none";
+      if (btnUnlock) btnUnlock.style.display = isReadOnly ? "inline-flex" : "none";
+      if (btnSave) btnSave.style.display = isReadOnly ? "none" : "inline-flex";
+
       if (id) {
         const found = findTaskArrayAndIndex(id, source);
         if (!found) return;
         const t = found.arr[found.idx];
-        document.getElementById("modalTitle").textContent = `Edit Task ${t.id}`;
+        document.getElementById("modalTitle").textContent = isReadOnly ? `Task ${t.id} (Read-Only View)` : `Edit Task ${t.id}`;
         document.getElementById("editInternalIdx").value = `${t.source}:::${t.id}`;
         document.getElementById("fTaskId").value = t.id;
         document.getElementById("fCategory").value = t.category || "General";
@@ -3196,6 +4013,7 @@
 
     function saveTaskForm(e) {
       e.preventDefault();
+      if (!AdminAuth.checkOrPrompt("save task modifications")) return;
       const editRef = document.getElementById("editInternalIdx").value;
       const payload = {
         id: document.getElementById("fTaskId").value.trim(),
@@ -3237,6 +4055,10 @@
     }
 
     function deleteTask(id, source) {
+      if (!AdminAuth.checkOrPrompt(`delete task ${id}`)) {
+        pendingAdminAction = () => deleteTask(id, source);
+        return;
+      }
       if (!confirm(`Delete task ${id}?`)) return;
       const found = findTaskArrayAndIndex(id, source);
       if (!found) return;
@@ -3277,6 +4099,10 @@
     function importCSV(event) {
       const file = event.target.files[0];
       if (!file) return;
+      if (!AdminAuth.checkOrPrompt("import tasks from CSV")) {
+        event.target.value = "";
+        return;
+      }
       const reader = new FileReader();
       reader.onload = function(e) {
         const text = e.target.result;

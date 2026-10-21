@@ -61,6 +61,16 @@ The application is powered by a dedicated **Google Cloud Firestore Database** (`
 - **Responsive Modals & Bottom Sheets**: Task Edit and Cloud DB Settings render as modern bottom sheets (`max-height: 92vh`) with touch-friendly spacing and zero accidental mobile zooming (`15px+` font size).
 - **Flexible Table Views**: Switch seamlessly between `🗂️ Cards`, `▦ Fit Table`, and `▦ 14-Col` horizontal touch-scroll table.
 
+### 8. 👑 Department Admin Control Panel & Access Control
+- **Read-Only Mode for Team Members**: Visitors and department members default to Read-Only access. They can view tasks, explore Kanban, browse 34 department repository links, search, and export CSV, but cannot alter database records.
+- **Master Edit Lock**: Non-admin users are strictly blocked from adding, editing, changing status, or deleting entries. All modification actions prompt for Admin authentication.
+- **Admin Authentication**: Secure passcode authentication with client-side SHA-256 hashing. Includes session persistence ("Remember me on this device") for instant access on your OnePlus 10R 5G and desktop.
+- **Dedicated Admin Control Panel**:
+  - **Security & Permissions**: Toggle Master Edit Lock on/off; change master admin passcode with live SHA-256 synchronization to Google Cloud Firestore.
+  - **Audit Activity Log**: Real-time log tracking task creations, edits, deletions, status transitions, and admin logins with IST timestamps.
+  - **Cloud Maintenance**: One-click complete database JSON backup download, force cloud resynchronization, and baseline data restoration.
+  - **Session Locking**: Instant one-click lock/logout returning the app to safe Read-Only mode.
+
 ---
 
 ## 🛠️ Tech Stack
