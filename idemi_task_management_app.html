@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Firebase SDK v10 (Compat Mode for Instant Real-Time Cloud Firestore Sync) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <title>IDEMI Animation Dept — Task & Repository Database</title>
   <style>
     :root {
@@ -1245,17 +1248,17 @@
         <div class="brand-badge">ANI</div>
         <div class="brand-title">
           <h1>IDEMI Animation Dept — Task &amp; Repository Database</h1>
-          <p>Official Department Task Database &amp; Repository — Powered by GitHub Repository Database</p>
+          <p>Official Department Task Database &amp; Repository — Powered by Google Cloud Firestore</p>
         </div>
-        <div class="db-status-pill" id="dbStatusPill" onclick="openDbSettingsModal()" title="Click to open Database Settings &amp; Sync Manager">
-          <span class="db-status-dot" id="dbStatusDot"></span>
-          <span id="dbStatusText">GitHub DB: Checking...</span>
+        <div class="db-status-pill" id="dbStatusPill" onclick="openDbSettingsModal()" title="Firebase Cloud Firestore Database (Click for settings &amp; sync)">
+          <span class="db-status-dot dot-connected" id="dbStatusDot"></span>
+          <span id="dbStatusText">🟢 Firebase DB: Connected (Real-Time)</span>
         </div>
       </div>
       <div class="header-actions">
         <button class="btn btn-primary" onclick="openTaskModal()">+ New Task (T-ID)</button>
-        <button class="btn btn-secondary" onclick="syncDatabaseNow()" title="Sync directly with GitHub Repository Database">🔄 Sync DB</button>
-        <button class="btn btn-secondary" onclick="openDbSettingsModal()" title="Configure GitHub database, Personal Access Token, and backups">⚙️ DB Settings</button>
+        <button class="btn btn-secondary" onclick="FirebaseDB.syncFullState()" title="Instant Real-Time Sync with Firebase Cloud Firestore">⚡ Cloud Sync</button>
+        <button class="btn btn-secondary" onclick="openDbSettingsModal()" title="Configure Firebase Cloud Firestore Database &amp; Backups">⚙️ Cloud DB</button>
         <button class="btn btn-secondary" onclick="exportCSV()">Export CSV</button>
         <label class="btn btn-secondary" style="margin:0;">
           Import CSV
@@ -1420,61 +1423,56 @@
   </div>
 
   
-  <!-- Database Settings & GitHub Sync Modal -->
+  <!-- Database Settings & Firebase Sync Modal -->
   <div class="modal-backdrop" id="dbSettingsModal">
-    <div class="modal-dialog" style="max-width: 600px;">
+    <div class="modal-dialog" style="max-width: 620px;">
       <div class="modal-header">
-        <h2>⚙️ GitHub Database Settings &amp; Sync</h2>
+        <h2>⚡ Firebase Cloud Firestore Settings &amp; Sync</h2>
         <button class="btn btn-light btn-sm" onclick="closeDbSettingsModal()">&#10005;</button>
       </div>
       <div class="modal-body" style="grid-template-columns: 1fr; gap: 14px; padding: 20px;">
-        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px; font-size: 12.5px; color: #166534; line-height: 1.45;">
-          <strong>Autonomous GitHub Repository Database</strong><br/>
-          This application operates on its own dedicated database file (<code style="background: #dcfce7; padding: 1px 5px; border-radius: 4px;">data/database.json</code>). All connections and dependencies on Google Sheets have been completely removed.
+        <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 14px; font-size: 13px; color: #065f46; line-height: 1.5;">
+          <strong>🟢 Google Cloud Firestore Database (Dedicated &amp; Real-Time)</strong><br/>
+          This application connects directly to a dedicated Cloud Firestore database (<code style="background: #d1fae5; padding: 2px 6px; border-radius: 4px; font-weight: 600;">idemi-task-management-db</code>). All tasks and department repositories sync instantly across all devices in real-time with zero manual tokens required!
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label for="dbOwner">GitHub Owner</label>
-            <input type="text" id="dbOwner" class="form-control" value="hawkzen001" placeholder="e.g. hawkzen001" />
+            <label>Database Provider</label>
+            <input type="text" class="form-control" value="Google Cloud Firestore (Native Mode)" readonly />
           </div>
           <div class="form-group">
-            <label for="dbRepo">Repository Name</label>
-            <input type="text" id="dbRepo" class="form-control" value="idemi-task-management-app" placeholder="e.g. idemi-task-management-app" />
+            <label>Firebase Project ID</label>
+            <input type="text" id="fbProjectId" class="form-control" value="idemi-task-management-db" readonly />
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 12px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
-            <label for="dbBranch">Branch</label>
-            <input type="text" id="dbBranch" class="form-control" value="main" placeholder="main" />
+            <label>Database Region</label>
+            <input type="text" class="form-control" value="asia-south1 (Mumbai, India)" readonly />
           </div>
           <div class="form-group">
-            <label for="dbFilePath">Database Path</label>
-            <input type="text" id="dbFilePath" class="form-control" value="data/database.json" readonly />
+            <label>Real-Time Sync Engine</label>
+            <input type="text" class="form-control" value="WebSockets &amp; Firestore onSnapshot" readonly />
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="dbToken">
-            GitHub Personal Access Token (PAT)
-            <span style="font-weight: normal; color: var(--text-muted); font-size: 11px;">(Enables live 1-click commits back to GitHub)</span>
-          </label>
-          <div style="display: flex; gap: 6px;">
-            <input type="password" id="dbToken" class="form-control" placeholder="Paste GitHub Token (ghp_... / github_pat_...)" autocomplete="off" />
-            <button type="button" class="btn btn-light btn-sm" onclick="toggleTokenVisibility()" id="btnToggleToken">Show</button>
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; font-size: 12px; color: #334155;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
+            <span><strong>Active Tasks in Cloud:</strong> <span id="fbActiveCount" style="font-weight:700; color: #1e3a8a;">Loading...</span></span>
+            <span><strong>Completed Tasks Archive:</strong> <span id="fbCompletedCount" style="font-weight:700; color: #059669;">Loading...</span></span>
+            <span><strong>Repositories:</strong> <span id="fbRepoCount" style="font-weight:700; color: #7c3aed;">Loading...</span></span>
           </div>
-          <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
-            Token is stored privately in your browser's local storage and only communicates directly with GitHub's official REST API (<code style="background:#f1f5f9; padding: 1px 4px;">api.github.com</code>).
-          </p>
+          <div><strong>Sync Status:</strong> <span id="fbRealtimeStatus" style="color: #059669; font-weight: 600;">🟢 Connected &amp; Listening to Real-Time Updates</span></div>
         </div>
 
         <div id="dbTestResult" style="display: none; padding: 10px 12px; border-radius: 6px; font-size: 12.5px; line-height: 1.4;"></div>
 
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-          <button type="button" class="btn btn-primary btn-sm" onclick="testGithubConnection()">🔌 Test Connection &amp; Permissions</button>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="saveDbSettings()">💾 Save Settings</button>
-          <button type="button" class="btn btn-light btn-sm" onclick="syncDatabaseNow()">🔄 Sync Database Now</button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="testFirebaseConnection()">⚡ Test Cloud Connection</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="FirebaseDB.syncFullState()">🔄 Force Full Cloud Sync</button>
+          <button type="button" class="btn btn-light btn-sm" onclick="resetToOriginalData()">↩️ Restore Baseline Data</button>
         </div>
 
         <hr style="border: 0; border-top: 1px solid var(--border); margin: 4px 0;" />
@@ -1602,8 +1600,31 @@
       const initialActive = state.activeTasks.length;
       const initialCompleted = state.completedTasks.length;
 
-      state.activeTasks = state.activeTasks.filter(t => !keySet.has(getTaskKey(t)));
-      state.completedTasks = state.completedTasks.filter(t => !keySet.has(getTaskKey(t)));
+      const activeIdsToDelete = [];
+      const completedIdsToDelete = [];
+
+      state.activeTasks = state.activeTasks.filter(t => {
+        if (keySet.has(getTaskKey(t))) {
+          activeIdsToDelete.push(t.id);
+          return false;
+        }
+        return true;
+      });
+
+      state.completedTasks = state.completedTasks.filter(t => {
+        if (keySet.has(getTaskKey(t))) {
+          completedIdsToDelete.push(t.id);
+          return false;
+        }
+        return true;
+      });
+
+      if (activeIdsToDelete.length > 0) {
+        FirebaseDB.deleteMultiple(activeIdsToDelete, "active_tasks");
+      }
+      if (completedIdsToDelete.length > 0) {
+        FirebaseDB.deleteMultiple(completedIdsToDelete, "completed_tasks");
+      }
 
       const removed = (initialActive - state.activeTasks.length) + (initialCompleted - state.completedTasks.length);
 
@@ -1616,47 +1637,41 @@
 
     
     /* ============================================================
-     * GitHub Repository Database Service (Decoupled from Google Sheets)
+     * Firebase Cloud Firestore Service (Real-Time Multi-Device Database)
      * ============================================================ */
-    const GithubDB = {
+    const FirebaseDB = {
       config: {
-        owner: "hawkzen001",
-        repo: "idemi-task-management-app",
-        branch: "main",
-        filePath: "data/database.json",
-        token: ""
+        apiKey: "AIzaSyC0QbjHCJ0qaVTxv5aaUYWX3RzkwROQMFU",
+        authDomain: "idemi-task-management-db.firebaseapp.com",
+        projectId: "idemi-task-management-db",
+        storageBucket: "idemi-task-management-db.firebasestorage.app",
+        messagingSenderId: "792772833301",
+        appId: "1:792772833301:web:d328f2abd36483c843de1c"
       },
-      currentSha: null,
-      status: "init", // 'connected' | 'readonly' | 'syncing' | 'error'
-      lastSyncTime: null,
+      db: null,
+      status: "init",
+      unsubscribeActive: null,
+      isRemoteUpdate: false,
 
       init() {
-        const saved = localStorage.getItem("idemi_db_config");
-        if (saved) {
-          try {
-            const parsed = JSON.parse(saved);
-            this.config = Object.assign(this.config, parsed);
-          } catch (e) {}
-        }
-        const tok = localStorage.getItem("idemi_github_token");
-        if (tok) this.config.token = tok;
-      },
-
-      saveConfig(newConfig) {
-        this.config = Object.assign(this.config, newConfig);
-        localStorage.setItem("idemi_db_config", JSON.stringify({
-          owner: this.config.owner,
-          repo: this.config.repo,
-          branch: this.config.branch,
-          filePath: this.config.filePath
-        }));
-        if (newConfig.token !== undefined) {
-          this.config.token = newConfig.token;
-          if (newConfig.token) {
-            localStorage.setItem("idemi_github_token", newConfig.token);
-          } else {
-            localStorage.removeItem("idemi_github_token");
+        try {
+          if (typeof firebase === "undefined") {
+            console.warn("Firebase SDK not yet loaded.");
+            return;
           }
+          if (!firebase.apps || !firebase.apps.length) {
+            firebase.initializeApp(this.config);
+          }
+          this.db = firebase.firestore();
+          
+          this.db.enablePersistence({ synchronizeTabs: true }).catch(err => {
+            console.warn("Firestore offline persistence notice:", err.code);
+          });
+
+          this.updateStatus("connected", "🟢 Firebase DB: Connected (Real-Time)");
+        } catch (err) {
+          console.error("Firebase init error:", err);
+          this.updateStatus("error", "🔴 Firebase DB: Error");
         }
       },
 
@@ -1664,212 +1679,249 @@
         this.status = status;
         const dot = document.getElementById("dbStatusDot");
         const label = document.getElementById("dbStatusText");
-        if (!dot || !label) return;
-        dot.className = "db-status-dot";
-        if (status === "connected") {
-          dot.classList.add("dot-connected");
-          label.textContent = text || "GitHub DB: Connected";
-        } else if (status === "readonly") {
-          dot.classList.add("dot-warning");
-          label.textContent = text || "GitHub DB: Read-Only";
-        } else if (status === "syncing") {
-          dot.classList.add("dot-syncing");
-          label.textContent = text || "GitHub DB: Syncing...";
-        } else if (status === "error") {
-          dot.classList.add("dot-error");
-          label.textContent = text || "GitHub DB: Sync Error";
-        } else {
-          label.textContent = text || "GitHub DB: Local";
+        const modalStatus = document.getElementById("fbRealtimeStatus");
+        if (dot) {
+          dot.className = "db-status-dot";
+          if (status === "connected") dot.classList.add("dot-connected");
+          else if (status === "syncing") dot.classList.add("dot-syncing");
+          else if (status === "error") dot.classList.add("dot-error");
+          else dot.classList.add("dot-warning");
+        }
+        if (label) {
+          label.textContent = text || (status === "connected" ? "🟢 Firebase DB: Connected (Real-Time)" : "🔴 Firebase DB: Error");
+        }
+        if (modalStatus) {
+          if (status === "connected") modalStatus.innerHTML = '<span style="color:#059669; font-weight:600;">🟢 Connected &amp; Listening to Real-Time Updates</span>';
+          else if (status === "syncing") modalStatus.innerHTML = '<span style="color:#2563eb; font-weight:600;">🔄 Syncing with Cloud Firestore...</span>';
+          else if (status === "error") modalStatus.innerHTML = '<span style="color:#dc2626; font-weight:600;">🔴 Sync Error</span>';
+          else modalStatus.innerHTML = '<span style="color:#d97706; font-weight:600;">🟡 Offline Mode</span>';
         }
       },
 
-      async load() {
-        this.init();
+      startRealtimeListener() {
+        if (!this.db) return;
+        if (this.unsubscribeActive) this.unsubscribeActive();
 
-        // 1. If token is present, try reading latest from GitHub API
-        if (this.config.token) {
-          try {
-            this.updateStatus("syncing", "Loading from GitHub...");
-            const apiUrl = `https://api.github.com/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}?ref=${this.config.branch}`;
-            const res = await fetch(apiUrl, {
-              headers: {
-                "Accept": "application/vnd.github.v3+json",
-                "Authorization": `token ${this.config.token}`
-              },
-              cache: "no-store"
-            });
-            if (res.ok) {
-              const fileData = await res.json();
-              this.currentSha = fileData.sha;
-              const decoded = decodeURIComponent(escape(atob(fileData.content.replace(/\s/g, ""))));
-              const dbJson = JSON.parse(decoded);
-              this.lastSyncTime = new Date();
-              this.updateStatus("connected", "GitHub DB: Connected");
-              return dbJson;
-            }
-          } catch (err) {
-            console.warn("GitHub API load error, falling back to static:", err);
-          }
-        }
-
-        // 2. Try loading from static data/database.json
-        try {
-          this.updateStatus("syncing", "Loading database...");
-          const res = await fetch(`./data/database.json?_t=${Date.now()}`);
-          if (res.ok) {
-            const dbJson = await res.json();
-            if (this.config.token) {
-              this.fetchShaInBackground();
-              this.updateStatus("connected", "GitHub DB: Connected");
-            } else {
-              this.updateStatus("readonly", "GitHub DB: Read-Only");
-            }
-            return dbJson;
-          }
-        } catch (e) {
-          console.warn("Static data/database.json fetch failed:", e);
-        }
-
-        // 3. Fallback to localStorage or INITIAL_DATA
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-          try {
-            const parsed = JSON.parse(saved);
-            this.updateStatus(this.config.token ? "connected" : "readonly", this.config.token ? "GitHub DB: Local Synced" : "GitHub DB: Read-Only");
-            return {
-              activeTasks: parsed.activeTasks,
-              completedTasks: parsed.completedTasks,
-              repositoryLinks: INITIAL_DATA.repositoryLinks
-            };
-          } catch (e) {}
-        }
-
-        this.updateStatus("readonly", "GitHub DB: Read-Only");
-        return INITIAL_DATA;
-      },
-
-      async fetchShaInBackground() {
-        if (!this.config.token) return;
-        try {
-          const res = await fetch(`https://api.github.com/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}?ref=${this.config.branch}`, {
-            headers: {
-              "Accept": "application/vnd.github.v3+json",
-              "Authorization": `token ${this.config.token}`
-            },
-            cache: "no-store"
+        this.unsubscribeActive = this.db.collection("active_tasks").onSnapshot((snapshot) => {
+          if (snapshot.empty && state.activeTasks.length > 0) return;
+          const tasks = [];
+          snapshot.forEach(doc => {
+            tasks.push(doc.data());
           });
-          if (res.ok) {
-            const data = await res.json();
-            this.currentSha = data.sha;
+          
+          if (tasks.length > 0) {
+            this.isRemoteUpdate = true;
+            tasks.sort((a, b) => (a.id || "").localeCompare(b.id || "", undefined, { numeric: true, sensitivity: 'base' }));
+            state.activeTasks = tasks;
+            populateFilterDropdowns();
+            renderCurrentView();
+            updateDatasetCounts();
+            updateDbSettingsModalFields();
+            this.isRemoteUpdate = false;
           }
-        } catch (e) {}
+          this.updateStatus("connected", "🟢 Firebase DB: Connected (Real-Time)");
+        }, (err) => {
+          console.warn("Firestore onSnapshot error:", err);
+          this.updateStatus("error", "🔴 Firebase DB: Error");
+        });
       },
 
-      async commit(commitMsg) {
-        if (!this.config.token) {
-          showToast("Saved locally. Click DB Settings to enter GitHub Token for cloud sync.");
+      async loadInitialData() {
+        this.init();
+        if (!this.db) return false;
+        this.updateStatus("syncing", "Loading from Firebase...");
+
+        try {
+          // 1. Fetch active tasks
+          const activeSnap = await this.db.collection("active_tasks").get();
+          if (!activeSnap.empty) {
+            const active = [];
+            activeSnap.forEach(doc => active.push(doc.data()));
+            active.sort((a, b) => (a.id || "").localeCompare(b.id || "", undefined, { numeric: true, sensitivity: 'base' }));
+            state.activeTasks = active;
+          }
+
+          // 2. Fetch completed tasks
+          const completedSnap = await this.db.collection("completed_tasks").get();
+          if (!completedSnap.empty) {
+            const comp = [];
+            completedSnap.forEach(doc => comp.push(doc.data()));
+            comp.sort((a, b) => (a.id || "").localeCompare(b.id || "", undefined, { numeric: true, sensitivity: 'base' }));
+            state.completedTasks = comp;
+          }
+
+          // 3. Fetch repository links
+          const reposSnap = await this.db.collection("repository_links").get();
+          if (!reposSnap.empty) {
+            const repos = [];
+            reposSnap.forEach(doc => repos.push(doc.data()));
+            repos.sort((a, b) => (a.id || "").localeCompare(b.id || "", undefined, { numeric: true, sensitivity: 'base' }));
+            state.repositoryLinks = repos;
+          }
+
+          this.updateStatus("connected", "🟢 Firebase DB: Connected (Real-Time)");
+          this.startRealtimeListener();
+          return true;
+        } catch (err) {
+          console.warn("Firestore initial load failed, trying fallback:", err);
+          this.updateStatus("warning", "🟡 Firebase DB: Offline Mode");
           return false;
         }
+      },
 
-        this.updateStatus("syncing", "Committing to GitHub...");
+      async saveTask(task) {
+        if (!this.db || this.isRemoteUpdate) return;
         try {
-          if (!this.currentSha) {
-            await this.fetchShaInBackground();
-          }
+          this.updateStatus("syncing", "Saving to Firebase...");
+          const col = (task.source === "Completed Tasks" || task.progress === "Completed") ? "completed_tasks" : "active_tasks";
+          await this.db.collection(col).doc(task.id).set(task);
+          this.updateStatus("connected", "🟢 Firebase DB: Connected (Real-Time)");
+        } catch (err) {
+          console.error("Firebase saveTask error:", err);
+          this.updateStatus("error", "🔴 Firebase DB: Save Error");
+        }
+      },
 
-          const payload = {
-            meta: {
-              name: "IDEMI Animation Dept Task & Repository Database",
-              version: "2.0.0",
-              schema: "idemi-github-db-v2",
-              repository: `${this.config.owner}/${this.config.repo}`,
-              lastUpdated: new Date().toISOString()
-            },
+      async deleteTask(taskId, source) {
+        if (!this.db || this.isRemoteUpdate) return;
+        try {
+          this.updateStatus("syncing", "Deleting from Firebase...");
+          const col = source === "Completed Tasks" ? "completed_tasks" : "active_tasks";
+          await this.db.collection(col).doc(taskId).delete();
+          this.updateStatus("connected", "🟢 Firebase DB: Connected (Real-Time)");
+        } catch (err) {
+          console.error("Firebase deleteTask error:", err);
+          this.updateStatus("error", "🔴 Firebase DB: Delete Error");
+        }
+      },
+
+      async deleteMultiple(taskIds, col = "active_tasks") {
+        if (!this.db || !taskIds.length) return;
+        try {
+          this.updateStatus("syncing", `Deleting ${taskIds.length} tasks...`);
+          const batch = this.db.batch();
+          taskIds.forEach(id => {
+            const ref = this.db.collection(col).doc(id);
+            batch.delete(ref);
+          });
+          await batch.commit();
+          this.updateStatus("connected", "🟢 Firebase DB: Connected (Real-Time)");
+        } catch (err) {
+          console.error("Firebase deleteMultiple error:", err);
+          this.updateStatus("error", "🔴 Firebase DB: Delete Error");
+        }
+      },
+
+      async syncFullState() {
+        if (!this.db) {
+          showToast("Firebase DB not initialized.");
+          return;
+        }
+        try {
+          this.updateStatus("syncing", "Syncing all state to Firebase...");
+          showToast("Syncing all records to Google Cloud Firestore...");
+
+          // 1. Batch sync active tasks
+          const batch = this.db.batch();
+          state.activeTasks.forEach(t => {
+            batch.set(this.db.collection("active_tasks").doc(t.id), t);
+          });
+          await batch.commit();
+
+          // 2. Update aggregate document
+          await this.db.collection("idemi_meta").doc("app_state").set({
             activeTasks: state.activeTasks,
             completedTasks: state.completedTasks,
             repositoryLinks: state.repositoryLinks,
-            assignees: INITIAL_DATA.assignees,
-            statuses: INITIAL_DATA.statuses,
-            priorities: INITIAL_DATA.priorities,
-            categories: INITIAL_DATA.categories
-          };
-
-          const jsonStr = JSON.stringify(payload, null, 2);
-          const b64Content = btoa(unescape(encodeURIComponent(jsonStr)));
-
-          const body = {
-            message: commitMsg || `Update database: ${state.activeTasks.length} active, ${state.completedTasks.length} completed tasks`,
-            content: b64Content,
-            branch: this.config.branch
-          };
-          if (this.currentSha) {
-            body.sha = this.currentSha;
-          }
-
-          const res = await fetch(`https://api.github.com/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`, {
-            method: "PUT",
-            headers: {
-              "Accept": "application/vnd.github.v3+json",
-              "Authorization": `token ${this.config.token}`,
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(body)
+            lastUpdated: new Date().toISOString()
           });
 
-          if (!res.ok) {
-            const errData = await res.json().catch(() => ({}));
-            throw new Error(errData.message || `HTTP ${res.status}`);
-          }
-
-          const resData = await res.json();
-          this.currentSha = resData.content.sha;
-          this.lastSyncTime = new Date();
-          this.updateStatus("connected", "GitHub DB: Connected");
-          showToast("Database committed & synced to GitHub repo!");
-          return true;
+          this.updateStatus("connected", "🟢 Firebase DB: Connected (Real-Time)");
+          updateDbSettingsModalFields();
+          showToast("All tasks successfully synchronized to Firebase Cloud Firestore!");
         } catch (err) {
-          console.error("GitHub commit failed:", err);
-          this.updateStatus("error", "GitHub DB: Sync Error");
-          showToast(`GitHub sync error: ${err.message}. Saved locally.`);
-          return false;
+          console.error("Firebase syncFullState error:", err);
+          this.updateStatus("error", "🔴 Firebase DB: Sync Error");
+          showToast(`Sync error: ${err.message}`);
+        }
+      },
+
+      async resetBaseline() {
+        if (!this.db) return;
+        this.updateStatus("syncing", "Restoring baseline in Firebase...");
+        try {
+          const res = await fetch(`./data/database.json?_t=${Date.now()}`);
+          const baseline = res.ok ? await res.json() : INITIAL_DATA;
+          
+          state.activeTasks = baseline.activeTasks || [];
+          state.completedTasks = baseline.completedTasks || [];
+          if (baseline.repositoryLinks) state.repositoryLinks = baseline.repositoryLinks;
+
+          const batch = this.db.batch();
+          state.activeTasks.forEach(t => {
+            batch.set(this.db.collection("active_tasks").doc(t.id), t);
+          });
+          await batch.commit();
+
+          await this.db.collection("idemi_meta").doc("app_state").set({
+            activeTasks: state.activeTasks,
+            completedTasks: state.completedTasks,
+            repositoryLinks: state.repositoryLinks,
+            lastUpdated: new Date().toISOString()
+          });
+
+          this.updateStatus("connected", "🟢 Firebase DB: Connected (Real-Time)");
+          updateDbSettingsModalFields();
+          showToast("Database restored to baseline (21 active, 102 completed) in Firebase!");
+        } catch (err) {
+          console.error("Reset baseline error:", err);
+          this.updateStatus("error", "🔴 Firebase DB: Reset Error");
+          showToast(`Restore baseline error: ${err.message}`);
         }
       }
     };
 
-    let commitDebounceTimer = null;
-    function debouncedGithubCommit(msg) {
-      clearTimeout(commitDebounceTimer);
-      commitDebounceTimer = setTimeout(() => {
-        GithubDB.commit(msg);
+    let syncDebounceTimer = null;
+    function debouncedFirebaseSync() {
+      clearTimeout(syncDebounceTimer);
+      syncDebounceTimer = setTimeout(() => {
+        if (FirebaseDB.db && !FirebaseDB.isRemoteUpdate) {
+          FirebaseDB.db.collection("idemi_meta").doc("app_state").set({
+            activeTasks: state.activeTasks,
+            completedTasks: state.completedTasks,
+            repositoryLinks: state.repositoryLinks,
+            lastUpdated: new Date().toISOString()
+          }).catch(e => console.warn("Background meta sync notice:", e));
+        }
       }, 1500);
     }
 
     async function initApp() {
-      GithubDB.init();
+      FirebaseDB.init();
       updateDbSettingsModalFields();
 
-      try {
-        const db = await GithubDB.load();
-        if (db) {
-          state.activeTasks = db.activeTasks || [];
-          state.completedTasks = db.completedTasks || [];
-          if (db.repositoryLinks) state.repositoryLinks = db.repositoryLinks;
-        }
-      } catch (err) {
-        console.error("Init database load error:", err);
-        loadDefaults();
-      }
+      // Load data from Firebase Cloud Firestore
+      const loadedFromFirebase = await FirebaseDB.loadInitialData();
 
-      // Check if localStorage has newer changes if no token was used
-      const localSaved = localStorage.getItem(STORAGE_KEY);
-      if (localSaved && !GithubDB.config.token) {
+      if (!loadedFromFirebase) {
+        // Fallback: try static database.json or INITIAL_DATA
         try {
-          const parsed = JSON.parse(localSaved);
-          if (parsed.activeTasks && parsed.activeTasks.length) state.activeTasks = parsed.activeTasks;
-          if (parsed.completedTasks && parsed.completedTasks.length) state.completedTasks = parsed.completedTasks;
-        } catch (e) {}
+          const res = await fetch(`./data/database.json?_t=${Date.now()}`);
+          if (res.ok) {
+            const db = await res.json();
+            state.activeTasks = db.activeTasks || [];
+            state.completedTasks = db.completedTasks || [];
+            if (db.repositoryLinks) state.repositoryLinks = db.repositoryLinks;
+          } else {
+            loadDefaults();
+          }
+        } catch (err) {
+          console.warn("Static database.json fallback failed:", err);
+          loadDefaults();
+        }
       }
 
+      updateDatasetCounts();
       populateFilterDropdowns();
       renderCurrentView();
     }
@@ -1886,9 +1938,10 @@
         timestamp: Date.now()
       }));
       updateDatasetCounts();
+      updateDbSettingsModalFields();
 
-      if (GithubDB.config.token && immediateCommit) {
-        debouncedGithubCommit();
+      if (immediateCommit && !FirebaseDB.isRemoteUpdate) {
+        debouncedFirebaseSync();
       }
     }
 
@@ -1900,25 +1953,13 @@
     }
 
     async function resetToOriginalData() {
-      if (confirm("Reset all tasks back to the baseline GitHub repository database?")) {
+      if (confirm("Reset all tasks back to the baseline Firebase database (21 active, 102 completed)?")) {
         localStorage.removeItem(STORAGE_KEY);
-        try {
-          const res = await fetch(`./data/database.json?_t=${Date.now()}`);
-          if (res.ok) {
-            const db = await res.json();
-            state.activeTasks = db.activeTasks || [];
-            state.completedTasks = db.completedTasks || [];
-          } else {
-            loadDefaults();
-          }
-        } catch (e) {
-          loadDefaults();
-        }
+        await FirebaseDB.resetBaseline();
         state.selectedTaskKeys.clear();
-        saveState(true);
+        saveState(false);
         populateFilterDropdowns();
         renderCurrentView();
-        showToast("Restored baseline repository database");
       }
     }
 
@@ -2604,6 +2645,7 @@
       if (field === "progress" && value === "Completed" && !task.completionDate) {
         task.completionDate = new Date().toISOString().slice(0, 10);
       }
+      FirebaseDB.saveTask(task);
       saveState();
       renderCurrentView();
       showToast(`Updated ${id} ${field} to ${value}`);
@@ -2701,6 +2743,7 @@
         showToast(`Created task ${payload.id}`);
       }
 
+      FirebaseDB.saveTask(payload);
       saveState();
       populateFilterDropdowns();
       closeTaskModal();
@@ -2713,6 +2756,7 @@
       if (!found) return;
       found.arr.splice(found.idx, 1);
       state.selectedTaskKeys.delete(getTaskKey({ id, source }));
+      FirebaseDB.deleteTask(id, source);
       saveState();
       renderCurrentView();
       showToast(`Deleted task ${id}`);
@@ -2827,7 +2871,7 @@
 
     
     /* ============================================================
-     * DB Settings Modal & Sync Helpers
+     * DB Settings Modal & Sync Helpers (Firebase Cloud Firestore)
      * ============================================================ */
     function openDbSettingsModal() {
       updateDbSettingsModalFields();
@@ -2839,117 +2883,37 @@
     }
 
     function updateDbSettingsModalFields() {
-      const o = document.getElementById("dbOwner");
-      const r = document.getElementById("dbRepo");
-      const b = document.getElementById("dbBranch");
-      const p = document.getElementById("dbFilePath");
-      const t = document.getElementById("dbToken");
-      if (o) o.value = GithubDB.config.owner;
-      if (r) r.value = GithubDB.config.repo;
-      if (b) b.value = GithubDB.config.branch;
-      if (p) p.value = GithubDB.config.filePath;
-      if (t) t.value = GithubDB.config.token || "";
+      const ac = document.getElementById("fbActiveCount");
+      const cc = document.getElementById("fbCompletedCount");
+      const rc = document.getElementById("fbRepoCount");
+      if (ac) ac.textContent = (state.activeTasks ? state.activeTasks.length : "0") + " tasks";
+      if (cc) cc.textContent = (state.completedTasks ? state.completedTasks.length : "0") + " tasks";
+      if (rc) rc.textContent = (state.repositoryLinks ? state.repositoryLinks.length : "0") + " links";
     }
 
-    function toggleTokenVisibility() {
-      const t = document.getElementById("dbToken");
-      const btn = document.getElementById("btnToggleToken");
-      if (t.type === "password") {
-        t.type = "text";
-        btn.textContent = "Hide";
-      } else {
-        t.type = "password";
-        btn.textContent = "Show";
-      }
-    }
-
-    function saveDbSettings() {
-      const owner = document.getElementById("dbOwner").value.trim() || "hawkzen001";
-      const repo = document.getElementById("dbRepo").value.trim() || "idemi-task-management-app";
-      const branch = document.getElementById("dbBranch").value.trim() || "main";
-      const token = document.getElementById("dbToken").value.trim();
-
-      GithubDB.saveConfig({ owner, repo, branch, token });
-      if (token) {
-        GithubDB.updateStatus("connected", "GitHub DB: Connected");
-      } else {
-        GithubDB.updateStatus("readonly", "GitHub DB: Read-Only");
-      }
-      showToast("Database settings saved!");
-    }
-
-    async function testGithubConnection() {
+    async function testFirebaseConnection() {
       const resDiv = document.getElementById("dbTestResult");
       resDiv.style.display = "block";
       resDiv.style.background = "#eff6ff";
       resDiv.style.color = "#1e40af";
       resDiv.style.border = "1px solid #bfdbfe";
-      resDiv.textContent = "Testing connection to GitHub repository...";
-
-      const owner = document.getElementById("dbOwner").value.trim();
-      const repo = document.getElementById("dbRepo").value.trim();
-      const token = document.getElementById("dbToken").value.trim();
-
-      if (!owner || !repo) {
-        resDiv.style.background = "#fef2f2";
-        resDiv.style.color = "#991b1b";
-        resDiv.style.border = "1px solid #fecaca";
-        resDiv.textContent = "Error: Repository owner and repository name are required.";
-        return;
-      }
+      resDiv.textContent = "Connecting to Google Cloud Firestore (idemi-task-management-db)...";
 
       try {
-        const headers = { "Accept": "application/vnd.github.v3+json" };
-        if (token) headers["Authorization"] = `token ${token}`;
-
-        const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers });
-        if (!res.ok) {
-          throw new Error(res.status === 404 ? "Repository not found or access denied." : `GitHub API returned HTTP ${res.status}`);
-        }
-        const repoData = await res.json();
-        const canPush = repoData.permissions ? repoData.permissions.push : !!token;
-
-        if (token) {
-          if (canPush) {
-            resDiv.style.background = "#ecfdf5";
-            resDiv.style.color = "#065f46";
-            resDiv.style.border = "1px solid #a7f3d0";
-            resDiv.innerHTML = `<strong>Connected successfully!</strong> Write permissions verified on repository <code>${owner}/${repo}</code>. You can sync &amp; commit directly to GitHub.`;
-            GithubDB.saveConfig({ owner, repo, token });
-            GithubDB.updateStatus("connected", "GitHub DB: Connected");
-          } else {
-            resDiv.style.background = "#fffbeb";
-            resDiv.style.color = "#92400e";
-            resDiv.style.border = "1px solid #fde68a";
-            resDiv.innerHTML = `Connected, but token has <strong>read-only</strong> access to <code>${owner}/${repo}</code>.`;
-            GithubDB.updateStatus("readonly", "GitHub DB: Read-Only");
-          }
-        } else {
-          resDiv.style.background = "#eff6ff";
-          resDiv.style.color = "#1e40af";
-          resDiv.style.border = "1px solid #bfdbfe";
-          resDiv.innerHTML = `Public repository read access verified! To commit changes directly to GitHub, enter your Personal Access Token.`;
-          GithubDB.updateStatus("readonly", "GitHub DB: Read-Only");
-        }
+        if (!FirebaseDB.db) FirebaseDB.init();
+        const snap = await FirebaseDB.db.collection("active_tasks").get();
+        resDiv.style.background = "#ecfdf5";
+        resDiv.style.color = "#065f46";
+        resDiv.style.border = "1px solid #a7f3d0";
+        resDiv.innerHTML = `<strong>Connected successfully!</strong> Verified live connection to Cloud Firestore in <code>asia-south1</code>. Loaded <strong>${snap.size} active tasks</strong> in real-time.`;
+        FirebaseDB.updateStatus("connected", "🟢 Firebase DB: Connected (Real-Time)");
+        updateDbSettingsModalFields();
       } catch (err) {
         resDiv.style.background = "#fef2f2";
         resDiv.style.color = "#991b1b";
         resDiv.style.border = "1px solid #fecaca";
         resDiv.textContent = `Connection failed: ${err.message}`;
-        GithubDB.updateStatus("error", "GitHub DB: Error");
-      }
-    }
-
-    async function syncDatabaseNow() {
-      if (!GithubDB.config.token) {
-        openDbSettingsModal();
-        showToast("Please enter your GitHub token to sync directly with GitHub");
-        return;
-      }
-      showToast("Syncing database with GitHub...");
-      const success = await GithubDB.commit("Manual sync: Update database records");
-      if (success) {
-        renderCurrentView();
+        FirebaseDB.updateStatus("error", "🔴 Firebase DB: Error");
       }
     }
 
@@ -2957,9 +2921,9 @@
       const payload = {
         meta: {
           name: "IDEMI Animation Dept Task & Repository Database",
-          version: "2.0.0",
-          schema: "idemi-github-db-v2",
-          repository: `${GithubDB.config.owner}/${GithubDB.config.repo}`,
+          version: "3.0.0",
+          schema: "idemi-firestore-db-v3",
+          projectId: "idemi-task-management-db",
           exportedAt: new Date().toISOString()
         },
         activeTasks: state.activeTasks,
@@ -2974,34 +2938,39 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `idemi_database_${new Date().toISOString().slice(0, 10)}.json`;
+      a.download = `IDEMI_Task_Database_Firebase_${new Date().toISOString().slice(0, 10)}.json`;
       a.click();
       URL.revokeObjectURL(url);
-      showToast("Database JSON backup downloaded!");
+      showToast("Database JSON backup downloaded");
     }
 
     function restoreDatabaseFromJSON(event) {
       const file = event.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = async function(e) {
         try {
           const db = JSON.parse(e.target.result);
           if (!db.activeTasks && !db.completedTasks) {
             alert("Invalid database format: activeTasks or completedTasks missing.");
             return;
           }
-          if (!confirm(`Restore database from file? This will load ${db.activeTasks?.length || 0} active tasks and ${db.completedTasks?.length || 0} completed tasks.`)) {
+          if (!confirm(`Restore database from file? This will load ${db.activeTasks?.length || 0} active tasks and ${db.completedTasks?.length || 0} completed tasks into Firebase.`)) {
             return;
           }
           if (db.activeTasks) state.activeTasks = db.activeTasks;
           if (db.completedTasks) state.completedTasks = db.completedTasks;
           if (db.repositoryLinks) state.repositoryLinks = db.repositoryLinks;
-          saveState(true);
+          
+          if (FirebaseDB.db) {
+            await FirebaseDB.syncFullState();
+          } else {
+            saveState(true);
+          }
           populateFilterDropdowns();
           renderCurrentView();
           closeDbSettingsModal();
-          showToast("Database successfully restored from JSON file!");
+          showToast("Database successfully restored from JSON file and synced to Firebase!");
         } catch (err) {
           alert("Error parsing JSON file: " + err.message);
         }

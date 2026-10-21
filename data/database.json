@@ -4,9 +4,26 @@
     "version": "2.0.0",
     "schema": "idemi-github-db-v2",
     "repository": "hawkzen001/idemi-task-management-app",
-    "lastUpdated": "2026-10-21T06:07:28.167Z"
+    "lastUpdated": "2026-10-15T05:36:53.829Z"
   },
   "activeTasks": [
+    {
+      "id": "T001",
+      "parentId": "",
+      "title": "NSQF Courses Brochure",
+      "description": "Design brochure for NSQF courses",
+      "category": "Design",
+      "priority": "High",
+      "startDate": "2025-01-02",
+      "dueDate": "2025-01-13",
+      "completionDate": "",
+      "assignee": "Abhishek Kamble",
+      "progress": "Delayed",
+      "dependencies": "Requires details from marketing team",
+      "comments": "",
+      "link": "",
+      "source": "Active Tasks"
+    },
     {
       "id": "T002",
       "parentId": "",
@@ -22,7 +39,7 @@
       "dependencies": "Requires details from the respective departments",
       "comments": "",
       "link": "",
-      "source": "Task Sheet"
+      "source": "Active Tasks"
     },
     {
       "id": "T002-B",
@@ -39,7 +56,7 @@
       "dependencies": "Requires details from the respective departments",
       "comments": "",
       "link": "",
-      "source": "Task Sheet"
+      "source": "Active Tasks"
     },
     {
       "id": "T003",
@@ -56,7 +73,7 @@
       "dependencies": "Coordinate with Harish Aryan",
       "comments": "",
       "link": "",
-      "source": "Task Sheet"
+      "source": "Active Tasks"
     },
     {
       "id": "T008",
@@ -67,13 +84,30 @@
       "priority": "Medium",
       "startDate": "2025-01-07",
       "dueDate": "2025-01-18",
-      "completionDate": "2026-10-14",
+      "completionDate": "",
       "assignee": "Aayush Raisoni",
-      "progress": "Completed",
+      "progress": "On Hold",
       "dependencies": "",
       "comments": "No response from the Sachin Deshpande - Process Aborted",
       "link": "",
-      "source": "Task Sheet"
+      "source": "Active Tasks"
+    },
+    {
+      "id": "T023",
+      "parentId": "",
+      "title": "Book to be made of curriculam",
+      "description": "Take print out of the exisiting NSQF Courses and Create a Spiral Book",
+      "category": "Teaching Material",
+      "priority": "Low",
+      "startDate": "2025-01-15",
+      "dueDate": "2025-01-18",
+      "completionDate": "",
+      "assignee": "Sushil Baviskar",
+      "progress": "On Hold",
+      "dependencies": "",
+      "comments": "",
+      "link": "",
+      "source": "Active Tasks"
     },
     {
       "id": "T038",
@@ -90,7 +124,24 @@
       "dependencies": "Documentation has been done only the discussion part has been remain",
       "comments": "Meity Information needs to be updated.\nNSQF Information needs to be updated.",
       "link": "",
-      "source": "Task Sheet"
+      "source": "Active Tasks"
+    },
+    {
+      "id": "T046",
+      "parentId": "",
+      "title": "Meity Brochure",
+      "description": "Flim comp assit & 3d Animator Assit",
+      "category": "Advertisement",
+      "priority": "Low",
+      "startDate": "2025-02-20",
+      "dueDate": "",
+      "completionDate": "",
+      "assignee": "Vishal Angre",
+      "progress": "On Hold",
+      "dependencies": "",
+      "comments": "",
+      "link": "",
+      "source": "Active Tasks"
     },
     {
       "id": "T050",
@@ -107,7 +158,7 @@
       "dependencies": "",
       "comments": "",
       "link": "",
-      "source": "Task Sheet"
+      "source": "Active Tasks"
     },
     {
       "id": "T051",
@@ -124,7 +175,7 @@
       "dependencies": "",
       "comments": "",
       "link": "",
-      "source": "Task Sheet"
+      "source": "Active Tasks"
     },
     {
       "id": "T052",
@@ -141,7 +192,7 @@
       "dependencies": "",
       "comments": "",
       "link": "",
-      "source": "Task Sheet"
+      "source": "Active Tasks"
     },
     {
       "id": "T053",
@@ -158,7 +209,7 @@
       "dependencies": "",
       "comments": "",
       "link": "",
-      "source": "Task Sheet"
+      "source": "Active Tasks"
     },
     {
       "id": "T057",
@@ -175,7 +226,7 @@
       "dependencies": "",
       "comments": "",
       "link": "",
-      "source": "Task Sheet"
+      "source": "Active Tasks"
     },
     {
       "id": "T069",
@@ -192,7 +243,7 @@
       "dependencies": "",
       "comments": "",
       "link": "",
-      "source": "Task Sheet"
+      "source": "Active Tasks"
     },
     {
       "id": "T073",
@@ -209,7 +260,41 @@
       "dependencies": "",
       "comments": "",
       "link": "",
-      "source": "Task Sheet"
+      "source": "Active Tasks"
+    },
+    {
+      "id": "T076",
+      "parentId": "",
+      "title": "Mobile Phone Note",
+      "description": "Only Allow Mobile Phones to the People who are using Phone for the Departmental Work",
+      "category": "Training",
+      "priority": "High",
+      "startDate": "2025-09-19",
+      "dueDate": "2025-09-20",
+      "completionDate": "2025-09-20",
+      "assignee": "Nilesh Sharma",
+      "progress": "On Hold",
+      "dependencies": "",
+      "comments": "",
+      "link": "",
+      "source": "Active Tasks"
+    },
+    {
+      "id": "T078",
+      "parentId": "",
+      "title": "Vision & Mission Statement",
+      "description": "For AICTE Audit",
+      "category": "Training",
+      "priority": "High",
+      "startDate": "2025-12-02",
+      "dueDate": "2025-12-03",
+      "completionDate": "",
+      "assignee": "Sushil Baviskar",
+      "progress": "On Hold",
+      "dependencies": "",
+      "comments": "",
+      "link": "",
+      "source": "Active Tasks"
     },
     {
       "id": "T082",
@@ -226,7 +311,58 @@
       "dependencies": "",
       "comments": "",
       "link": "",
-      "source": "Task Sheet"
+      "source": "Active Tasks"
+    },
+    {
+      "id": "T104",
+      "parentId": "",
+      "title": "IDEMI Diploma Dashboard",
+      "description": "https://idemi-diploma-dashboard.vercel.app/admin-dashboard",
+      "category": "Dashboard & Portal",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completionDate": "",
+      "assignee": "Unassigned",
+      "progress": "Not Started",
+      "dependencies": "",
+      "comments": "Quick-access dashboard/form link listed in Task Sheet",
+      "link": "https://idemi-diploma-dashboard.vercel.app/admin-dashboard",
+      "source": "Active Tasks"
+    },
+    {
+      "id": "T105",
+      "parentId": "",
+      "title": "AICTE Registrations 2026-27",
+      "description": "AICTE Student Inquiry Form 2026-27 (Responses)",
+      "category": "Dashboard & Portal",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completionDate": "",
+      "assignee": "Unassigned",
+      "progress": "Not Started",
+      "dependencies": "",
+      "comments": "Quick-access dashboard/form link listed in Task Sheet",
+      "link": "https://docs.google.com/spreadsheets/d/1TRkzM1g8SBxy-DfcimxJ-l2UNHTHwgUOym1s7NglxCE/edit?gid=2024590674",
+      "source": "Active Tasks"
+    },
+    {
+      "id": "T106",
+      "parentId": "",
+      "title": "AICTE Admission 26-27 Dashboard",
+      "description": "Dashboard Animation - AICTE Admission 2026-27",
+      "category": "Dashboard & Portal",
+      "priority": "Medium",
+      "startDate": "",
+      "dueDate": "",
+      "completionDate": "",
+      "assignee": "Unassigned",
+      "progress": "Not Started",
+      "dependencies": "",
+      "comments": "Quick-access dashboard/form link listed in Task Sheet",
+      "link": "https://docs.google.com/spreadsheets/d/1I9wHBe2tZGc6bxoRooytqo8NK7bUHxPQ4dJH4WLzHcI/edit?gid=1082350316",
+      "source": "Active Tasks"
     }
   ],
   "completedTasks": [
@@ -246,7 +382,7 @@
       "comments": "Payment for the Application is pending from the account section.",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-002",
@@ -264,7 +400,7 @@
       "comments": "Sachin Nikam has shared the updated sheet with the Animation Department",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-003",
@@ -282,7 +418,7 @@
       "comments": "Work on the Office Automation syllabus is ongoing, the same will be completed by 29th May 24.",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-004",
@@ -300,7 +436,7 @@
       "comments": "Work on the Principals of Animation syllabus is ongoing, the same will be completed by 29th May 24.",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-005",
@@ -318,7 +454,7 @@
       "comments": "The MOM has been completed.",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-006",
@@ -336,7 +472,7 @@
       "comments": "Certification process has been completed.",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-007",
@@ -354,7 +490,7 @@
       "comments": "PPT has been completed only minor changes are required.",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-008",
@@ -372,7 +508,7 @@
       "comments": "Non Commercial License to be downloaded for faculty PCs.",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-009",
@@ -390,7 +526,7 @@
       "comments": "Call has been done by the vishal to the registered applicants to complete the admission process.",
       "link": "https://docs.google.com/spreadsheets/d/1sXfyIN1z0r46S8cdKIB9U3ED05x1n8O7cJWYpGZVAMA/edit",
       "linkLabel": "Animation Department Task & Repository Sheet",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-010",
@@ -408,7 +544,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-011",
@@ -426,7 +562,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-012",
@@ -444,7 +580,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-013",
@@ -462,7 +598,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-014",
@@ -480,7 +616,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-015",
@@ -498,7 +634,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-016",
@@ -516,7 +652,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-017",
@@ -534,7 +670,7 @@
       "comments": "Praveen Dhurve has transferred partial data in the server.",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-018",
@@ -552,7 +688,7 @@
       "comments": "Abhhishek Kamble is sorting the Creative Assets Data and uploading the same on GDrive. The same will be linked in the Task & Repository Sheet.",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-019",
@@ -570,7 +706,7 @@
       "comments": "Need to register our Institute on the Internshala Portal",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-020",
@@ -588,7 +724,7 @@
       "comments": "Need to create a half page color advertisment for AICTE Course promotion",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-051",
@@ -606,7 +742,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-052",
@@ -624,7 +760,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-053",
@@ -642,7 +778,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-054",
@@ -660,7 +796,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-055",
@@ -678,7 +814,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-056",
@@ -696,7 +832,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-057",
@@ -714,7 +850,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-058",
@@ -732,7 +868,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-059",
@@ -750,7 +886,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-060",
@@ -768,7 +904,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-061",
@@ -786,7 +922,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-062",
@@ -804,7 +940,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-063",
@@ -822,7 +958,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-064",
@@ -840,7 +976,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-065",
@@ -858,7 +994,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-066",
@@ -876,7 +1012,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-067",
@@ -894,7 +1030,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-068",
@@ -912,7 +1048,7 @@
       "comments": "Created other batches that were in demand",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-069",
@@ -930,7 +1066,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-070",
@@ -948,7 +1084,7 @@
       "comments": "PPT created, 2 Social media post created but are in rework, brochure pending",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-071",
@@ -966,7 +1102,7 @@
       "comments": "1 Student got hired",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-072",
@@ -984,7 +1120,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-073",
@@ -1002,7 +1138,7 @@
       "comments": "1 Student got hired",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-074",
@@ -1020,7 +1156,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-075",
@@ -1038,7 +1174,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-076",
@@ -1056,7 +1192,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-077",
@@ -1074,7 +1210,7 @@
       "comments": "Done by Sagar Nevage Sir",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-078",
@@ -1092,7 +1228,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-079",
@@ -1110,7 +1246,7 @@
       "comments": "Window is there, hence no need to install grill",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-080",
@@ -1128,7 +1264,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-081",
@@ -1146,7 +1282,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-082",
@@ -1164,7 +1300,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-083",
@@ -1182,7 +1318,7 @@
       "comments": "Process is Done through PD Sir by Raju Kharat",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-084",
@@ -1200,7 +1336,7 @@
       "comments": "Task successfully completed at the last day of the GWD Batch",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-085",
@@ -1218,7 +1354,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-086",
@@ -1236,7 +1372,7 @@
       "comments": "Task successfully completed, SCM is Schedule through online mode on 18th Jan 2025, at 11 am",
       "link": "https://meet.google.com/heh-tjth-zza",
       "linkLabel": "https://meet.google.com/heh-tjth-zza",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-087",
@@ -1254,7 +1390,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-088",
@@ -1272,7 +1408,7 @@
       "comments": "Task successfully completed",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-089",
@@ -1290,7 +1426,7 @@
       "comments": "Task successfully completed",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-090",
@@ -1308,7 +1444,7 @@
       "comments": "Task successfully completed",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-091",
@@ -1326,7 +1462,7 @@
       "comments": "Task successfully completed",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-092",
@@ -1344,7 +1480,7 @@
       "comments": "Task successfully completed",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-093",
@@ -1362,7 +1498,7 @@
       "comments": "Task successfully completed",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-094",
@@ -1380,7 +1516,7 @@
       "comments": "Task successfully completed",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-095",
@@ -1398,7 +1534,7 @@
       "comments": "Task successfully completed",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-096",
@@ -1416,7 +1552,7 @@
       "comments": "Task successfully completed",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-097",
@@ -1434,7 +1570,7 @@
       "comments": "Task successfully completed",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-098",
@@ -1452,7 +1588,7 @@
       "comments": "Task successfully completed",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-099",
@@ -1470,7 +1606,7 @@
       "comments": "Task successfully completed",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-100",
@@ -1488,7 +1624,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-101",
@@ -1506,7 +1642,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-102",
@@ -1524,7 +1660,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-103",
@@ -1542,7 +1678,7 @@
       "comments": "No Update from the Batch Coordinator",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-104",
@@ -1560,7 +1696,7 @@
       "comments": "No Update from the Batch Coordinator",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-105",
@@ -1578,7 +1714,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-106",
@@ -1596,7 +1732,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-107",
@@ -1614,7 +1750,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-108",
@@ -1632,7 +1768,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-109",
@@ -1650,7 +1786,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-110",
@@ -1668,7 +1804,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-111",
@@ -1686,7 +1822,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-112",
@@ -1704,7 +1840,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-113",
@@ -1722,7 +1858,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-114",
@@ -1740,7 +1876,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-115",
@@ -1758,7 +1894,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-116",
@@ -1776,7 +1912,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-117",
@@ -1794,7 +1930,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-118",
@@ -1812,7 +1948,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-119",
@@ -1830,7 +1966,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-120",
@@ -1848,7 +1984,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-121",
@@ -1866,7 +2002,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-122",
@@ -1884,7 +2020,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-123",
@@ -1902,7 +2038,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-124",
@@ -1920,7 +2056,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-125",
@@ -1938,7 +2074,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-126",
@@ -1956,7 +2092,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-127",
@@ -1974,7 +2110,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-128",
@@ -1992,7 +2128,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-129",
@@ -2010,7 +2146,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-130",
@@ -2028,7 +2164,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-131",
@@ -2046,7 +2182,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     },
     {
       "id": "CW-132",
@@ -2064,7 +2200,7 @@
       "comments": "",
       "link": "",
       "linkLabel": "",
-      "source": "Task Sheet (Completed Work)"
+      "source": "Completed Archive"
     }
   ],
   "repositoryLinks": [
@@ -2273,6 +2409,19 @@
       "url": "https://docs.google.com/spreadsheets/d/1VM41RQ0Y5fP02fS4lA9zdbW3ej-veF2y/edit?gid=1738325545"
     }
   ],
+  "categories": [
+    "Design",
+    "Web Design",
+    "Communication",
+    "Teaching Material",
+    "Website Management",
+    "Advertisement",
+    "Placement",
+    "Training",
+    "Dashboard & Portal",
+    "Completed Archive",
+    "General"
+  ],
   "assignees": [
     "Abhishek Kamble",
     "Rahul More",
@@ -2304,18 +2453,5 @@
     "High",
     "Medium",
     "Low"
-  ],
-  "categories": [
-    "Design",
-    "Web Design",
-    "Communication",
-    "Teaching Material",
-    "Website Management",
-    "Advertisement",
-    "Placement",
-    "Training",
-    "Dashboard & Portal",
-    "Completed Archive",
-    "General"
   ]
 }
