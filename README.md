@@ -54,6 +54,13 @@ The application is powered by a dedicated **Google Cloud Firestore Database** (`
 - In-place editing of title, description, category, assignee, priority, start/due/completion dates, dependencies, comments, and links.
 - Automatic completion date stamping when marking progress as *Completed*.
 
+### 7. 📱 Mobile-First Responsive Design (OnePlus 10R 5G & Smartphones)
+- **Automatic Mobile Detection**: Detects viewport width on load; automatically activates touch-optimized **Cards Mode** (`🗂️ Cards`) on mobile devices (e.g., OnePlus 10R 5G, 412x919 px).
+- **Mobile Task Cards**: Native touch cards with selection checkboxes, priority pills, category badges, due date indicators, avatar chips, and inline status dropdowns.
+- **Horizontal Touch Kanban**: Swipe horizontally through Kanban columns with CSS scroll snap (`scroll-snap-type: x mandatory`).
+- **Responsive Modals & Bottom Sheets**: Task Edit and Cloud DB Settings render as modern bottom sheets (`max-height: 92vh`) with touch-friendly spacing and zero accidental mobile zooming (`15px+` font size).
+- **Flexible Table Views**: Switch seamlessly between `🗂️ Cards`, `▦ Fit Table`, and `▦ 14-Col` horizontal touch-scroll table.
+
 ---
 
 ## 🛠️ Tech Stack

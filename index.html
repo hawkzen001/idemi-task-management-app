@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+  <meta name="theme-color" content="#1e3a8a" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <!-- Google Firebase SDK v10 (Compat Mode for Instant Real-Time Cloud Firestore Sync) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -1228,13 +1232,419 @@
       transform: translateY(0);
     }
 
+    /* ============================================================
+     * Mobile Responsive Optimization (OnePlus 10R 5G & Mobile Devices)
+     * ============================================================ */
+    .mobile-cards-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      width: 100%;
+    }
+
+    .m-task-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 13px 14px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .m-task-card.row-selected {
+      background: #eff6ff !important;
+      border-color: #93c5fd !important;
+    }
+
+    .m-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .m-card-left-check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .m-card-badges {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .m-card-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.35;
+      cursor: pointer;
+    }
+
+    .m-card-desc {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.35;
+      background: var(--surface-alt);
+      padding: 6px 9px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+
+    .m-card-info-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding-top: 5px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .m-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+
+    .m-card-actions {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
     @media (max-width: 768px) {
-      .modal-body {
-        grid-template-columns: 1fr;
+      :root {
+        --radius-md: 10px;
+        --radius-lg: 14px;
       }
+
+      body {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+
+      .app-header {
+        padding: 10px 14px;
+      }
+
       .header-top {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        gap: 10px;
+      }
+
+      .brand-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        width: 100%;
+      }
+
+      .brand-badge {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+        border-radius: 8px;
+        flex-shrink: 0;
+      }
+
+      .brand-title {
+        flex: 1;
+        min-width: 180px;
+      }
+
+      .brand-title h1 {
+        font-size: 14.5px;
+        line-height: 1.25;
+        margin-bottom: 2px;
+      }
+
+      .brand-title p {
+        font-size: 11px;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .db-status-pill {
+        font-size: 11px;
+        padding: 4px 10px;
+        margin-top: 2px;
+        width: auto;
+        align-self: flex-start;
+      }
+
+      .header-actions {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 7px;
+        width: 100%;
+      }
+
+      .header-actions .btn-primary {
+        grid-column: 1 / -1;
+        padding: 10px 14px;
+        font-size: 13.5px;
+        font-weight: 700;
+        justify-content: center;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(30, 58, 138, 0.25);
+      }
+
+      .header-actions .btn-secondary,
+      .header-actions label.btn-secondary {
+        padding: 8px 6px;
+        font-size: 11.5px;
+        justify-content: center;
+        text-align: center;
+        border-radius: 6px;
+        min-height: 36px;
+        display: flex;
+        align-items: center;
+      }
+
+      .main-container {
+        padding: 10px 10px 48px;
+        gap: 12px;
+        width: 100%;
+      }
+
+      /* KPI Summary Strip (2x3 Grid on Mobile) */
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .kpi-card {
+        padding: 10px 12px;
+        border-radius: 8px;
+      }
+
+      .kpi-label {
+        font-size: 10px;
+        letter-spacing: 0.3px;
+      }
+
+      .kpi-value {
+        font-size: 21px;
+        margin: 2px 0;
+      }
+
+      .kpi-sub {
+        font-size: 10.5px;
+      }
+
+      /* Controls Panel & Tabs */
+      .controls-panel {
+        padding: 12px;
+        gap: 10px;
+        border-radius: 10px;
+      }
+
+      .tabs-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding-bottom: 8px;
+      }
+
+      .view-tabs {
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+        display: flex;
+        gap: 5px;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+
+      .view-tabs::-webkit-scrollbar {
+        display: none;
+      }
+
+      .view-tab {
+        padding: 7px 11px;
+        font-size: 12px;
+        border-radius: 6px;
+        flex-shrink: 0;
+      }
+
+      .dataset-switch {
+        width: 100%;
+        display: flex;
+      }
+
+      .dataset-btn {
+        flex: 1;
+        text-align: center;
+        padding: 7px 4px;
+        font-size: 11px;
+      }
+
+      .filters-row {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .search-wrapper {
+        width: 100%;
+        min-width: 100%;
+      }
+
+      .search-input {
+        font-size: 13.5px;
+        padding: 9px 12px 9px 34px;
+      }
+
+      .filter-select {
+        font-size: 12.5px;
+        padding: 8px 10px;
+        width: 100%;
+      }
+
+      .table-mode-switch {
+        width: 100%;
+        display: flex;
+      }
+
+      .table-mode-switch .btn {
+        flex: 1;
+        text-align: center;
+        padding: 7px 4px;
+        font-size: 11px;
+      }
+
+      /* Table responsive touch scroll on phone when in table mode */
+      .table-scroll {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        max-height: 70vh;
+      }
+
+      table.task-table {
+        min-width: 820px;
+      }
+
+      /* Mobile Kanban Horizontal Swipe with Snap */
+      .kanban-board {
+        display: flex !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory;
+        gap: 12px;
+        padding-bottom: 12px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+      }
+
+      .kanban-col {
+        min-width: 82vw !important;
+        max-width: 86vw !important;
+        scroll-snap-align: center;
+        flex-shrink: 0;
+        max-height: 70vh;
+      }
+
+      /* Workload & Analytics on Mobile */
+      .analytics-layout {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .panel-card {
+        padding: 14px 16px;
+      }
+
+      /* Repositories on Mobile */
+      .repo-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      /* Floating Bulk Action Bar on Mobile */
+      .bulk-action-bar {
+        position: sticky;
+        bottom: 12px;
+        z-index: 45;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 10px 12px;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.18);
+        border-radius: 10px;
+      }
+
+      .bulk-bar-right {
+        display: flex;
+        width: 100%;
+        gap: 6px;
+      }
+
+      .bulk-bar-right .btn {
+        flex: 1;
+        justify-content: center;
+        text-align: center;
+        padding: 8px 6px;
+        font-size: 11px;
+      }
+
+      /* Mobile Modals (Bottom Sheet Pattern for Phones) */
+      .modal-backdrop {
+        padding: 0;
+        align-items: flex-end;
+      }
+
+      .modal-dialog {
+        max-width: 100%;
+        width: 100%;
+        max-height: 92vh;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+      }
+
+      .modal-header {
+        padding: 14px 16px;
+      }
+
+      .modal-body {
+        padding: 14px 16px;
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+      }
+
+      .modal-footer {
+        padding: 12px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .modal-footer .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .form-control {
+        font-size: 15px !important;
+        padding: 9px 11px;
       }
     }
   </style>
@@ -1321,9 +1731,10 @@
         <select id="filterAssignee" class="filter-select" onchange="renderCurrentView()">
           <option value="">All Assignees</option>
         </select>
-        <div class="table-mode-switch" id="tableModeSwitch" title="Switch table horizontal layout">
-          <button type="button" class="btn btn-sm btn-light active" id="btnModeFit" onclick="setTableMode('fit')" title="Streamlined horizontal fit with zero scrolling">&#9638; Fit to Page</button>
-          <button type="button" class="btn btn-sm btn-light" id="btnModeExpanded" onclick="setTableMode('expanded')" title="Separate 14 columns across full screen width">&#9641; 14 Columns</button>
+        <div class="table-mode-switch" id="tableModeSwitch" title="Switch layout mode">
+          <button type="button" class="btn btn-sm btn-light" id="btnModeCards" onclick="setTableMode('cards')" title="Mobile Cards layout">🗂️ Cards</button>
+          <button type="button" class="btn btn-sm btn-light active" id="btnModeFit" onclick="setTableMode('fit')" title="Streamlined horizontal fit">&#9638; Fit Table</button>
+          <button type="button" class="btn btn-sm btn-light" id="btnModeExpanded" onclick="setTableMode('expanded')" title="Separate 14 columns across full width">&#9641; 14-Col</button>
         </div>
         <button type="button" class="btn btn-light btn-sm" id="btnSelectAllToggle" onclick="toggleSelectAllFromButton()" title="Select or deselect all visible tasks">&#9745; Select All</button>
         <div class="selection-actions-inline" id="selectionActionsInline" style="display:none; align-items: center; gap: 6px;">
@@ -1506,7 +1917,7 @@
       repositoryLinks: INITIAL_DATA.repositoryLinks,
       currentView: "table", // 'table' | 'kanban' | 'workload' | 'repository'
       dataset: "active",    // 'active' | 'completed' | 'all'
-      tableMode: localStorage.getItem("idemi_table_mode") || "fit", // 'fit' | 'expanded'
+      tableMode: localStorage.getItem("idemi_table_mode") || (window.innerWidth <= 768 ? "cards" : "fit"), // 'fit' | 'expanded'
       sortField: "id",
       sortAsc: true,
       selectedTaskKeys: new Set()
@@ -1515,12 +1926,12 @@
     function setTableMode(mode) {
       state.tableMode = mode;
       localStorage.setItem("idemi_table_mode", mode);
+      const btnCards = document.getElementById("btnModeCards");
       const btnFit = document.getElementById("btnModeFit");
       const btnExp = document.getElementById("btnModeExpanded");
-      if (btnFit && btnExp) {
-        btnFit.classList.toggle("active", mode === "fit");
-        btnExp.classList.toggle("active", mode === "expanded");
-      }
+      if (btnCards) btnCards.classList.toggle("active", mode === "cards");
+      if (btnFit) btnFit.classList.toggle("active", mode === "fit");
+      if (btnExp) btnExp.classList.toggle("active", mode === "expanded");
       renderCurrentView();
     }
 
@@ -2167,12 +2578,12 @@
       const modeSwitch = document.getElementById("tableModeSwitch");
       if (modeSwitch) {
         modeSwitch.style.display = state.currentView === "table" ? "inline-flex" : "none";
+        const btnCards = document.getElementById("btnModeCards");
         const btnFit = document.getElementById("btnModeFit");
         const btnExp = document.getElementById("btnModeExpanded");
-        if (btnFit && btnExp) {
-          btnFit.classList.toggle("active", state.tableMode === "fit");
-          btnExp.classList.toggle("active", state.tableMode === "expanded");
-        }
+        if (btnCards) btnCards.classList.toggle("active", state.tableMode === "cards");
+        if (btnFit) btnFit.classList.toggle("active", state.tableMode === "fit");
+        if (btnExp) btnExp.classList.toggle("active", state.tableMode === "expanded");
       }
 
       // Sync Selection Controls in Filter Bar
@@ -2239,8 +2650,83 @@
         </div>
       ` : "";
 
+      if (state.tableMode === "cards") {
+        // Mobile Touch Cards Mode (Optimized for OnePlus 10R 5G & Mobile Viewports)
+        const cardsHtml = tasks.map(t => {
+          const key = getTaskKey(t);
+          const isSelected = state.selectedTaskKeys.has(key);
+          const mergedBadge = t.parentId ? `<div class="merged-indicator" title="Linked with ${escapeHtml(t.parentId)}">🔗 ${escapeHtml(t.parentId)}</div>` : "";
+          const linkHtml = t.link
+            ? `<a class="link-icon-btn" href="${escapeHtml(t.link)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(t.link)}">&#128279; Link</a>`
+            : "";
+          const isOverdue = t.dueDate && t.progress !== "Completed" && new Date(t.dueDate) < new Date();
+
+          return `
+            <div class="m-task-card ${isSelected ? 'row-selected' : ''}">
+              <div class="m-card-top">
+                <div class="m-card-left-check">
+                  <input type="checkbox" class="task-checkbox task-row-chk" data-key="${escapeHtml(key)}" onchange="toggleTaskSelection('${escapeHtml(t.id)}', '${escapeHtml(t.source)}', this.checked)" ${isSelected ? 'checked' : ''} />
+                  <span class="td-id">${escapeHtml(t.id)}</span>
+                  ${mergedBadge}
+                </div>
+                <div class="m-card-badges">
+                  <span class="cat-tag">${escapeHtml(t.category || "General")}</span>
+                  <span class="badge prio-${escapeHtml(t.priority)}">${escapeHtml(t.priority || "Medium")}</span>
+                </div>
+              </div>
+
+              <div class="m-card-title" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')" title="Tap to edit task">
+                ${escapeHtml(t.title || "(Untitled Task)")}
+              </div>
+
+              ${t.description ? `<div class="m-card-desc">${escapeHtml(t.description)}</div>` : ''}
+
+              <div class="m-card-info-row">
+                <div class="assignee-chip" title="${escapeHtml(t.assignee || 'Unassigned')}">
+                  <span class="avatar">${getInitials(t.assignee)}</span>
+                  <span>${escapeHtml(t.assignee || "Unassigned")}</span>
+                </div>
+                <div class="td-date-stacked">
+                  <span class="${isOverdue ? 'date-overdue' : 'date-due'}" title="Due Date">
+                    &#9200; Due: ${escapeHtml(t.dueDate || "—")}
+                  </span>
+                  ${t.completionDate ? `<span style="color:#059669;font-weight:600;" title="Completed Date">&#10003; ${escapeHtml(t.completionDate)}</span>` : ''}
+                </div>
+              </div>
+
+              ${t.dependencies || t.comments ? `
+                <div class="td-notes-compact" style="margin-top: 2px;">
+                  ${t.dependencies ? `<div class="note-pill dep-pill" title="Dependency: ${escapeHtml(t.dependencies)}">&#9888; ${escapeHtml(t.dependencies)}</div>` : ''}
+                  ${t.comments ? `<div class="note-pill comment-pill" title="Comment: ${escapeHtml(t.comments)}">&#128172; ${escapeHtml(t.comments)}</div>` : ''}
+                </div>
+              ` : ''}
+
+              <div class="m-card-footer">
+                <div style="flex: 1; max-width: 150px;">
+                  <select class="inline-select ${statusClass(t.progress)}" style="width: 100%; padding: 6px 8px; font-size: 12px;" onchange="inlineUpdateTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}', 'progress', this.value)">
+                    ${INITIAL_DATA.statuses.map(s => `<option value="${s}" ${t.progress === s ? 'selected' : ''}>${s}</option>`).join("")}
+                  </select>
+                </div>
+                <div class="m-card-actions">
+                  ${linkHtml}
+                  <button type="button" class="btn btn-xs btn-light" onclick="openTaskModal('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')" title="Edit">&#9998; Edit</button>
+                  <button type="button" class="btn btn-xs btn-danger-outline" onclick="deleteTask('${escapeHtml(t.id)}', '${escapeHtml(t.source)}')" title="Delete">&#128465;</button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        return `
+          ${bulkBarHtml}
+          <div class="mobile-cards-grid">
+            ${cardsHtml}
+          </div>
+        `;
+      }
+
       if (state.tableMode !== "expanded") {
-        // Fit to Page Mode (Default - Zero horizontal scroll, all actions & options fully visible)
+        // Fit to Page Mode (Default on Desktop - Zero horizontal scroll, all actions & options fully visible)
         const rowsHtml = tasks.map(t => {
           const key = getTaskKey(t);
           const isSelected = state.selectedTaskKeys.has(key);
