@@ -1,0 +1,65 @@
+{
+  "project": "idemi-work",
+  "appName": "IDEMI Animation Dept — Task & Repository Database",
+  "author": "Nilesh Sharma",
+  "department": "Animation Department, IDEMI Mumbai",
+  "timestamp": "2026-10-21T15:33:00+05:30",
+  "liveUrl": "https://hawkzen001.github.io/idemi-task-management-app/",
+  "gitRepo": "https://github.com/hawkzen001/idemi-task-management-app",
+  "cloudResources": {
+    "gcpProject": "idemi-work",
+    "cloudStorageBucket": "gs://idemi-work-docs/",
+    "firestoreDb": "idemi-task-management-db",
+    "region": "asia-south1 (Mumbai)"
+  },
+  "milestones": [
+    {
+      "phase": 1,
+      "name": "Ingestion & Base Web App",
+      "status": "COMPLETED",
+      "summary": "Built standalone task management app based on shared Gemini conversation and master spreadsheet (21 active, 102 completed, 34 repos)."
+    },
+    {
+      "phase": 2,
+      "name": "GitHub Pages Deployment",
+      "status": "COMPLETED",
+      "summary": "Created remote GitHub repository and deployed to GitHub Pages with live domain."
+    },
+    {
+      "phase": 3,
+      "name": "Zero Horizontal Scroll Fit",
+      "status": "COMPLETED",
+      "summary": "Fit all 14 columns into screen width without horizontal scrollbars, sticky actions column, and view mode toggle."
+    },
+    {
+      "phase": 4,
+      "name": "Select All & Bulk Delete",
+      "status": "COMPLETED",
+      "summary": "Added row checkboxes, select all toggle, selection count bar, and batch deletion."
+    },
+    {
+      "phase": 5,
+      "name": "Google Cloud Firestore Migration",
+      "status": "COMPLETED",
+      "summary": "Migrated database to dedicated Google Cloud Firestore (idemi-task-management-db in asia-south1) with sub-second real-time sync."
+    },
+    {
+      "phase": 6,
+      "name": "Mobile Responsiveness (OnePlus 10R 5G)",
+      "status": "COMPLETED",
+      "summary": "Designed mobile touch cards view, 2x3 KPI grid, touch-swipe Kanban, and bottom-sheet modals for 412x919 px viewport."
+    },
+    {
+      "phase": 7,
+      "name": "Admin Panel & Access Control",
+      "status": "COMPLETED",
+      "summary": "Implemented Read-Only mode for viewers, Master Edit Lock, SHA-256 passcode authentication, audit log, and dedicated Admin Control Panel."
+    },
+    {
+      "phase": 8,
+      "name": "Cloud Communication Update to idemi-work",
+      "status": "COMPLETED",
+      "summary": "Uploaded complete communication history to Google Cloud Storage (gs://idemi-work-docs/), Cloud Logging, Firestore, and GitHub repository."
+    }
+  ]
+}
