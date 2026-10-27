@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "schema": "idemi-github-db-v2",
     "repository": "hawkzen001/idemi-task-management-app",
-    "lastUpdated": "2026-10-27T07:42:50.055Z"
+    "lastUpdated": "2026-10-27T09:00:37.465Z"
   },
   "activeTasks": [
     {
@@ -391,7 +391,7 @@
       "priority": "High",
       "progress": "In Progress",
       "description": "",
-      "assignee": "Ravindra Ahire",
+      "assignee": "Rahul Jagtap",
       "dependencies": "",
       "comments": "",
       "id": "T108"
@@ -799,7 +799,7 @@
       "startDate": "",
       "dueDate": "2024-07-16",
       "completionDate": "2024-07-15",
-      "assignee": "Ravindra Ahire",
+      "assignee": "Rahul Jagtap",
       "progress": "Completed",
       "dependencies": "",
       "comments": "Need to register our Institute on the Internshala Portal",
@@ -2537,7 +2537,7 @@
     "Sachin Nikam",
     "Pratik Deshmukh",
     "Kunal Tawde",
-    "Ravindra Ahire",
+    "Rahul Jagtap",
     "Naresh Shimpi",
     "Unassigned"
   ],
